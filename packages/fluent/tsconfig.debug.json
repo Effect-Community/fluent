@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "debug",
+    "target": "ES2018",
+    "lib": ["DOM", "ES2020"],
+    "module": "CommonJS",
+    "removeComments": false,
+    "incremental": false,
+    "plugins": [
+      { "transform": "./src/rewrite.ts" },
+      { "transform": "@effect-ts/tracing-plugin" }
+    ]
+  },
+  "include": ["./test/dummy.test.ts"]
+}

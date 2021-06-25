@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "files": [],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ES2018",
+    "plugins": [
+      { "transform": "./packages/fluent/src/rewrite.ts" },
+      {
+        "transform": "@effect-ts/tracing-plugin",
+        "moduleMap": {
+          "^packages/fluent/src/(.*)": "(@effect-ts/fluent): src/$1",
+          "^packages/fluent/test/(.*)": "(@effect-ts/fluent/test): test/$1"
+        }
+      }
+    ]
+  }
+}
