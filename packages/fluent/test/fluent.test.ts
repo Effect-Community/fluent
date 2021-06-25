@@ -4,8 +4,6 @@ import * as L from "@effect-ts/core/Effect/Layer"
 import { tag } from "@effect-ts/core/Has"
 import type { _A } from "@effect-ts/core/Utils"
 
-import type {} from "../src"
-
 class Err1 extends Tagged("Err1")<{}> {}
 class Err2 extends Tagged("Err2")<{}> {}
 
