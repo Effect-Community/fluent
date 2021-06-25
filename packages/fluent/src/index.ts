@@ -5,10 +5,18 @@ import type * as T from "@effect-ts/core/Effect"
 import type { Cause } from "@effect-ts/core/Effect/Cause"
 import type { Exit } from "@effect-ts/core/Effect/Exit"
 import type { Layer } from "@effect-ts/core/Effect/Layer"
+import type { Either } from "@effect-ts/core/Either"
 import type { Has, Tag } from "@effect-ts/core/Has"
 import type { Compute, Erase } from "@effect-ts/core/Utils"
 
 declare module "@effect-ts/core/Effect" {
+  type EitherA<A extends Either<any, any>> = [A] extends [Either<any, infer X>]
+    ? X
+    : never
+  type EitherE<A extends Either<any, any>> = [A] extends [Either<infer X, any>]
+    ? X
+    : never
+
   export interface Effect<R, E, A> {
     /**
      * @rewrite provideService_ from "@effect-ts/core/Effect"
@@ -51,6 +59,11 @@ declare module "@effect-ts/core/Effect" {
      * @rewrite result from "@effect-ts/core/Effect"
      */
     result(): T.Effect<R, never, Exit<E, A>>
+
+    /**
+     * @rewrite either from "@effect-ts/core/Effect"
+     */
+    either(): T.Effect<R, never, Either<E, A>>
 
     /**
      * @rewrite as_ from "@effect-ts/core/Effect"
@@ -105,7 +118,7 @@ declare module "@effect-ts/core/Effect" {
      */
     zipPar<R2, E2, B>(f: T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, Tuple<[A, B]>>
 
-    runPromise: ((_: R) => void) extends (_: T.DefaultEnv) => void
+    runPromise: [(_: R) => void] extends [(_: T.DefaultEnv) => void]
       ? {
           /**
            * @rewrite runPromise from "@effect-ts/core/Effect"
@@ -114,7 +127,7 @@ declare module "@effect-ts/core/Effect" {
         }
       : ["required", (_: R) => void]
 
-    runPromiseExit: ((_: R) => void) extends (_: T.DefaultEnv) => void
+    runPromiseExit: [(_: R) => void] extends [(_: T.DefaultEnv) => void]
       ? {
           /**
            * @rewrite runPromiseExit from "@effect-ts/core/Effect"
@@ -123,7 +136,16 @@ declare module "@effect-ts/core/Effect" {
         }
       : ["required", (_: R) => void]
 
-    bind: A extends Record<string, unknown>
+    absolve: [A] extends [Either<any, any>]
+      ? {
+          /**
+           * @rewrite absolve from "@effect-ts/core/Effect"
+           */
+          (): T.Effect<R, E | EitherE<A>, EitherA<A>>
+        }
+      : ["absolve is available only when A is Either"]
+
+    bind: [A] extends [Record<string, unknown>]
       ? {
           /**
            * @rewrite bind_ from "@effect-ts/core/Effect"
@@ -135,7 +157,7 @@ declare module "@effect-ts/core/Effect" {
         }
       : ["bind is available only when using `do`"]
 
-    let: A extends Record<string, unknown>
+    let: [A] extends [Record<string, unknown>]
       ? {
           /**
            * @rewrite let_ from "@effect-ts/core/Effect"

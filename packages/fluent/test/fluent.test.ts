@@ -45,6 +45,8 @@ describe("Unified API", () => {
       .chain(() => T.fail(new Err2()))
       .catchTag("Err1", (e) => T.succeed(e._tag.length))
       .tap((n) => log(`n: ${n}`))
+      .either()
+      .absolve()
 
     expect(await program.inject(TestConsole).runPromise()).toEqual(4)
     expect(messages).toEqual(["n: 4"])
