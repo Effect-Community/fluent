@@ -2,6 +2,7 @@ import { Tagged } from "@effect-ts/core/Case"
 import * as T from "@effect-ts/core/Effect"
 import * as L from "@effect-ts/core/Effect/Layer"
 import { tag } from "@effect-ts/core/Has"
+import * as S from "@effect-ts/core/Sync"
 import type { _A } from "@effect-ts/core/Utils"
 
 class Err1 extends Tagged("Err1")<{}> {}
@@ -39,6 +40,7 @@ describe("Unified API", () => {
       .foldM(T.fail, T.succeed)
       .result()
       .chain(T.done)
+      .chain((x) => S.succeed(x))
       .chain(() => T.fail(new Err1()))
       .chain(() => T.fail(new Err2()))
       .catchTag("Err1", (e) => T.succeed(e._tag.length))

@@ -11,6 +11,10 @@ import type { Either } from "@effect-ts/core/Either"
 import type { Has, Tag } from "@effect-ts/core/Has"
 import type { Compute, Erase } from "@effect-ts/core/Utils"
 
+declare module "@effect-ts/core/Sync" {
+  export interface Sync<R, E, A> extends T.Effect<R, E, A> {}
+}
+
 declare module "@effect-ts/core/Effect" {
   type EitherA<A extends Either<any, any>> = [A] extends [Either<any, infer X>]
     ? X
