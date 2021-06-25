@@ -36,6 +36,19 @@ declare module "@effect-ts/core/Effect" {
 
   export interface Effect<R, E, A> {
     /**
+     * @rewrite bracket_ from "@effect-ts/core/Effect"
+     */
+    bracket<R2, E2, A2, R3, B>(
+      use: (a: A) => Effect<R2, E2, A2>,
+      release: (a: A, exit: Exit<E2, A2>) => Effect<R3, never, B>
+    ): T.Effect<R & R2 & R3, E | E2, A2>
+
+    /**
+     * @rewrite ensuring_ from "@effect-ts/core/Effect"
+     */
+    ensuring<R1, X>(finalizer: Effect<R1, never, X>): T.Effect<R & R1, E, A>
+
+    /**
      * @rewrite provideService_ from "@effect-ts/core/Effect"
      */
     inject<A2>(

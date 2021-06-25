@@ -32,6 +32,8 @@ describe("Unified API", () => {
         })
     })
 
+    const fn = jest.fn()
+
     const program = T.do
       .let("foo", () => 0)
       .bind("bar", (_) => T.succeed(_.foo + 1))
@@ -48,9 +50,20 @@ describe("Unified API", () => {
       .either()
       .absolve()
       .race(T.delay(10)(T.succeed(0)))
+      .ensuring(
+        T.succeedWith(() => {
+          fn()
+        })
+      )
+      .bracket(T.succeed, () =>
+        T.succeedWith(() => {
+          fn()
+        })
+      )
 
     expect(await program.inject(TestConsole).runPromise()).toEqual(4)
     expect(messages).toEqual(["n: 4"])
+    expect(fn).toHaveBeenCalledTimes(2)
     expect(S.run(S.succeed(0).chain((n) => S.succeed(n + 1)))).toEqual(1)
   })
 })
