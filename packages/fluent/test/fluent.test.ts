@@ -51,5 +51,6 @@ describe("Unified API", () => {
 
     expect(await program.inject(TestConsole).runPromise()).toEqual(4)
     expect(messages).toEqual(["n: 4"])
+    expect(S.run(S.succeed(0).chain((n) => S.succeed(n + 1)))).toEqual(1)
   })
 })

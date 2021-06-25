@@ -9,10 +9,21 @@ import type { Layer } from "@effect-ts/core/Effect/Layer"
 import type * as M from "@effect-ts/core/Effect/Managed"
 import type { Either } from "@effect-ts/core/Either"
 import type { Has, Tag } from "@effect-ts/core/Has"
+import type * as S from "@effect-ts/core/Sync"
 import type { Compute, Erase } from "@effect-ts/core/Utils"
 
 declare module "@effect-ts/core/Sync" {
-  export interface Sync<R, E, A> extends T.Effect<R, E, A> {}
+  export interface Sync<R, E, A> extends T.Effect<R, E, A> {
+    /**
+     * @rewrite chain_ from "@effect-ts/core/Sync"
+     */
+    chain<R2, E2, B>(f: (a: A) => S.Sync<R2, E2, B>): S.Sync<R & R2, E | E2, B>
+
+    /**
+     * @rewrite chain_ from "@effect-ts/core/Effect"
+     */
+    chain<R2, E2, B>(f: (a: A) => T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, B>
+  }
 }
 
 declare module "@effect-ts/core/Effect" {
