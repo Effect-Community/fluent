@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.6...@effect-ts/fluent@0.0.7) (2021-06-25)
+
+
+### Bug Fixes
+
+* **effect:** fix tapBoth type ([46217e3](https://github.com/Effect-TS/schema/commit/46217e3de534e946c1e1590779229c4a28277457))
+
+
+
+
+
 ## [0.0.6](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.5...@effect-ts/fluent@0.0.6) (2021-06-25)
 
 
