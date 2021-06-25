@@ -31,9 +31,9 @@ declare module "@effect-ts/core/Effect" {
     /**
      * @rewrite bracketExit_ from "@effect-ts/core/Effect"
      */
-    bracket<R2, E2, A2, R3, B>(
-      use: (a: A) => Effect<R2, E2, A2>,
-      release: (a: A, exit: Exit<E2, A2>) => Effect<R3, never, B>
+    bracket<R2, E2, A2, R3, B, AX extends A>(
+      use: (a: AX) => Effect<R2, E2, A2>,
+      release: (a: AX, exit: Exit<E2, A2>) => Effect<R3, never, B>
     ): T.Effect<R & R2 & R3, E | E2, A2>
 
     /**
@@ -65,38 +65,38 @@ declare module "@effect-ts/core/Effect" {
     /**
      * @rewrite foldM_ from "@effect-ts/core/Effect"
      */
-    foldM<R2, E2, A2, R3, E3, A3>(
-      g: (e: E) => T.Effect<R3, E3, A3>,
-      f: (a: A) => T.Effect<R2, E2, A2>
+    foldM<R2, E2, A2, R3, E3, A3, EX extends E, AX extends A>(
+      g: (e: EX) => T.Effect<R3, E3, A3>,
+      f: (a: AX) => T.Effect<R2, E2, A2>
     ): T.Effect<R & R2 & R3, E2 | E3, A2 | A3>
 
     /**
      * @rewrite foldCauseM_ from "@effect-ts/core/Effect"
      */
-    foldCauseM<R2, E2, A2, R3, E3, A3>(
-      g: (e: Cause<E>) => T.Effect<R3, E3, A3>,
-      f: (a: A) => T.Effect<R2, E2, A2>
+    foldCauseM<R2, E2, A2, R3, E3, A3, EX extends E, AX extends A>(
+      g: (e: Cause<EX>) => T.Effect<R3, E3, A3>,
+      f: (a: AX) => T.Effect<R2, E2, A2>
     ): T.Effect<R & R2 & R3, E2 | E3, A2 | A3>
 
     /**
      * @rewrite fork from "@effect-ts/core/Effect"
      */
-    fork(): T.Effect<R, never, Fiber<E, A>>
+    fork<EX extends E, AX extends A>(): T.Effect<R, never, Fiber<EX, AX>>
 
     /**
      * @rewrite forkManaged from "@effect-ts/core/Effect"
      */
-    forkManaged(): M.Managed<R, never, Fiber<E, A>>
+    forkManaged<EX extends E, AX extends A>(): M.Managed<R, never, Fiber<EX, AX>>
 
     /**
      * @rewrite result from "@effect-ts/core/Effect"
      */
-    result(): T.Effect<R, never, Exit<E, A>>
+    result<EX extends E, AX extends A>(): T.Effect<R, never, Exit<EX, AX>>
 
     /**
      * @rewrite either from "@effect-ts/core/Effect"
      */
-    either(): T.Effect<R, never, Either<E, A>>
+    either<EX extends E, AX extends A>(): T.Effect<R, never, Either<EX, AX>>
 
     /**
      * @rewrite as_ from "@effect-ts/core/Effect"
@@ -106,42 +106,50 @@ declare module "@effect-ts/core/Effect" {
     /**
      * @rewrite map_ from "@effect-ts/core/Effect"
      */
-    map<B>(f: (a: A) => B): T.Effect<R, E, B>
+    map<AX extends A, B>(f: (a: AX) => B): T.Effect<R, E, B>
 
     /**
      * @rewrite chain_ from "@effect-ts/core/Effect"
      */
-    chain<R2, E2, B>(f: (a: A) => T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, B>
+    chain<AX extends A, R2, E2, B>(
+      f: (a: AX) => T.Effect<R2, E2, B>
+    ): T.Effect<R & R2, E | E2, B>
 
     /**
      * @rewrite tap_ from "@effect-ts/core/Effect"
      */
-    tap<R2, E2, B>(f: (a: A) => T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, A>
+    tap<AX extends A, R2, E2, B>(
+      f: (a: AX) => T.Effect<R2, E2, B>
+    ): T.Effect<R & R2, E | E2, A>
 
     /**
      * @rewrite tapError_ from "@effect-ts/core/Effect"
      */
-    tapError<R2, E2, B>(f: (e: E) => T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, A>
+    tapError<EX extends E, R2, E2, B>(
+      f: (e: EX) => T.Effect<R2, E2, B>
+    ): T.Effect<R & R2, E | E2, A>
 
     /**
      * @rewrite tapCause_ from "@effect-ts/core/Effect"
      */
-    tapCause<R2, E2, B>(
-      f: (e: Cause<E>) => T.Effect<R2, E2, B>
+    tapCause<EX extends E, R2, E2, B>(
+      f: (e: Cause<EX>) => T.Effect<R2, E2, B>
     ): T.Effect<R & R2, E | E2, A>
 
     /**
      * @rewrite tapBoth_ from "@effect-ts/core/Effect"
      */
-    tapBoth<R2, E2, B, R3, E3, C>(
-      f: (e: E) => T.Effect<R2, E2, B>,
-      g: (e: Cause<E>) => T.Effect<R2, E3, C>
+    tapBoth<EX extends E, AX extends A, R2, E2, B, R3, E3, C>(
+      f: (e: EX) => T.Effect<R2, E2, B>,
+      g: (e: AX) => T.Effect<R2, E3, C>
     ): T.Effect<R & R2 & R3, E | E2 | E3, A>
 
     /**
      * @rewrite catchAll_ from "@effect-ts/core/Effect"
      */
-    catchAll<R2, E2, B>(f: (e: E) => T.Effect<R2, E2, B>): T.Effect<R & R2, E2, A | B>
+    catchAll<EX extends E, R2, E2, B>(
+      f: (e: EX) => T.Effect<R2, E2, B>
+    ): T.Effect<R & R2, E2, A | B>
 
     /**
      * @rewrite catchTag_ from "@effect-ts/core/Effect"
@@ -159,7 +167,9 @@ declare module "@effect-ts/core/Effect" {
     /**
      * @rewrite zip_ from "@effect-ts/core/Effect"
      */
-    zip<R2, E2, B>(f: T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, Tuple<[A, B]>>
+    zip<R2, E2, B, AX extends A>(
+      f: T.Effect<R2, E2, B>
+    ): T.Effect<R & R2, E | E2, Tuple<[AX, B]>>
 
     /**
      * @rewrite zipRight_ from "@effect-ts/core/Effect"
@@ -174,14 +184,16 @@ declare module "@effect-ts/core/Effect" {
     /**
      * @rewrite zipPar_ from "@effect-ts/core/Effect"
      */
-    zipPar<R2, E2, B>(f: T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, Tuple<[A, B]>>
+    zipPar<R2, E2, B, AX extends A>(
+      f: T.Effect<R2, E2, B>
+    ): T.Effect<R & R2, E | E2, Tuple<[AX, B]>>
 
     runPromise: [(_: R) => void] extends [(_: T.DefaultEnv) => void]
       ? {
           /**
            * @rewrite runPromise from "@effect-ts/core/Effect"
            */
-          (): Promise<A>
+          <AX extends A>(): Promise<AX>
         }
       : ["required", (_: R) => void]
 
@@ -190,7 +202,7 @@ declare module "@effect-ts/core/Effect" {
           /**
            * @rewrite runPromiseExit from "@effect-ts/core/Effect"
            */
-          (): Promise<Exit<E, A>>
+          <EX extends E, AX extends A>(): Promise<Exit<EX, AX>>
         }
       : ["required", (_: R) => void]
 
