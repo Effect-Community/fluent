@@ -5,7 +5,6 @@
     "baseUrl": ".",
     "target": "ES2018",
     "plugins": [
-      { "transform": "./packages/fluent/src/rewrite.ts" },
       {
         "transform": "@effect-ts/tracing-plugin",
         "moduleMap": {
