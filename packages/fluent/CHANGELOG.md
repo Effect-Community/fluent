@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.4...@effect-ts/fluent@0.0.5) (2021-06-25)
+
+
+### Features
+
+* **effect:** race ([6d9313c](https://github.com/Effect-TS/schema/commit/6d9313c85b72687a6aaf32fa4ce0b79363aede17))
+
+
+
+
+
 ## [0.0.4](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.3...@effect-ts/fluent@0.0.4) (2021-06-25)
 
 
