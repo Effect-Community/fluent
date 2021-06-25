@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.4](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.3...@effect-ts/fluent@0.0.4) (2021-06-25)
+
+
+### Features
+
+* **fluent:** add tap variants ([dd5d48f](https://github.com/Effect-TS/schema/commit/dd5d48fe7c3df5358c8e502d1cc897934c4ec910))
+
+
+
+
+
 ## [0.0.3](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.2...@effect-ts/fluent@0.0.3) (2021-06-25)
 
 
