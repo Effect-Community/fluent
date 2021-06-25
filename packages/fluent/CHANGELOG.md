@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.10](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.9...@effect-ts/fluent@0.0.10) (2021-06-25)
+
+
+### Bug Fixes
+
+* **effect:** fix bracket ([fbcb584](https://github.com/Effect-TS/schema/commit/fbcb5845a4c80fe02d6322798854d5587e0dabbc))
+
+
+### Features
+
+* **effect:** ensuring/bracket ([b07bdc9](https://github.com/Effect-TS/schema/commit/b07bdc95450b222fe8b2732bc082803939176e64))
+
+
+
+
+
 ## [0.0.9](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.8...@effect-ts/fluent@0.0.9) (2021-06-25)
 
 
