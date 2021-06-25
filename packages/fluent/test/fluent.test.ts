@@ -45,6 +45,7 @@ describe("Unified API", () => {
       .tap((n) => log(`n: ${n}`))
       .either()
       .absolve()
+      .race(T.delay(10)(T.succeed(0)))
 
     expect(await program.inject(TestConsole).runPromise()).toEqual(4)
     expect(messages).toEqual(["n: 4"])

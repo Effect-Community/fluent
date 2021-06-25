@@ -119,6 +119,11 @@ declare module "@effect-ts/core/Effect" {
     ): T.Effect<R & R2, E2 | Exclude<E, { readonly _tag: Tag }>, A | B>
 
     /**
+     * @rewrite race_ from "@effect-ts/core/Effect"
+     */
+    race<R2, E2, B>(f: T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, A | B>
+
+    /**
      * @rewrite zip_ from "@effect-ts/core/Effect"
      */
     zip<R2, E2, B>(f: T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, Tuple<[A, B]>>
