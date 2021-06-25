@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.9](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.8...@effect-ts/fluent@0.0.9) (2021-06-25)
+
+
+### Features
+
+* **sync:** sync chain ([ee34e07](https://github.com/Effect-TS/schema/commit/ee34e07adacdecac90de223b0e97499ac991d382))
+
+
+
+
+
 ## [0.0.8](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.7...@effect-ts/fluent@0.0.8) (2021-06-25)
 
 
