@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.5...@effect-ts/fluent@0.0.6) (2021-06-25)
+
+
+### Features
+
+* **effect:** fork/forkManaged ([6fa6bc2](https://github.com/Effect-TS/schema/commit/6fa6bc21cc50e599af5b867974ded1ef71663d63))
+
+
+
+
+
 ## [0.0.5](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.4...@effect-ts/fluent@0.0.5) (2021-06-25)
 
 
