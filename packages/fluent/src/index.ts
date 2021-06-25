@@ -36,7 +36,7 @@ declare module "@effect-ts/core/Effect" {
 
   export interface Effect<R, E, A> {
     /**
-     * @rewrite bracket_ from "@effect-ts/core/Effect"
+     * @rewrite bracketExit_ from "@effect-ts/core/Effect"
      */
     bracket<R2, E2, A2, R3, B>(
       use: (a: A) => Effect<R2, E2, A2>,
