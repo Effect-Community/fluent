@@ -114,8 +114,8 @@ declare module "@effect-ts/core/Effect" {
      */
     tapBoth<R2, E2, B, R3, E3, C>(
       f: (e: E) => T.Effect<R2, E2, B>,
-      g: (e: Cause<E>) => T.Effect<R2, E2, C>
-    ): T.Effect<R & R2 & R3, E | E2 | E2, A>
+      g: (e: Cause<E>) => T.Effect<R2, E3, C>
+    ): T.Effect<R & R2 & R3, E | E2 | E3, A>
 
     /**
      * @rewrite catchAll_ from "@effect-ts/core/Effect"
