@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.2](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.1...@effect-ts/fluent@0.0.2) (2021-06-25)
+
+
+### Bug Fixes
+
+* **fluent:** remove local plugin ([d63444b](https://github.com/Effect-TS/schema/commit/d63444bccf1bfb4cd8470a9cfa57406d3d784a56))
+
+
+
+
+
 ## 0.0.1 (2021-06-25)
 
 
