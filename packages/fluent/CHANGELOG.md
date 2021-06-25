@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.8](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.7...@effect-ts/fluent@0.0.8) (2021-06-25)
+
+
+### Bug Fixes
+
+* **sync:** interop ([132fbd2](https://github.com/Effect-TS/schema/commit/132fbd2cb413c752b814be18c36ea62a338477a3))
+
+
+
+
+
 ## [0.0.7](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.6...@effect-ts/fluent@0.0.7) (2021-06-25)
 
 
