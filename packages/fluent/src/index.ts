@@ -86,6 +86,26 @@ declare module "@effect-ts/core/Effect" {
     tap<R2, E2, B>(f: (a: A) => T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, A>
 
     /**
+     * @rewrite tapError_ from "@effect-ts/core/Effect"
+     */
+    tapError<R2, E2, B>(f: (e: E) => T.Effect<R2, E2, B>): T.Effect<R & R2, E | E2, A>
+
+    /**
+     * @rewrite tapCause_ from "@effect-ts/core/Effect"
+     */
+    tapCause<R2, E2, B>(
+      f: (e: Cause<E>) => T.Effect<R2, E2, B>
+    ): T.Effect<R & R2, E | E2, A>
+
+    /**
+     * @rewrite tapBoth_ from "@effect-ts/core/Effect"
+     */
+    tapBoth<R2, E2, B, R3, E3, C>(
+      f: (e: E) => T.Effect<R2, E2, B>,
+      g: (e: Cause<E>) => T.Effect<R2, E2, C>
+    ): T.Effect<R & R2 & R3, E | E2 | E2, A>
+
+    /**
      * @rewrite catchAll_ from "@effect-ts/core/Effect"
      */
     catchAll<R2, E2, B>(f: (e: E) => T.Effect<R2, E2, B>): T.Effect<R & R2, E2, A | B>
