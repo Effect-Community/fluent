@@ -42,7 +42,7 @@ describe("Unified API", () => {
       .foldM(T.fail, T.succeed)
       .result()
       .chain(T.done)
-      .chain((x) => S.succeed(x))
+      .chain(S.succeed)
       .chain(() => T.fail(new Err1()))
       .chain(() => T.fail(new Err2()))
       .catchTag("Err1", (e) => T.succeed(e._tag.length))
