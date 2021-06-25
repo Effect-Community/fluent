@@ -9,5 +9,5 @@
     "incremental": false,
     "plugins": [{ "transform": "@effect-ts/tracing-plugin" }]
   },
-  "include": ["./test/dummy.test.ts"]
+  "include": ["./test/fluent.test.ts"]
 }
