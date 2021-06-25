@@ -27,13 +27,6 @@ declare module "@effect-ts/core/Sync" {
 }
 
 declare module "@effect-ts/core/Effect" {
-  type EitherA<A extends Either<any, any>> = [A] extends [Either<any, infer X>]
-    ? X
-    : never
-  type EitherE<A extends Either<any, any>> = [A] extends [Either<infer X, any>]
-    ? X
-    : never
-
   export interface Effect<R, E, A> {
     /**
      * @rewrite bracketExit_ from "@effect-ts/core/Effect"
@@ -201,16 +194,16 @@ declare module "@effect-ts/core/Effect" {
         }
       : ["required", (_: R) => void]
 
-    absolve: [A] extends [Either<any, any>]
+    absolve: [() => A] extends [() => Either<infer EE, infer EA>]
       ? {
           /**
            * @rewrite absolve from "@effect-ts/core/Effect"
            */
-          (): T.Effect<R, E | EitherE<A>, EitherA<A>>
+          (): T.Effect<R, E | EE, EA>
         }
       : ["absolve is available only when A is Either"]
 
-    bind: [A] extends [Record<string, unknown>]
+    bind: [() => A] extends [() => Record<string, unknown>]
       ? {
           /**
            * @rewrite bind_ from "@effect-ts/core/Effect"
@@ -222,7 +215,7 @@ declare module "@effect-ts/core/Effect" {
         }
       : ["bind is available only when using `do`"]
 
-    let: [A] extends [Record<string, unknown>]
+    let: [() => A] extends [() => Record<string, unknown>]
       ? {
           /**
            * @rewrite let_ from "@effect-ts/core/Effect"
