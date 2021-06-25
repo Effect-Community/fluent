@@ -4,7 +4,9 @@ import type { Tuple } from "@effect-ts/core/Collections/Immutable/Tuple"
 import type * as T from "@effect-ts/core/Effect"
 import type { Cause } from "@effect-ts/core/Effect/Cause"
 import type { Exit } from "@effect-ts/core/Effect/Exit"
+import type { Fiber } from "@effect-ts/core/Effect/Fiber"
 import type { Layer } from "@effect-ts/core/Effect/Layer"
+import type * as M from "@effect-ts/core/Effect/Managed"
 import type { Either } from "@effect-ts/core/Either"
 import type { Has, Tag } from "@effect-ts/core/Has"
 import type { Compute, Erase } from "@effect-ts/core/Utils"
@@ -54,6 +56,16 @@ declare module "@effect-ts/core/Effect" {
       g: (e: Cause<E>) => T.Effect<R3, E3, A3>,
       f: (a: A) => T.Effect<R2, E2, A2>
     ): T.Effect<R & R2 & R3, E2 | E3, A2 | A3>
+
+    /**
+     * @rewrite fork from "@effect-ts/core/Effect"
+     */
+    fork(): T.Effect<R, never, Fiber<E, A>>
+
+    /**
+     * @rewrite forkManaged from "@effect-ts/core/Effect"
+     */
+    forkManaged(): M.Managed<R, never, Fiber<E, A>>
 
     /**
      * @rewrite result from "@effect-ts/core/Effect"
