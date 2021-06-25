@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.3](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.2...@effect-ts/fluent@0.0.3) (2021-06-25)
+
+
+### Features
+
+* **effect:** either/absolve ([b3380f2](https://github.com/Effect-TS/schema/commit/b3380f2e5793e5b3518a8c0d32630d277c5771a9))
+
+
+
+
+
 ## [0.0.2](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.1...@effect-ts/fluent@0.0.2) (2021-06-25)
 
 
