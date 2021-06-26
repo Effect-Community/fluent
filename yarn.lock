@@ -369,10 +369,10 @@
   dependencies:
     chalk "^4.0.0"
 
-"@effect-ts/build-utils@^0.20.6":
-  version "0.20.6"
-  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.20.6.tgz#2c283b15e8090c5ca56e756bdd8eea25f205323c"
-  integrity sha512-wea54SKvDqZRWRQ8xFDp8GqUjky4J1V0gCbmdZ5OfefVOOtoGeXJotWEA8iU1cSYbPWrcTTL0P3V48tQUcQwGQ==
+"@effect-ts/build-utils@^0.20.7":
+  version "0.20.7"
+  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.20.7.tgz#2a95adc3a4518c26a1473d776c57295521fb658d"
+  integrity sha512-nMsDSPJnRfU0oOaFXVEqxHcfMKXv0zQhgUgSW78g6OBkSApbF7q3krmdRDm0fTKlaJQ5j7rSyfX4Ku70gl1pow==
 
 "@effect-ts/core@^0.40.7":
   version "0.40.7"
@@ -6869,10 +6869,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.1.tgz#76903c3f8c4449bc9ac597acefa24dc5ad4cbea6"
-  integrity sha512-p+vNbgpLjif/+D+DwAZAbndtRrR0md0MwfmOVN9N+2RgyACMT+7tfaRnT+WDPkqnuVwleyuBIG2XBxKDme3hPA==
+prettier@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.2.tgz#ef280a05ec253712e486233db5c6f23441e7342d"
+  integrity sha512-lnJzDfJ66zkMy58OL5/NY5zp70S7Nz6KqcKkXYzn2tMVrNxvbqaBpg7H3qHaLxCJ5lNMsGuM8+ohS7cZrthdLQ==
 
 pretty-format@^26.0.0, pretty-format@^26.6.2:
   version "26.6.2"
