@@ -17,16 +17,18 @@ declare module "@effect-ts/system/Sync/core" {
     /**
      * @rewrite chain_ from "@effect-ts/core/Sync"
      */
-    chain<R2, E2, B, AX extends A>(
+    chain<RX, EX, AX, R2, E2, B>(
+      this: S.Sync<RX, EX, AX>,
       f: (a: AX) => S.Sync<R2, E2, B>
-    ): S.Sync<R & R2, E | E2, B>
+    ): S.Sync<RX & R2, EX | E2, B>
 
     /**
      * @rewrite chain_ from "@effect-ts/core/Effect"
      */
-    chain<R2, E2, B, AX extends A>(
+    chain<RX, EX, AX, R2, E2, B>(
+      this: S.Sync<RX, EX, AX>,
       f: (a: AX) => T.Effect<R2, E2, B>
-    ): T.Effect<R & R2, E | E2, B>
+    ): T.Effect<RX & R2, EX | E2, B>
   }
 }
 
