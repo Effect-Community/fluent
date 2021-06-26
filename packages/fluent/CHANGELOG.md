@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.13...@effect-ts/fluent@0.0.14) (2021-06-26)
+
+
+### Bug Fixes
+
+* avoid breaking lib ([ed58268](https://github.com/Effect-TS/schema/commit/ed58268e45a57afa9877253334e6c443b3e0b1bd))
+
+
+
+
+
 ## [0.0.13](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.12...@effect-ts/fluent@0.0.13) (2021-06-26)
 
 
