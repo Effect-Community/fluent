@@ -21,7 +21,7 @@ interface Console extends _A<typeof makeConsole> {}
 const Console = tag<Console>()
 const { log } = T.deriveLifted(Console)(["log"], [], [])
 
-describe("Unified API", () => {
+describe("Effect API", () => {
   it("fluent", async () => {
     const messages: string[] = []
 

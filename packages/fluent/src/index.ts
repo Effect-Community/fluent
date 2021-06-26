@@ -12,6 +12,18 @@ import type { Has, Tag } from "@effect-ts/core/Has"
 import type * as S from "@effect-ts/core/Sync"
 import type { _A, _E, _R, Compute, Erase } from "@effect-ts/core/Utils"
 
+export interface OptionOps<A> {
+  /**
+   * @rewriteGetter toUndefined from "@effect-ts/core/Option"
+   */
+  readonly value: A | undefined
+}
+
+declare module "@effect-ts/system/Option/core" {
+  export interface Some<A> extends OptionOps<A> {}
+  export interface None extends OptionOps<never> {}
+}
+
 declare module "@effect-ts/system/Sync/core" {
   export interface Sync<R, E, A> extends T.Effect<R, E, A> {
     /**
