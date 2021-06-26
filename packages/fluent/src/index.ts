@@ -69,6 +69,11 @@ declare module "@effect-ts/system/Effect/effect" {
     ): T.Effect<RX & R1, EX, AX>
 
     /**
+     * @rewrite fromEffect from "@effect-ts/core/Effect/Managed"
+     */
+    toManaged<RX, EX, AX>(this: T.Effect<RX, EX, AX>): M.Managed<RX, EX, AX>
+
+    /**
      * @rewrite provideService_ from "@effect-ts/core/Effect"
      */
     inject<RX, EX, AX, A2>(
@@ -319,5 +324,100 @@ declare module "@effect-ts/system/Effect/effect" {
       f: (a: AX) => B,
       __trace?: string
     ): T.Effect<RX, EX, Compute<AX & { readonly [k in N]: B }, "flat">>
+  }
+}
+
+declare module "@effect-ts/system/Managed/managed" {
+  export interface Managed<R, E, A> {
+    /**
+     * @rewrite as_ from "@effect-ts/core/Effect/Managed"
+     */
+    as<RX, EX, AX, B>(
+      this: M.Managed<RX, EX, AX>,
+      b: B,
+      __trace?: string
+    ): M.Managed<RX, EX, B>
+
+    /**
+     * @rewrite map_ from "@effect-ts/core/Effect/Managed"
+     */
+    map<RX, EX, AX, B>(
+      this: M.Managed<RX, EX, AX>,
+      f: (a: AX) => B,
+      __trace?: string
+    ): M.Managed<RX, EX, B>
+
+    /**
+     * @rewrite chain_ from "@effect-ts/core/Effect/Managed"
+     */
+    chain<RX, EX, AX, R2, E2, B>(
+      this: M.Managed<RX, EX, AX>,
+      f: (a: AX) => M.Managed<R2, E2, B>,
+      __trace?: string
+    ): M.Managed<RX & R2, EX | E2, B>
+
+    /**
+     * @rewrite tapM_ from "@effect-ts/core/Effect/Managed"
+     */
+    tap<RX, EX, AX, R2, E2, B>(
+      this: M.Managed<RX, EX, AX>,
+      f: (a: AX) => T.Effect<R2, E2, B>,
+      __trace?: string
+    ): M.Managed<RX & R2, EX | E2, A>
+
+    /**
+     * @rewrite tap_ from "@effect-ts/core/Effect/Managed"
+     */
+    tap<RX, EX, AX, R2, E2, B>(
+      this: M.Managed<RX, EX, AX>,
+      f: (a: AX) => M.Managed<R2, E2, B>,
+      __trace?: string
+    ): M.Managed<RX & R2, EX | E2, A>
+
+    /**
+     * @rewrite tapError_ from "@effect-ts/core/Effect/Managed"
+     */
+    tapError<RX, EX, AX, R2, E2, B>(
+      this: M.Managed<RX, EX, AX>,
+      f: (e: EX) => M.Managed<R2, E2, B>,
+      __trace?: string
+    ): M.Managed<RX & R2, EX | E2, A>
+
+    /**
+     * @rewrite tapCause_ from "@effect-ts/core/Effect/Managed"
+     */
+    tapCause<RX, EX, AX, R2, E2, B>(
+      this: M.Managed<RX, EX, AX>,
+      f: (e: Cause<EX>) => M.Managed<R2, E2, B>,
+      __trace?: string
+    ): M.Managed<RX & R2, EX | E2, AX>
+
+    /**
+     * @rewrite tapBoth_ from "@effect-ts/core/Effect/Managed"
+     */
+    tapBoth<RX, EX, AX, R2, E2, B, R3, E3, C>(
+      this: M.Managed<RX, EX, AX>,
+      f: (e: EX) => M.Managed<R2, E2, B>,
+      g: (e: AX) => M.Managed<R2, E3, C>,
+      __trace?: string
+    ): M.Managed<RX & R2 & R3, EX | E2 | E3, AX>
+
+    /**
+     * @rewrite catchAll_ from "@effect-ts/core/Effect/Managed"
+     */
+    catchAll<RX, EX, AX, R2, E2, B>(
+      this: M.Managed<RX, EX, AX>,
+      f: (e: EX) => M.Managed<R2, E2, B>,
+      __trace?: string
+    ): M.Managed<RX & R2, E2, AX | B>
+
+    /**
+     * @rewrite use_ from "@effect-ts/core/Effect/Managed"
+     */
+    use<RX, EX, AX, R2, E2, B>(
+      this: M.Managed<RX, EX, AX>,
+      f: (a: AX) => T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, EX | E2, B>
   }
 }
