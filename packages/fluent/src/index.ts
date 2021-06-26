@@ -37,265 +37,235 @@ declare module "@effect-ts/system/Effect/effect" {
     /**
      * @rewrite bracketExit_ from "@effect-ts/core/Effect"
      */
-    bracket<Self, R2, E2, A2, R3, B>(
-      this: Self,
-      use: (a: _A<Self>) => Effect<R2, E2, A2>,
-      release: (a: _A<Self>, exit: Exit<E2, A2>) => Effect<R3, never, B>
-    ): T.Effect<_R<Self> & R2 & R3, _E<Self> | E2, A2>
+    bracket<RX, EX, AX, R2, E2, A2, R3, B>(
+      this: T.Effect<RX, EX, AX>,
+      use: (a: AX) => Effect<R2, E2, A2>,
+      release: (a: AX, exit: Exit<E2, A2>) => Effect<R3, never, B>
+    ): T.Effect<RX & R2 & R3, EX | E2, A2>
 
     /**
      * @rewrite ensuring_ from "@effect-ts/core/Effect"
      */
-    ensuring<Self, R1, X>(
-      this: Self,
+    ensuring<RX, EX, AX, R1, X>(
+      this: T.Effect<RX, EX, AX>,
       finalizer: Effect<R1, never, X>
-    ): T.Effect<_R<Self> & R1, _E<Self>, _A<Self>>
+    ): T.Effect<RX & R1, EX, AX>
 
     /**
      * @rewrite provideService_ from "@effect-ts/core/Effect"
      */
-    inject<Self, A2>(
-      this: Self,
+    inject<RX, EX, AX, A2>(
+      this: T.Effect<RX, EX, AX>,
       tag: Tag<A2>,
       value: A2
-    ): T.Effect<_R<Self> extends Has<A2> & infer K ? K : unknown, _E<Self>, _A<Self>>
+    ): T.Effect<RX extends Has<A2> & infer K ? K : unknown, EX, AX>
 
     /**
      * @rewrite provideServiceM_ from "@effect-ts/core/Effect"
      */
-    inject<Self, R2, E2, A2>(
-      this: Self,
+    inject<RX, EX, AX, R2, E2, A2>(
+      this: T.Effect<RX, EX, AX>,
       tag: Tag<A2>,
       value: T.Effect<R2, E2, A2>
-    ): T.Effect<
-      R2 & (_R<Self> extends Has<A2> & infer K ? K : unknown),
-      _E<Self> | E2,
-      _A<Self>
-    >
+    ): T.Effect<R2 & (RX extends Has<A2> & infer K ? K : unknown), EX | E2, AX>
 
     /**
      * @rewrite provideSomeLayer_ from "@effect-ts/core/Effect"
      */
-    inject<Self, R2, E2, A2>(
-      this: Self,
+    inject<RX, EX, AX, R2, E2, A2>(
+      this: T.Effect<RX, EX, AX>,
       layer: Layer<R2, E2, A2>
-    ): T.Effect<Erase<_R<Self>, A2> & R2, _E<Self> | E2, _A<Self>>
+    ): T.Effect<Erase<RX, A2> & R2, EX | E2, AX>
 
     /**
      * @rewrite foldM_ from "@effect-ts/core/Effect"
      */
-    foldM<Self, R2, E2, A2, R3, E3, A3>(
-      this: Self,
-      g: (e: _E<Self>) => T.Effect<R3, E3, A3>,
-      f: (a: _A<Self>) => T.Effect<R2, E2, A2>
+    foldM<RX, EX, AX, R2, E2, A2, R3, E3, A3>(
+      this: T.Effect<RX, EX, AX>,
+      g: (e: EX) => T.Effect<R3, E3, A3>,
+      f: (a: AX) => T.Effect<R2, E2, A2>
     ): T.Effect<R & R2 & R3, E2 | E3, A2 | A3>
 
     /**
      * @rewrite foldCauseM_ from "@effect-ts/core/Effect"
      */
-    foldCauseM<Self, R2, E2, A2, R3, E3, A3>(
-      this: Self,
-      g: (e: Cause<_E<Self>>) => T.Effect<R3, E3, A3>,
-      f: (a: _A<Self>) => T.Effect<R2, E2, A2>
-    ): T.Effect<_R<Self> & R2 & R3, E2 | E3, A2 | A3>
+    foldCauseM<RX, EX, AX, R2, E2, A2, R3, E3, A3>(
+      this: T.Effect<RX, EX, AX>,
+      g: (e: Cause<EX>) => T.Effect<R3, E3, A3>,
+      f: (a: AX) => T.Effect<R2, E2, A2>
+    ): T.Effect<RX & R2 & R3, E2 | E3, A2 | A3>
 
     /**
      * @rewrite fork from "@effect-ts/core/Effect"
      */
-    fork<Self>(this: Self): T.Effect<_R<Self>, never, Fiber<_E<Self>, _A<Self>>>
+    fork<RX, EX, AX>(this: T.Effect<RX, EX, AX>): T.Effect<RX, never, Fiber<EX, AX>>
 
     /**
      * @rewrite forkManaged from "@effect-ts/core/Effect"
      */
-    forkManaged<Self>(this: Self): M.Managed<_R<Self>, never, Fiber<_E<Self>, _A<Self>>>
+    forkManaged<RX, EX, AX>(
+      this: T.Effect<RX, EX, AX>
+    ): M.Managed<RX, never, Fiber<EX, AX>>
 
     /**
      * @rewrite result from "@effect-ts/core/Effect"
      */
-    result<Self>(this: Self): T.Effect<_R<Self>, never, Exit<_E<Self>, _A<Self>>>
+    result<RX, EX, AX>(this: T.Effect<RX, EX, AX>): T.Effect<RX, never, Exit<EX, AX>>
 
     /**
      * @rewrite either from "@effect-ts/core/Effect"
      */
-    either<Self>(this: Self): T.Effect<_R<Self>, never, Either<_E<Self>, _A<Self>>>
+    either<RX, EX, AX>(this: T.Effect<RX, EX, AX>): T.Effect<RX, never, Either<EX, AX>>
 
     /**
      * @rewrite as_ from "@effect-ts/core/Effect"
      */
-    as<Self, B>(this: Self, b: B): T.Effect<_R<Self>, _E<Self>, B>
+    as<RX, EX, AX, B>(this: T.Effect<RX, EX, AX>, b: B): T.Effect<RX, EX, B>
 
     /**
      * @rewrite map_ from "@effect-ts/core/Effect"
      */
-    map<Self, B>(this: Self, f: (a: _A<Self>) => B): T.Effect<_R<Self>, _E<Self>, B>
+    map<RX, EX, AX, B>(this: T.Effect<RX, EX, AX>, f: (a: AX) => B): T.Effect<RX, EX, B>
 
     /**
      * @rewrite chain_ from "@effect-ts/core/Effect"
      */
-    chain<Self, R2, E2, B>(
-      this: Self,
-      f: (a: _A<Self>) => T.Effect<R2, E2, B>
-    ): T.Effect<_R<Self> & R2, _E<Self> | E2, B>
+    chain<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (a: AX) => T.Effect<R2, E2, B>
+    ): T.Effect<RX & R2, EX | E2, B>
 
     /**
      * @rewrite tap_ from "@effect-ts/core/Effect"
      */
-    tap<Self, R2, E2, B>(
-      this: Self,
-      f: (a: _A<Self>) => T.Effect<R2, E2, B>
-    ): T.Effect<_R<Self> & R2, _E<Self> | E2, A>
+    tap<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (a: AX) => T.Effect<R2, E2, B>
+    ): T.Effect<RX & R2, EX | E2, A>
 
     /**
      * @rewrite tapError_ from "@effect-ts/core/Effect"
      */
-    tapError<Self, R2, E2, B>(
-      this: Self,
-      f: (e: _E<Self>) => T.Effect<R2, E2, B>
-    ): T.Effect<_R<Self> & R2, _E<Self> | E2, A>
+    tapError<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (e: EX) => T.Effect<R2, E2, B>
+    ): T.Effect<RX & R2, EX | E2, A>
 
     /**
      * @rewrite tapCause_ from "@effect-ts/core/Effect"
      */
-    tapCause<Self, R2, E2, B>(
-      this: Self,
-      f: (e: Cause<_E<Self>>) => T.Effect<R2, E2, B>
-    ): T.Effect<_R<Self> & R2, _E<Self> | E2, _A<Self>>
+    tapCause<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (e: Cause<EX>) => T.Effect<R2, E2, B>
+    ): T.Effect<RX & R2, EX | E2, AX>
 
     /**
      * @rewrite tapBoth_ from "@effect-ts/core/Effect"
      */
-    tapBoth<Self, R2, E2, B, R3, E3, C>(
-      this: Self,
-      f: (e: _E<Self>) => T.Effect<R2, E2, B>,
-      g: (e: _A<Self>) => T.Effect<R2, E3, C>
-    ): T.Effect<_R<Self> & R2 & R3, _E<Self> | E2 | E3, _A<Self>>
+    tapBoth<RX, EX, AX, R2, E2, B, R3, E3, C>(
+      this: T.Effect<RX, EX, AX>,
+      f: (e: EX) => T.Effect<R2, E2, B>,
+      g: (e: AX) => T.Effect<R2, E3, C>
+    ): T.Effect<RX & R2 & R3, EX | E2 | E3, AX>
 
     /**
      * @rewrite catchAll_ from "@effect-ts/core/Effect"
      */
-    catchAll<Self, R2, E2, B>(
-      this: Self,
-      f: (e: _E<Self>) => T.Effect<R2, E2, B>
-    ): T.Effect<_R<Self> & R2, E2, _A<Self> | B>
+    catchAll<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (e: EX) => T.Effect<R2, E2, B>
+    ): T.Effect<RX & R2, E2, AX | B>
 
     /**
      * @rewrite catchTag_ from "@effect-ts/core/Effect"
      */
     catchTag<
-      Self,
-      Tag extends _E<Self> extends { _tag: infer X } ? X : never,
+      RX,
+      EX,
+      AX,
+      Tag extends EX extends { _tag: infer X } ? X : never,
       R2,
       E2,
       B
     >(
-      this: Self,
+      this: T.Effect<RX, EX, AX>,
       tag: Tag,
-      f: (e: Extract<_E<Self>, { readonly _tag: Tag }>) => T.Effect<R2, E2, B>
-    ): T.Effect<
-      _R<Self> & R2,
-      E2 | Exclude<_E<Self>, { readonly _tag: Tag }>,
-      _A<Self> | B
-    >
+      f: (e: Extract<EX, { readonly _tag: Tag }>) => T.Effect<R2, E2, B>
+    ): T.Effect<RX & R2, E2 | Exclude<EX, { readonly _tag: Tag }>, AX | B>
 
     /**
      * @rewrite race_ from "@effect-ts/core/Effect"
      */
-    race<Self, R2, E2, B>(
-      this: Self,
+    race<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
       f: T.Effect<R2, E2, B>
-    ): T.Effect<_R<Self> & R2, _E<Self> | E2, _A<Self> | B>
+    ): T.Effect<RX & R2, EX | E2, AX | B>
 
     /**
      * @rewrite zip_ from "@effect-ts/core/Effect"
      */
-    zip<Self, R2, E2, B>(
-      this: Self,
+    zip<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
       f: T.Effect<R2, E2, B>
-    ): T.Effect<_R<Self> & R2, _E<Self> | E2, Tuple<[_A<Self>, B]>>
+    ): T.Effect<RX & R2, EX | E2, Tuple<[AX, B]>>
 
     /**
      * @rewrite zipRight_ from "@effect-ts/core/Effect"
      */
-    zipRight<Self, R2, E2, B>(
-      this: Self,
+    zipRight<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
       f: T.Effect<R2, E2, B>
-    ): T.Effect<_R<Self> & R2, _E<Self> | E2, B>
+    ): T.Effect<RX & R2, EX | E2, B>
 
     /**
      * @rewrite zipLeft_ from "@effect-ts/core/Effect"
      */
-    zipLeft<Self, R2, E2, B>(
-      this: Self,
+    zipLeft<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
       f: T.Effect<R2, E2, B>
-    ): T.Effect<_R<Self> & R2, _E<Self> | E2, _A<Self>>
+    ): T.Effect<RX & R2, EX | E2, AX>
 
     /**
      * @rewrite zipPar_ from "@effect-ts/core/Effect"
      */
-    zipPar<Self, R2, E2, B>(
-      this: Self,
+    zipPar<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
       f: T.Effect<R2, E2, B>
-    ): T.Effect<_R<Self> & R2, _E<Self> | E2, Tuple<[_A<Self>, B]>>
+    ): T.Effect<RX & R2, EX | E2, Tuple<[AX, B]>>
 
-    runPromise: [(_: R) => void] extends [(_: T.DefaultEnv) => void]
-      ? {
-          /**
-           * @rewrite runPromise from "@effect-ts/core/Effect"
-           */
-          <Self>(this: Self): Promise<_A<Self>>
-        }
-      : ["required", (_: R) => void]
+    /**
+     * @rewrite runPromise from "@effect-ts/core/Effect"
+     */
+    runPromise<EX, AX>(this: T.Effect<T.DefaultEnv, EX, AX>): Promise<AX>
 
-    runPromiseExit: [(_: R) => void] extends [(_: T.DefaultEnv) => void]
-      ? {
-          /**
-           * @rewrite runPromiseExit from "@effect-ts/core/Effect"
-           */
-          <Self>(this: Self): Promise<Exit<_E<Self>, _A<Self>>>
-        }
-      : ["required", (_: R) => void]
+    /**
+     * @rewrite runPromiseExit from "@effect-ts/core/Effect"
+     */
+    runPromiseExit<EX, AX>(this: T.Effect<T.DefaultEnv, EX, AX>): Promise<Exit<EX, AX>>
 
-    absolve: [() => A] extends [() => Either<infer EE, infer EA>]
-      ? {
-          /**
-           * @rewrite absolve from "@effect-ts/core/Effect"
-           */
-          <Self>(this: Self): T.Effect<_R<Self>, _E<Self> | EE, EA>
-        }
-      : ["absolve is available only when A is Either"]
+    /**
+     * @rewrite absolve from "@effect-ts/core/Effect"
+     */
+    absolve<RX, EX, EE, AA>(
+      this: T.Effect<RX, EX, Either<EE, AA>>
+    ): T.Effect<RX, EX | EE, AA>
 
-    bind: [() => A] extends [() => Record<string, unknown>]
-      ? {
-          /**
-           * @rewrite bind_ from "@effect-ts/core/Effect"
-           */
-          <Self, N extends string, R2, E2, B>(
-            this: Self,
-            n: N & N extends keyof _A<Self> ? [`${N} already in use`] : N,
-            f: (a: _A<Self>) => T.Effect<R2, E2, B>
-          ): T.Effect<
-            _R<Self> & R2,
-            _E<Self> | E2,
-            Compute<_A<Self> & { readonly [k in N]: B }, "flat">
-          >
-        }
-      : ["bind is available only when using `do`"]
+    /**
+     * @rewrite bind_ from "@effect-ts/core/Effect"
+     */
+    bind<RX, EX, AX extends Record<string, unknown>, N extends string, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      n: N & N extends keyof AX ? [`${N} already in use`] : N,
+      f: (a: AX) => T.Effect<R2, E2, B>
+    ): T.Effect<RX & R2, EX | E2, Compute<AX & { readonly [k in N]: B }, "flat">>
 
-    let: [() => A] extends [() => Record<string, unknown>]
-      ? {
-          /**
-           * @rewrite let_ from "@effect-ts/core/Effect"
-           */
-          <Self, N extends string, B>(
-            this: Self,
-            n: N & N extends keyof _A<Self> ? [`${N} already in use`] : N,
-            f: (a: _A<Self>) => B
-          ): T.Effect<
-            _R<Self>,
-            _E<Self>,
-            Compute<_A<Self> & { readonly [k in N]: B }, "flat">
-          >
-        }
-      : ["let is available only when using `do`"]
+    /**
+     * @rewrite let_ from "@effect-ts/core/Effect"
+     */
+    let<RX, EX, AX extends Record<string, unknown>, N extends string, B>(
+      this: T.Effect<RX, EX, AX>,
+      n: N & N extends keyof AX ? [`${N} already in use`] : N,
+      f: (a: AX) => B
+    ): T.Effect<RX, EX, Compute<AX & { readonly [k in N]: B }, "flat">>
   }
 }
