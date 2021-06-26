@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.16...@effect-ts/fluent@0.0.17) (2021-06-26)
+
+
+### Bug Fixes
+
+* **fluent:** fix sync chain ([4a1dd60](https://github.com/Effect-TS/schema/commit/4a1dd6067c91f2c2b67dd15aac53053b26c6762f))
+
+
+### Features
+
+* **fluent:** begin managed ([1646a5a](https://github.com/Effect-TS/schema/commit/1646a5a1d99e6ff71b0547b206b5034c1651221e))
+* **fluent:** begin option ([a396bd2](https://github.com/Effect-TS/schema/commit/a396bd20ef38a14293d29926a296c2ac221b4d4f))
+* **fluent:** tracing ([2917917](https://github.com/Effect-TS/schema/commit/29179171b61bf886ac37b541b5bfa9dd6a27fabb))
+* **option:** continue with option ([b1662c3](https://github.com/Effect-TS/schema/commit/b1662c3cd40f4785f768a5e9f3d27aac2adb072e))
+
+
+
+
+
 ## [0.0.16](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.15...@effect-ts/fluent@0.0.16) (2021-06-26)
 
 
