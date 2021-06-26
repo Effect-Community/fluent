@@ -9,6 +9,7 @@ import type { Layer } from "@effect-ts/core/Effect/Layer"
 import type * as M from "@effect-ts/core/Effect/Managed"
 import type { Either } from "@effect-ts/core/Either"
 import type { Has, Tag } from "@effect-ts/core/Has"
+import type * as O from "@effect-ts/core/Option"
 import type * as S from "@effect-ts/core/Sync"
 import type { _A, _E, _R, Compute, Erase } from "@effect-ts/core/Utils"
 
@@ -17,6 +18,21 @@ export interface OptionOps<A> {
    * @rewriteGetter toUndefined from "@effect-ts/core/Option"
    */
   readonly value: A | undefined
+
+  /**
+   * @rewrite chain_ from "@effect-ts/core/Option"
+   */
+  chain<AX, B>(this: O.Option<AX>, f: (a: AX) => O.Option<B>): O.Option<B>
+
+  /**
+   * @rewrite isSome from "@effect-ts/core/Option"
+   */
+  isSome<AX>(this: O.Option<AX>): this is O.Some<AX>
+
+  /**
+   * @rewrite isNone from "@effect-ts/core/Option"
+   */
+  isNone<AX>(this: O.Option<AX>): this is O.None
 }
 
 declare module "@effect-ts/system/Option/core" {
