@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.16](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.15...@effect-ts/fluent@0.0.16) (2021-06-26)
+
+
+### Features
+
+* **fluent:** use constraints over this ([d3abe5c](https://github.com/Effect-TS/schema/commit/d3abe5c656cdd93b30fe0a36fd5f6cde176378d2))
+
+
+
+
+
 ## [0.0.15](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.14...@effect-ts/fluent@0.0.15) (2021-06-26)
 
 
