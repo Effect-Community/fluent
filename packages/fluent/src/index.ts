@@ -12,7 +12,7 @@ import type { Has, Tag } from "@effect-ts/core/Has"
 import type * as S from "@effect-ts/core/Sync"
 import type { Compute, Erase } from "@effect-ts/core/Utils"
 
-declare module "@effect-ts/core/Sync" {
+declare module "@effect-ts/system/Sync/core" {
   export interface Sync<R, E, A> extends T.Effect<R, E, A> {
     /**
      * @rewrite chain_ from "@effect-ts/core/Sync"
@@ -30,7 +30,7 @@ declare module "@effect-ts/core/Sync" {
   }
 }
 
-declare module "@effect-ts/core/Effect" {
+declare module "@effect-ts/system/Effect/effect" {
   export interface Effect<R, E, A> {
     /**
      * @rewrite bracketExit_ from "@effect-ts/core/Effect"
