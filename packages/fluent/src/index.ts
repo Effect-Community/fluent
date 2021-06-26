@@ -27,7 +27,8 @@ declare module "@effect-ts/system/Sync/core" {
      */
     chain<RX, EX, AX, R2, E2, B>(
       this: S.Sync<RX, EX, AX>,
-      f: (a: AX) => T.Effect<R2, E2, B>
+      f: (a: AX) => T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, B>
   }
 }
@@ -42,7 +43,8 @@ declare module "@effect-ts/system/Effect/effect" {
     bracket<RX, EX, AX, R2, E2, A2, R3, B>(
       this: T.Effect<RX, EX, AX>,
       use: (a: AX) => Effect<R2, E2, A2>,
-      release: (a: AX, exit: Exit<E2, A2>) => Effect<R3, never, B>
+      release: (a: AX, exit: Exit<E2, A2>) => Effect<R3, never, B>,
+      __trace?: string
     ): T.Effect<RX & R2 & R3, EX | E2, A2>
 
     /**
@@ -50,7 +52,8 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     ensuring<RX, EX, AX, R1, X>(
       this: T.Effect<RX, EX, AX>,
-      finalizer: Effect<R1, never, X>
+      finalizer: Effect<R1, never, X>,
+      __trace?: string
     ): T.Effect<RX & R1, EX, AX>
 
     /**
@@ -85,7 +88,8 @@ declare module "@effect-ts/system/Effect/effect" {
     foldM<RX, EX, AX, R2, E2, A2, R3, E3, A3>(
       this: T.Effect<RX, EX, AX>,
       g: (e: EX) => T.Effect<R3, E3, A3>,
-      f: (a: AX) => T.Effect<R2, E2, A2>
+      f: (a: AX) => T.Effect<R2, E2, A2>,
+      __trace?: string
     ): T.Effect<R & R2 & R3, E2 | E3, A2 | A3>
 
     /**
@@ -94,47 +98,67 @@ declare module "@effect-ts/system/Effect/effect" {
     foldCauseM<RX, EX, AX, R2, E2, A2, R3, E3, A3>(
       this: T.Effect<RX, EX, AX>,
       g: (e: Cause<EX>) => T.Effect<R3, E3, A3>,
-      f: (a: AX) => T.Effect<R2, E2, A2>
+      f: (a: AX) => T.Effect<R2, E2, A2>,
+      __trace?: string
     ): T.Effect<RX & R2 & R3, E2 | E3, A2 | A3>
 
     /**
      * @rewrite fork from "@effect-ts/core/Effect"
      */
-    fork<RX, EX, AX>(this: T.Effect<RX, EX, AX>): T.Effect<RX, never, Fiber<EX, AX>>
+    fork<RX, EX, AX>(
+      this: T.Effect<RX, EX, AX>,
+      __trace?: string
+    ): T.Effect<RX, never, Fiber<EX, AX>>
 
     /**
      * @rewrite forkManaged from "@effect-ts/core/Effect"
      */
     forkManaged<RX, EX, AX>(
-      this: T.Effect<RX, EX, AX>
+      this: T.Effect<RX, EX, AX>,
+      __trace?: string
     ): M.Managed<RX, never, Fiber<EX, AX>>
 
     /**
      * @rewrite result from "@effect-ts/core/Effect"
      */
-    result<RX, EX, AX>(this: T.Effect<RX, EX, AX>): T.Effect<RX, never, Exit<EX, AX>>
+    result<RX, EX, AX>(
+      this: T.Effect<RX, EX, AX>,
+      __trace?: string
+    ): T.Effect<RX, never, Exit<EX, AX>>
 
     /**
      * @rewrite either from "@effect-ts/core/Effect"
      */
-    either<RX, EX, AX>(this: T.Effect<RX, EX, AX>): T.Effect<RX, never, Either<EX, AX>>
+    either<RX, EX, AX>(
+      this: T.Effect<RX, EX, AX>,
+      __trace?: string
+    ): T.Effect<RX, never, Either<EX, AX>>
 
     /**
      * @rewrite as_ from "@effect-ts/core/Effect"
      */
-    as<RX, EX, AX, B>(this: T.Effect<RX, EX, AX>, b: B): T.Effect<RX, EX, B>
+    as<RX, EX, AX, B>(
+      this: T.Effect<RX, EX, AX>,
+      b: B,
+      __trace?: string
+    ): T.Effect<RX, EX, B>
 
     /**
      * @rewrite map_ from "@effect-ts/core/Effect"
      */
-    map<RX, EX, AX, B>(this: T.Effect<RX, EX, AX>, f: (a: AX) => B): T.Effect<RX, EX, B>
+    map<RX, EX, AX, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (a: AX) => B,
+      __trace?: string
+    ): T.Effect<RX, EX, B>
 
     /**
      * @rewrite chain_ from "@effect-ts/core/Effect"
      */
     chain<RX, EX, AX, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
-      f: (a: AX) => T.Effect<R2, E2, B>
+      f: (a: AX) => T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, B>
 
     /**
@@ -142,7 +166,8 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     tap<RX, EX, AX, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
-      f: (a: AX) => T.Effect<R2, E2, B>
+      f: (a: AX) => T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, A>
 
     /**
@@ -150,7 +175,8 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     tapError<RX, EX, AX, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
-      f: (e: EX) => T.Effect<R2, E2, B>
+      f: (e: EX) => T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, A>
 
     /**
@@ -158,7 +184,8 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     tapCause<RX, EX, AX, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
-      f: (e: Cause<EX>) => T.Effect<R2, E2, B>
+      f: (e: Cause<EX>) => T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, AX>
 
     /**
@@ -167,7 +194,8 @@ declare module "@effect-ts/system/Effect/effect" {
     tapBoth<RX, EX, AX, R2, E2, B, R3, E3, C>(
       this: T.Effect<RX, EX, AX>,
       f: (e: EX) => T.Effect<R2, E2, B>,
-      g: (e: AX) => T.Effect<R2, E3, C>
+      g: (e: AX) => T.Effect<R2, E3, C>,
+      __trace?: string
     ): T.Effect<RX & R2 & R3, EX | E2 | E3, AX>
 
     /**
@@ -175,7 +203,8 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     catchAll<RX, EX, AX, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
-      f: (e: EX) => T.Effect<R2, E2, B>
+      f: (e: EX) => T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, E2, AX | B>
 
     /**
@@ -192,7 +221,8 @@ declare module "@effect-ts/system/Effect/effect" {
     >(
       this: T.Effect<RX, EX, AX>,
       tag: Tag,
-      f: (e: Extract<EX, { readonly _tag: Tag }>) => T.Effect<R2, E2, B>
+      f: (e: Extract<EX, { readonly _tag: Tag }>) => T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, E2 | Exclude<EX, { readonly _tag: Tag }>, AX | B>
 
     /**
@@ -200,7 +230,8 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     race<RX, EX, AX, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
-      f: T.Effect<R2, E2, B>
+      f: T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, AX | B>
 
     /**
@@ -208,7 +239,8 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     zip<RX, EX, AX, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
-      f: T.Effect<R2, E2, B>
+      f: T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, Tuple<[AX, B]>>
 
     /**
@@ -216,7 +248,8 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     zipRight<RX, EX, AX, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
-      f: T.Effect<R2, E2, B>
+      f: T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, B>
 
     /**
@@ -224,7 +257,8 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     zipLeft<RX, EX, AX, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
-      f: T.Effect<R2, E2, B>
+      f: T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, AX>
 
     /**
@@ -232,7 +266,8 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     zipPar<RX, EX, AX, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
-      f: T.Effect<R2, E2, B>
+      f: T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, Tuple<[AX, B]>>
 
     /**
@@ -249,7 +284,8 @@ declare module "@effect-ts/system/Effect/effect" {
      * @rewrite absolve from "@effect-ts/core/Effect"
      */
     absolve<RX, EX, EE, AA>(
-      this: T.Effect<RX, EX, Either<EE, AA>>
+      this: T.Effect<RX, EX, Either<EE, AA>>,
+      __trace?: string
     ): T.Effect<RX, EX | EE, AA>
 
     /**
@@ -258,7 +294,8 @@ declare module "@effect-ts/system/Effect/effect" {
     bind<RX, EX, AX extends Record<string, unknown>, N extends string, R2, E2, B>(
       this: T.Effect<RX, EX, AX>,
       n: N & N extends keyof AX ? [`${N} already in use`] : N,
-      f: (a: AX) => T.Effect<R2, E2, B>
+      f: (a: AX) => T.Effect<R2, E2, B>,
+      __trace?: string
     ): T.Effect<RX & R2, EX | E2, Compute<AX & { readonly [k in N]: B }, "flat">>
 
     /**
@@ -267,7 +304,8 @@ declare module "@effect-ts/system/Effect/effect" {
     let<RX, EX, AX extends Record<string, unknown>, N extends string, B>(
       this: T.Effect<RX, EX, AX>,
       n: N & N extends keyof AX ? [`${N} already in use`] : N,
-      f: (a: AX) => B
+      f: (a: AX) => B,
+      __trace?: string
     ): T.Effect<RX, EX, Compute<AX & { readonly [k in N]: B }, "flat">>
   }
 }
