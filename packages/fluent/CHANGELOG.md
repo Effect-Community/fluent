@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.13](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.12...@effect-ts/fluent@0.0.13) (2021-06-26)
+
+
+### Bug Fixes
+
+* **fluent:** fix augmentation target ([50f7d22](https://github.com/Effect-TS/schema/commit/50f7d22492449ea5cff9bd8eece108a7953d52ed))
+* **sync:** chain variance ([4250f50](https://github.com/Effect-TS/schema/commit/4250f508e083c066d32892fbacc14fca1bd4d0e5))
+
+
+
+
+
 ## [0.0.12](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.11...@effect-ts/fluent@0.0.12) (2021-06-25)
 
 
