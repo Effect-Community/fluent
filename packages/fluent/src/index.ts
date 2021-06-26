@@ -31,6 +31,8 @@ declare module "@effect-ts/system/Sync/core" {
 }
 
 declare module "@effect-ts/system/Effect/effect" {
+  export interface Base<R, E, A> extends Effect<R, E, A> {}
+
   export interface Effect<R, E, A> {
     /**
      * @rewrite bracketExit_ from "@effect-ts/core/Effect"
