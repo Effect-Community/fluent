@@ -3,14 +3,12 @@ import { tag } from "@effect-ts/core/Has"
 import * as S from "@effect-ts/core/Sync"
 import type { _A } from "@effect-ts/core/Utils"
 
-export const makeConsole = T.succeedWith(() => {
-  return {
-    log: (s: string) =>
-      T.succeedWith(() => {
-        console.log(s)
-      })
-  }
-})
+export const makeConsole = T.succeedWith(() => ({
+  log: (s: string) =>
+    T.succeedWith(() => {
+      console.log(s)
+    })
+}))
 
 export interface Console extends _A<typeof makeConsole> {}
 export const Console = tag<Console>()
@@ -20,8 +18,8 @@ export const { log } = Console.deriveLifted("log")
 
 export const makePrinter = T.do
   .bind("console", () => T.service(Console))
-  .map((_) => ({
-    printN: (n: number) => _.console.log(`n: ${n}`)
+  .map(({ console }) => ({
+    printN: (n: number) => console.log(`n: ${n}`)
   }))
 
 export interface Printer extends _A<typeof makePrinter> {}
