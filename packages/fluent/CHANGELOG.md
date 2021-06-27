@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.19](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.18...@effect-ts/fluent@0.0.19) (2021-06-27)
+
+
+### Bug Fixes
+
+* **option:** fold return type ([25b6fee](https://github.com/Effect-TS/schema/commit/25b6fee6dbb1546fa9d33821030e7da27251dffc))
+* **tag:** ensure restrictions on deriveLifted ([00583be](https://github.com/Effect-TS/schema/commit/00583be41525483b63dc51b1ecacc37eee206153))
+
+
+### Features
+
+* **fluent:** continue with apis ([0caa726](https://github.com/Effect-TS/schema/commit/0caa726810c773945a8e43375b6392750da7b12d))
+* **option:** full module ([085cd26](https://github.com/Effect-TS/schema/commit/085cd263d2939d2c8331e487635735de1bb41734))
+* **tag:** deriveLifted ([677b6c3](https://github.com/Effect-TS/schema/commit/677b6c330d864a61d0e223f483cc06ee5bad4a11))
+
+
+
+
+
 ## [0.0.18](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.17...@effect-ts/fluent@0.0.18) (2021-06-27)
 
 
