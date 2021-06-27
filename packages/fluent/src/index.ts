@@ -10,7 +10,7 @@ import type { Layer } from "@effect-ts/core/Effect/Layer"
 import type * as M from "@effect-ts/core/Effect/Managed"
 import type * as E from "@effect-ts/core/Either"
 import type { Predicate, Refinement } from "@effect-ts/core/Function"
-import type { Has, Tag } from "@effect-ts/core/Has"
+import type { DerivedFunctions, Has, Tag } from "@effect-ts/core/Has"
 import type * as O from "@effect-ts/core/Option"
 import type * as S from "@effect-ts/core/Sync"
 import type {
@@ -20,12 +20,10 @@ import type {
   UnionToIntersection
 } from "@effect-ts/core/Utils"
 
-import type { DerivedLifted } from "./has"
-
 declare global {
   interface Array<T> {
     /**
-     * @rewrite mapSync_ from "@effect-ts/fluent/array"
+     * @rewrite mapSync_ from "@effect-ts/core/Collections/Immutable/Array"
      */
     mapM<AX, R, E, B>(
       this: A.Array<AX>,
@@ -43,6 +41,11 @@ declare global {
 }
 
 export interface OptionOps<A> {
+  /**
+   * @rewrite pipe from "smart:pipe"
+   */
+  pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
+
   /**
    * @rewrite ap_ from "@effect-ts/core/Option"
    */
@@ -175,24 +178,39 @@ export interface OptionOps<A> {
 
 export interface EitherOps<E, A> {
   /**
-   * @rewriteGetter unsafeGetLeft from "@effect-ts/fluent/either"
+   * @rewrite pipe from "smart:pipe"
+   */
+  pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
+
+  /**
+   * @rewriteGetter unsafeGetLeft from "@effect-ts/core/Either"
    */
   readonly left: E | undefined
 
   /**
-   * @rewriteGetter unsafeGetRight from "@effect-ts/fluent/either"
+   * @rewriteGetter unsafeGetRight from "@effect-ts/core/Either"
    */
   readonly right: A | undefined
 
   /**
-   * @rewriteGetter getLeft from "@effect-ts/fluent/either"
+   * @rewriteGetter getLeft from "@effect-ts/core/Either"
    */
   readonly getLeft: O.Option<E>
 
   /**
-   * @rewriteGetter getRight from "@effect-ts/fluent/either"
+   * @rewriteGetter getRight from "@effect-ts/core/Either"
    */
   readonly getRight: O.Option<A>
+
+  /**
+   * @rewrite identity from "smart:identity"
+   */
+  widenLeft<WE>(): E.Either<WE | E, A>
+
+  /**
+   * @rewrite identity from "smart:identity"
+   */
+  widenRight<WA>(): E.Either<E, WA | A>
 
   /**
    * @rewrite chain_ from "@effect-ts/core/Either"
@@ -252,6 +270,11 @@ declare module "@effect-ts/system/Sync/core" {
 declare module "@effect-ts/system/Has" {
   export interface Has<T> {
     /**
+     * @rewrite pipe from "smart:pipe"
+     */
+    pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
+
+    /**
      * @rewrite succeed from "@effect-ts/core/Effect/Layer"
      */
     toLayer<AX>(this: Has<AX>): Layer<unknown, never, Has<AX>>
@@ -261,16 +284,21 @@ declare module "@effect-ts/system/Has" {
 declare module "@effect-ts/system/Has" {
   export interface Tag<T> {
     /**
-     * @rewrite deriveLifted_ from "@effect-ts/fluent/has"
+     * @rewrite pipe from "smart:pipe"
      */
-    deriveLifted<TX, Ks extends readonly (keyof DerivedLifted<TX>)[]>(
+    pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
+
+    /**
+     * @rewrite deriveFunctions from "@effect-ts/core/Has"
+     */
+    deriveLifted<TX, Ks extends readonly (keyof DerivedFunctions<TX>)[]>(
       this: Tag<TX>,
       ...keys: Ks
     ): Compute<
       UnionToIntersection<
         {
-          [k in keyof Ks]: Ks[k] extends keyof DerivedLifted<TX>
-            ? { [H in Ks[k]]: DerivedLifted<TX>[Ks[k]] }
+          [k in keyof Ks]: Ks[k] extends keyof DerivedFunctions<TX>
+            ? { [H in Ks[k]]: DerivedFunctions<TX>[Ks[k]] }
             : never
         }[number]
       >,
@@ -283,6 +311,11 @@ declare module "@effect-ts/system/Effect/effect" {
   export interface Base<R, E, A> extends Effect<R, E, A> {}
 
   export interface Effect<R, E, A> {
+    /**
+     * @rewrite pipe from "smart:pipe"
+     */
+    pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
+
     /**
      * @rewrite bracketExit_ from "@effect-ts/core/Effect"
      */
@@ -299,7 +332,7 @@ declare module "@effect-ts/system/Effect/effect" {
     toLayer<RX, EX, AX>(this: T.Effect<RX, EX, AX>): Layer<RX, EX, AX>
 
     /**
-     * @rewrite fromEffect_ from "@effect-ts/fluent/layer"
+     * @rewrite fromEffect_ from "@effect-ts/core/Effect/Layer"
      */
     toLayer<RX, EX, AX>(
       this: T.Effect<RX, EX, AX>,
@@ -582,6 +615,11 @@ declare module "@effect-ts/system/Effect/effect" {
 declare module "@effect-ts/system/Managed/managed" {
   export interface Managed<R, E, A> {
     /**
+     * @rewrite pipe from "smart:pipe"
+     */
+    pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
+
+    /**
      * @rewrite as_ from "@effect-ts/core/Effect/Managed"
      */
     as<RX, EX, AX, B>(
@@ -615,7 +653,7 @@ declare module "@effect-ts/system/Managed/managed" {
       this: M.Managed<RX, EX, AX>,
       f: (a: AX) => T.Effect<R2, E2, B>,
       __trace?: string
-    ): M.Managed<RX & R2, EX | E2, A>
+    ): M.Managed<RX & R2, EX | E2, AX>
 
     /**
      * @rewrite tap_ from "@effect-ts/core/Effect/Managed"
@@ -624,7 +662,7 @@ declare module "@effect-ts/system/Managed/managed" {
       this: M.Managed<RX, EX, AX>,
       f: (a: AX) => M.Managed<R2, E2, B>,
       __trace?: string
-    ): M.Managed<RX & R2, EX | E2, A>
+    ): M.Managed<RX & R2, EX | E2, AX>
 
     /**
      * @rewrite tapError_ from "@effect-ts/core/Effect/Managed"
@@ -633,7 +671,7 @@ declare module "@effect-ts/system/Managed/managed" {
       this: M.Managed<RX, EX, AX>,
       f: (e: EX) => M.Managed<R2, E2, B>,
       __trace?: string
-    ): M.Managed<RX & R2, EX | E2, A>
+    ): M.Managed<RX & R2, EX | E2, AX>
 
     /**
      * @rewrite tapCause_ from "@effect-ts/core/Effect/Managed"
