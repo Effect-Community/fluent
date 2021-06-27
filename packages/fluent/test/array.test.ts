@@ -41,9 +41,11 @@ describe("Array API", () => {
 
     const program = [0, 1, 2].mapM((n) => T.succeed(n + 1).tap(printN))
 
-    expect(await program.inject(TestConsole[">+>"](LivePrinter)).runPromise()).toEqual([
-      1, 2, 3
-    ])
+    await program
+      .inject(TestConsole[">+>"](LivePrinter))
+      .map((x) => expect(x).toEqual([1, 2, 3]))
+      .runPromise()
+
     expect(messages).toEqual(["n: 1", "n: 2", "n: 3"])
 
     expect(S.run([0, 1, 2].mapM((n) => S.succeed(n + 1)))).toEqual([1, 2, 3])
