@@ -86,11 +86,7 @@ export interface OptionOps<A> {
   /**
    * @rewrite fold_ from "@effect-ts/core/Option"
    */
-  fold<AX, B, C>(
-    this: O.Option<AX>,
-    onNone: () => B,
-    onSome: (a: AX) => C
-  ): O.Option<B | C>
+  fold<AX, B, C>(this: O.Option<AX>, onNone: () => B, onSome: (a: AX) => C): B | C
 
   /**
    * @rewrite chain_ from "@effect-ts/core/Option"
