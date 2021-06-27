@@ -9,6 +9,7 @@ import type { Fiber } from "@effect-ts/core/Effect/Fiber"
 import type { Layer } from "@effect-ts/core/Effect/Layer"
 import type * as M from "@effect-ts/core/Effect/Managed"
 import type { Either } from "@effect-ts/core/Either"
+import type { Predicate } from "@effect-ts/core/Function"
 import type { Has, Tag } from "@effect-ts/core/Has"
 import type * as O from "@effect-ts/core/Option"
 import type * as S from "@effect-ts/core/Sync"
@@ -43,9 +44,73 @@ export interface OptionOps<A> {
   readonly value: A | undefined
 
   /**
+   * @rewrite ap_ from "@effect-ts/core/Option"
+   */
+  ap<AX, B>(this: O.Option<(a: AX) => B>, fa: O.Option<AX>): O.Option<B>
+
+  /**
+   * @rewrite zip_ from "@effect-ts/core/Option"
+   */
+  zip<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<Tuple<[AX, B]>>
+
+  /**
+   * @rewrite zipFirst_ from "@effect-ts/core/Option"
+   */
+  zipLeft<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<AX>
+
+  /**
+   * @rewrite zipSecond_ from "@effect-ts/core/Option"
+   */
+  zipRight<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<B>
+
+  /**
+   * @rewrite flatten from "@effect-ts/core/Option"
+   */
+  flatten<AX>(this: O.Option<O.Option<AX>>): O.Option<AX>
+
+  /**
+   * @rewrite duplicate from "@effect-ts/core/Option"
+   */
+  duplicate<AX>(this: O.Option<AX>): O.Option<O.Option<AX>>
+
+  /**
+   * @rewrite exists_ from "@effect-ts/core/Option"
+   */
+  exists<AX>(this: O.Option<AX>, predicate: Predicate<AX>): boolean
+
+  /**
+   * @rewrite extend_ from "@effect-ts/core/Option"
+   */
+  extend<AX, B>(this: O.Option<AX>, f: (a: O.Option<AX>) => B): O.Option<B>
+
+  /**
+   * @rewrite fold_ from "@effect-ts/core/Option"
+   */
+  fold<AX, B, C>(
+    this: O.Option<AX>,
+    onNone: () => B,
+    onSome: (a: AX) => C
+  ): O.Option<B | C>
+
+  /**
    * @rewrite chain_ from "@effect-ts/core/Option"
    */
   chain<AX, B>(this: O.Option<AX>, f: (a: AX) => O.Option<B>): O.Option<B>
+
+  /**
+   * @rewrite tap_ from "@effect-ts/core/Option"
+   */
+  tap<AX, B>(this: O.Option<AX>, f: (a: AX) => O.Option<B>): O.Option<AX>
+
+  /**
+   * @rewrite map_ from "@effect-ts/core/Option"
+   */
+  map<AX, B>(this: O.Option<AX>, f: (a: AX) => B): O.Option<B>
+
+  /**
+   * @rewrite getOrElse_ from "@effect-ts/core/Option"
+   */
+  getOrElse<AX, B>(this: O.Option<AX>, f: () => B): O.Option<AX | B>
 
   /**
    * @rewrite isSome from "@effect-ts/core/Option"
@@ -378,6 +443,11 @@ declare module "@effect-ts/system/Effect/effect" {
      * @rewrite runPromiseExit from "@effect-ts/core/Effect"
      */
     runPromiseExit<EX, AX>(this: T.Effect<T.DefaultEnv, EX, AX>): Promise<Exit<EX, AX>>
+
+    /**
+     * @rewrite runFiber from "@effect-ts/core/Effect"
+     */
+    runFiber<EX, AX>(this: T.Effect<T.DefaultEnv, EX, AX>): Fiber<EX, AX>
 
     /**
      * @rewrite absolve from "@effect-ts/core/Effect"

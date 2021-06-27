@@ -17,4 +17,13 @@ describe("Option API", () => {
       expect(res1.value).toEqual(1)
     }
   })
+
+  it("ap", () => {
+    expect(
+      O.some((n: number) => (s: string) => `${s}: ${n}`)
+        .ap(O.some(0))
+        .ap(O.some("ok"))
+        .getOrElse(() => "n/a")
+    ).toEqual("ok: 0")
+  })
 })
