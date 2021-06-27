@@ -17,6 +17,14 @@ import type { _A, _E, _R, Compute, Erase } from "@effect-ts/core/Utils"
 declare global {
   interface Array<T> {
     /**
+     * @rewrite mapSync_ from "@effect-ts/fluent/array"
+     */
+    mapM<AX, R, E, B>(
+      this: A.Array<AX>,
+      f: (a: AX) => S.Sync<R, E, B>
+    ): S.Sync<R, E, readonly B[]>
+
+    /**
      * @rewrite mapEffect_ from "@effect-ts/core/Collections/Immutable/Array"
      */
     mapM<AX, R, E, B>(
@@ -74,6 +82,15 @@ declare module "@effect-ts/system/Sync/core" {
   }
 }
 
+declare module "@effect-ts/system/Has" {
+  export interface Has<T> {
+    /**
+     * @rewrite succeed from "@effect-ts/core/Effect/Layer"
+     */
+    toLayer<AX>(this: Has<AX>): Layer<unknown, never, Has<AX>>
+  }
+}
+
 declare module "@effect-ts/system/Effect/effect" {
   export interface Base<R, E, A> extends Effect<R, E, A> {}
 
@@ -87,6 +104,19 @@ declare module "@effect-ts/system/Effect/effect" {
       release: (a: AX, exit: Exit<E2, A2>) => Effect<R3, never, B>,
       __trace?: string
     ): T.Effect<RX & R2 & R3, EX | E2, A2>
+
+    /**
+     * @rewrite fromRawEffect from "@effect-ts/core/Effect/Layer"
+     */
+    toLayer<RX, EX, AX>(this: T.Effect<RX, EX, AX>): Layer<RX, EX, AX>
+
+    /**
+     * @rewrite fromEffect_ from "@effect-ts/fluent/layer"
+     */
+    toLayer<RX, EX, AX>(
+      this: T.Effect<RX, EX, AX>,
+      tag: Tag<AX>
+    ): Layer<RX, EX, Has<AX>>
 
     /**
      * @rewrite ensuring_ from "@effect-ts/core/Effect"

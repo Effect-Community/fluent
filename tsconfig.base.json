@@ -30,7 +30,11 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "target": "ES2018",
-    "typeRoots": ["./node_modules/@types", "./typings"]
+    "typeRoots": ["./node_modules/@types", "./typings"],
+    "paths": {
+      "@effect-ts/fluent/*": ["packages/fluent/build/*"],
+      "@effect-ts/fluent": ["packages/fluent/build"]
+    }
   },
   "exclude": ["node_modules", "build", "lib"]
 }

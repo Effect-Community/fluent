@@ -29,6 +29,9 @@
     "@effect-ts/core": "^0.40.11"
   },
   "config": {
-    "modules": []
+    "modules": [
+      "array",
+      "layer"
+    ]
   }
 }

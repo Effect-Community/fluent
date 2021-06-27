@@ -3,6 +3,10 @@
   "files": [],
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "ES2018"
+    "target": "ES2018",
+    "paths": {
+      "@effect-ts/fluent/*": ["packages/fluent/src/*"],
+      "@effect-ts/fluent": ["packages/fluent/src"]
+    }
   }
 }
