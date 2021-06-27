@@ -369,15 +369,15 @@
   dependencies:
     chalk "^4.0.0"
 
-"@effect-ts/build-utils@^0.20.14":
-  version "0.20.14"
-  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.20.14.tgz#3d4c1c9ef5b90dae9486e286e805b59ca61fbb0f"
-  integrity sha512-rh5ncUV3kUgWi+RZLt7K3bbpWkpsDYvbxfbJD5MkrR6CnftT8ADnOVtyEhfVBWuzxVIJqEMFTCPPGhCjM/UW8g==
+"@effect-ts/build-utils@^0.20.15":
+  version "0.20.15"
+  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.20.15.tgz#604c1e2fd12358ad465e7317a90fd07e43134fc6"
+  integrity sha512-JOHwaECPzuZthDA2B9gd/Xs8r1G9iwrHvSvbEUy7doJUZiDDRBSmqGH6D1feSBzIhgKSQJK3jMBXKLbPfEwO3A==
 
-"@effect-ts/core@^0.40.12":
-  version "0.40.12"
-  resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.40.12.tgz#a14aaa26f64b502afffbca1461cdfdc03f3de1d1"
-  integrity sha512-J8Y/YwpXs/K0uOnXaoNbYNyJ35ZgIggI9+nWUOAMG2nEelKuZrkFOFm+CU++ur6VEVN0Orh0VChY2IFTK1BLAQ==
+"@effect-ts/core@^0.40.13":
+  version "0.40.13"
+  resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.40.13.tgz#103d5f6bcfb6301d955768525fb2bc6100369e99"
+  integrity sha512-YVPk6V7OAV+QeXl0WuzEq9wRuLUFjZ9AFWGPvxeADT6MHRAkcYL/DBcPRAfdHaSoGNhs/c/2l6M61sNyGIXxHw==
   dependencies:
     "@effect-ts/system" "^0.37.11"
 

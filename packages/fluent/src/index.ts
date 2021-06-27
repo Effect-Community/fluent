@@ -9,11 +9,16 @@ import type { Fiber } from "@effect-ts/core/Effect/Fiber"
 import type { Layer } from "@effect-ts/core/Effect/Layer"
 import type * as M from "@effect-ts/core/Effect/Managed"
 import type { Either } from "@effect-ts/core/Either"
-import type { Predicate } from "@effect-ts/core/Function"
+import type { Predicate, Refinement } from "@effect-ts/core/Function"
 import type { Has, Tag } from "@effect-ts/core/Has"
 import type * as O from "@effect-ts/core/Option"
 import type * as S from "@effect-ts/core/Sync"
-import type { Compute, Erase, UnionToIntersection } from "@effect-ts/core/Utils"
+import type {
+  Compute,
+  Erase,
+  Separated,
+  UnionToIntersection
+} from "@effect-ts/core/Utils"
 
 import type { DerivedLifted } from "./has"
 
@@ -39,34 +44,14 @@ declare global {
 
 export interface OptionOps<A> {
   /**
-   * @rewriteGetter toUndefined from "@effect-ts/core/Option"
-   */
-  readonly value: A | undefined
-
-  /**
    * @rewrite ap_ from "@effect-ts/core/Option"
    */
   ap<AX, B>(this: O.Option<(a: AX) => B>, fa: O.Option<AX>): O.Option<B>
 
   /**
-   * @rewrite zip_ from "@effect-ts/core/Option"
+   * @rewrite chain_ from "@effect-ts/core/Option"
    */
-  zip<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<Tuple<[AX, B]>>
-
-  /**
-   * @rewrite zipFirst_ from "@effect-ts/core/Option"
-   */
-  zipLeft<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<AX>
-
-  /**
-   * @rewrite zipSecond_ from "@effect-ts/core/Option"
-   */
-  zipRight<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<B>
-
-  /**
-   * @rewrite flatten from "@effect-ts/core/Option"
-   */
-  flatten<AX>(this: O.Option<O.Option<AX>>): O.Option<AX>
+  chain<AX, B>(this: O.Option<AX>, f: (a: AX) => O.Option<B>): O.Option<B>
 
   /**
    * @rewrite duplicate from "@effect-ts/core/Option"
@@ -84,24 +69,32 @@ export interface OptionOps<A> {
   extend<AX, B>(this: O.Option<AX>, f: (a: O.Option<AX>) => B): O.Option<B>
 
   /**
+   * @rewrite flatten from "@effect-ts/core/Option"
+   */
+  flatten<AX>(this: O.Option<O.Option<AX>>): O.Option<AX>
+
+  /**
+   * @rewrite filter_ from "@effect-ts/core/Option"
+   */
+  filter<AX, BX extends AX>(
+    this: O.Option<AX>,
+    refinement: Refinement<AX, BX>
+  ): O.Option<BX>
+
+  /**
+   * @rewrite filter_ from "@effect-ts/core/Option"
+   */
+  filter<AX>(this: O.Option<AX>, refinement: Predicate<AX>): O.Option<AX>
+
+  /**
+   * @rewrite filterMap_ from "@effect-ts/core/Option"
+   */
+  filter<AX, BX>(this: O.Option<AX>, refinement: (a: AX) => O.Option<BX>): O.Option<BX>
+
+  /**
    * @rewrite fold_ from "@effect-ts/core/Option"
    */
   fold<AX, B, C>(this: O.Option<AX>, onNone: () => B, onSome: (a: AX) => C): B | C
-
-  /**
-   * @rewrite chain_ from "@effect-ts/core/Option"
-   */
-  chain<AX, B>(this: O.Option<AX>, f: (a: AX) => O.Option<B>): O.Option<B>
-
-  /**
-   * @rewrite tap_ from "@effect-ts/core/Option"
-   */
-  tap<AX, B>(this: O.Option<AX>, f: (a: AX) => O.Option<B>): O.Option<AX>
-
-  /**
-   * @rewrite map_ from "@effect-ts/core/Option"
-   */
-  map<AX, B>(this: O.Option<AX>, f: (a: AX) => B): O.Option<B>
 
   /**
    * @rewrite getOrElse_ from "@effect-ts/core/Option"
@@ -117,6 +110,67 @@ export interface OptionOps<A> {
    * @rewrite isNone from "@effect-ts/core/Option"
    */
   isNone<AX>(this: O.Option<AX>): this is O.None
+
+  /**
+   * @rewrite map_ from "@effect-ts/core/Option"
+   */
+  map<AX, B>(this: O.Option<AX>, f: (a: AX) => B): O.Option<B>
+
+  /**
+   * @rewrite partitionMap_ from "@effect-ts/core/Option"
+   */
+  partition<AX, B, C>(
+    this: O.Option<AX>,
+    f: (a: AX) => Either<B, C>
+  ): Separated<O.Option<B>, O.Option<C>>
+
+  /**
+   * @rewrite partition_ from "@effect-ts/core/Option"
+   */
+  partition<AX, B extends AX>(
+    this: O.Option<AX>,
+    ref: Refinement<AX, B>
+  ): Separated<O.Option<Exclude<AX, B>>, O.Option<B>>
+
+  /**
+   * @rewrite partition_ from "@effect-ts/core/Option"
+   */
+  partition<AX>(
+    this: O.Option<AX>,
+    ref: Predicate<AX>
+  ): Separated<O.Option<AX>, O.Option<AX>>
+
+  /**
+   * @rewrite separate from "@effect-ts/core/Option"
+   */
+  separate<AX, BX>(
+    this: O.Option<Either<AX, BX>>
+  ): Separated<O.Option<AX>, O.Option<BX>>
+
+  /**
+   * @rewrite tap_ from "@effect-ts/core/Option"
+   */
+  tap<AX, B>(this: O.Option<AX>, f: (a: AX) => O.Option<B>): O.Option<AX>
+
+  /**
+   * @rewriteGetter toUndefined from "@effect-ts/core/Option"
+   */
+  readonly value: A | undefined
+
+  /**
+   * @rewrite zip_ from "@effect-ts/core/Option"
+   */
+  zip<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<Tuple<[AX, B]>>
+
+  /**
+   * @rewrite zipFirst_ from "@effect-ts/core/Option"
+   */
+  zipLeft<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<AX>
+
+  /**
+   * @rewrite zipSecond_ from "@effect-ts/core/Option"
+   */
+  zipRight<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<B>
 }
 
 declare module "@effect-ts/system/Option/core" {

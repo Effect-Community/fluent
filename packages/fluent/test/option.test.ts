@@ -1,3 +1,4 @@
+import * as E from "@effect-ts/core/Either"
 import * as O from "@effect-ts/core/Option"
 
 describe("Option API", () => {
@@ -25,5 +26,11 @@ describe("Option API", () => {
         .ap(O.some("ok"))
         .getOrElse(() => "n/a")
     ).toEqual("ok: 0")
+  })
+
+  it("partitionMap", () => {
+    const res = O.some(1).partition((n) => (n > 0 ? E.right(n) : E.left(n)))
+
+    expect(res).toEqual({ left: O.none, right: O.some(1) })
   })
 })
