@@ -16,7 +16,19 @@ export interface Console extends _A<typeof makeConsole> {}
 export const Console = tag<Console>()
 export const LiveConsole = makeConsole.toLayer(Console)
 
-const { log } = Console.deriveLifted("log")
+export const { log } = Console.deriveLifted("log")
+
+export const makePrinter = T.do
+  .bind("console", () => T.service(Console))
+  .map((_) => ({
+    printN: (n: number) => _.console.log(`n: ${n}`)
+  }))
+
+export interface Printer extends _A<typeof makePrinter> {}
+export const Printer = tag<Printer>()
+export const LivePrinter = makePrinter.toLayer(Printer)
+
+export const { printN } = Printer.deriveLifted("printN")
 
 describe("Array API", () => {
   it("fluent", async () => {
@@ -29,10 +41,12 @@ describe("Array API", () => {
         })
     }).toLayer()
 
-    const program = [0, 1, 2].mapM((n) => T.succeed(n + 1).zipLeft(log(`n: ${n}`)))
+    const program = [0, 1, 2].mapM((n) => T.succeed(n + 1).tap(printN))
 
-    expect(await program.inject(TestConsole).runPromise()).toEqual([1, 2, 3])
-    expect(messages).toEqual(["n: 0", "n: 1", "n: 2"])
+    expect(await program.inject(TestConsole[">+>"](LivePrinter)).runPromise()).toEqual([
+      1, 2, 3
+    ])
+    expect(messages).toEqual(["n: 1", "n: 2", "n: 3"])
 
     expect(S.run([0, 1, 2].mapM((n) => S.succeed(n + 1)))).toEqual([1, 2, 3])
 
@@ -40,12 +54,12 @@ describe("Array API", () => {
 
     const spyConsole = jest.spyOn(console, "log").mockImplementation(mockConsole)
 
-    await program.inject(LiveConsole).runPromise()
+    await program.inject(LiveConsole[">+>"](LivePrinter)).runPromise()
 
     spyConsole.mockRestore()
 
-    expect(mockConsole).toHaveBeenNthCalledWith(1, "n: 0")
-    expect(mockConsole).toHaveBeenNthCalledWith(2, "n: 1")
-    expect(mockConsole).toHaveBeenNthCalledWith(3, "n: 2")
+    expect(mockConsole).toHaveBeenNthCalledWith(1, "n: 1")
+    expect(mockConsole).toHaveBeenNthCalledWith(2, "n: 2")
+    expect(mockConsole).toHaveBeenNthCalledWith(3, "n: 3")
   })
 })
