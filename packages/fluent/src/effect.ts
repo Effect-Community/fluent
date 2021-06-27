@@ -1,0 +1,335 @@
+import type { Tuple } from "@effect-ts/core/Collections/Immutable/Tuple"
+import type * as T from "@effect-ts/core/Effect"
+import type { Cause } from "@effect-ts/core/Effect/Cause"
+import type { Exit } from "@effect-ts/core/Effect/Exit"
+import type { Fiber } from "@effect-ts/core/Effect/Fiber"
+import type { Layer } from "@effect-ts/core/Effect/Layer"
+import type * as M from "@effect-ts/core/Effect/Managed"
+import * as E from "@effect-ts/core/Either"
+import type { Has, Tag } from "@effect-ts/core/Has"
+import type { Compute, Erase } from "@effect-ts/core/Utils"
+
+declare module "@effect-ts/system/Effect/effect" {
+  export interface Base<R, E, A> extends Effect<R, E, A> {}
+
+  export interface Effect<R, E, A> {
+    /**
+     * @rewrite pipe from "smart:pipe"
+     */
+    pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
+
+    /**
+     * @rewrite bracketExit_ from "@effect-ts/core/Effect"
+     */
+    bracket<RX, EX, AX, R2, E2, A2, R3, B>(
+      this: T.Effect<RX, EX, AX>,
+      use: (a: AX) => Effect<R2, E2, A2>,
+      release: (a: AX, exit: Exit<E2, A2>) => Effect<R3, never, B>,
+      __trace?: string
+    ): T.Effect<RX & R2 & R3, EX | E2, A2>
+
+    /**
+     * @rewrite fromRawEffect from "@effect-ts/core/Effect/Layer"
+     */
+    toLayer<RX, EX, AX>(this: T.Effect<RX, EX, AX>): Layer<RX, EX, AX>
+
+    /**
+     * @rewrite fromEffect_ from "@effect-ts/core/Effect/Layer"
+     */
+    toLayer<RX, EX, AX>(
+      this: T.Effect<RX, EX, AX>,
+      tag: Tag<AX>
+    ): Layer<RX, EX, Has<AX>>
+
+    /**
+     * @rewrite ensuring_ from "@effect-ts/core/Effect"
+     */
+    ensuring<RX, EX, AX, R1, X>(
+      this: T.Effect<RX, EX, AX>,
+      finalizer: Effect<R1, never, X>,
+      __trace?: string
+    ): T.Effect<RX & R1, EX, AX>
+
+    /**
+     * @rewrite fromEffect from "@effect-ts/core/Effect/Managed"
+     */
+    toManaged<RX, EX, AX>(this: T.Effect<RX, EX, AX>): M.Managed<RX, EX, AX>
+
+    /**
+     * @rewrite provideService_ from "@effect-ts/core/Effect"
+     */
+    inject<RX, EX, AX, A2>(
+      this: T.Effect<RX, EX, AX>,
+      tag: Tag<A2>,
+      value: A2
+    ): T.Effect<RX extends Has<A2> & infer K ? K : unknown, EX, AX>
+
+    /**
+     * @rewrite provideServiceM_ from "@effect-ts/core/Effect"
+     */
+    inject<RX, EX, AX, R2, E2, A2>(
+      this: T.Effect<RX, EX, AX>,
+      tag: Tag<A2>,
+      value: T.Effect<R2, E2, A2>
+    ): T.Effect<R2 & (RX extends Has<A2> & infer K ? K : unknown), EX | E2, AX>
+
+    /**
+     * @rewrite provideSomeLayer_ from "@effect-ts/core/Effect"
+     */
+    inject<RX, EX, AX, R2, E2, A2>(
+      this: T.Effect<RX, EX, AX>,
+      layer: Layer<R2, E2, A2>
+    ): T.Effect<Erase<RX, A2> & R2, EX | E2, AX>
+
+    /**
+     * @rewrite foldM_ from "@effect-ts/core/Effect"
+     */
+    foldM<RX, EX, AX, R2, E2, A2, R3, E3, A3>(
+      this: T.Effect<RX, EX, AX>,
+      g: (e: EX) => T.Effect<R3, E3, A3>,
+      f: (a: AX) => T.Effect<R2, E2, A2>,
+      __trace?: string
+    ): T.Effect<R & R2 & R3, E2 | E3, A2 | A3>
+
+    /**
+     * @rewrite foldCauseM_ from "@effect-ts/core/Effect"
+     */
+    foldCauseM<RX, EX, AX, R2, E2, A2, R3, E3, A3>(
+      this: T.Effect<RX, EX, AX>,
+      g: (e: Cause<EX>) => T.Effect<R3, E3, A3>,
+      f: (a: AX) => T.Effect<R2, E2, A2>,
+      __trace?: string
+    ): T.Effect<RX & R2 & R3, E2 | E3, A2 | A3>
+
+    /**
+     * @rewrite fork from "@effect-ts/core/Effect"
+     */
+    fork<RX, EX, AX>(
+      this: T.Effect<RX, EX, AX>,
+      __trace?: string
+    ): T.Effect<RX, never, Fiber<EX, AX>>
+
+    /**
+     * @rewrite forkManaged from "@effect-ts/core/Effect"
+     */
+    forkManaged<RX, EX, AX>(
+      this: T.Effect<RX, EX, AX>,
+      __trace?: string
+    ): M.Managed<RX, never, Fiber<EX, AX>>
+
+    /**
+     * @rewrite result from "@effect-ts/core/Effect"
+     */
+    result<RX, EX, AX>(
+      this: T.Effect<RX, EX, AX>,
+      __trace?: string
+    ): T.Effect<RX, never, Exit<EX, AX>>
+
+    /**
+     * @rewrite either from "@effect-ts/core/Effect"
+     */
+    either<RX, EX, AX>(
+      this: T.Effect<RX, EX, AX>,
+      __trace?: string
+    ): T.Effect<RX, never, E.Either<EX, AX>>
+
+    /**
+     * @rewrite as_ from "@effect-ts/core/Effect"
+     */
+    as<RX, EX, AX, B>(
+      this: T.Effect<RX, EX, AX>,
+      b: B,
+      __trace?: string
+    ): T.Effect<RX, EX, B>
+
+    /**
+     * @rewrite map_ from "@effect-ts/core/Effect"
+     */
+    map<RX, EX, AX, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (a: AX) => B,
+      __trace?: string
+    ): T.Effect<RX, EX, B>
+
+    /**
+     * @rewrite chain_ from "@effect-ts/core/Effect"
+     */
+    chain<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (a: AX) => T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, EX | E2, B>
+
+    /**
+     * @rewrite tap_ from "@effect-ts/core/Effect"
+     */
+    tap<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (a: AX) => T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, EX | E2, A>
+
+    /**
+     * @rewrite tapError_ from "@effect-ts/core/Effect"
+     */
+    tapError<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (e: EX) => T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, EX | E2, A>
+
+    /**
+     * @rewrite tapCause_ from "@effect-ts/core/Effect"
+     */
+    tapCause<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (e: Cause<EX>) => T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, EX | E2, AX>
+
+    /**
+     * @rewrite tapBoth_ from "@effect-ts/core/Effect"
+     */
+    tapBoth<RX, EX, AX, R2, E2, B, R3, E3, C>(
+      this: T.Effect<RX, EX, AX>,
+      f: (e: EX) => T.Effect<R2, E2, B>,
+      g: (e: AX) => T.Effect<R2, E3, C>,
+      __trace?: string
+    ): T.Effect<RX & R2 & R3, EX | E2 | E3, AX>
+
+    /**
+     * @rewrite catchAll_ from "@effect-ts/core/Effect"
+     */
+    catchAll<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: (e: EX) => T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, E2, AX | B>
+
+    /**
+     * @rewrite catchTag_ from "@effect-ts/core/Effect"
+     */
+    catchTag<
+      RX,
+      EX,
+      AX,
+      Tag extends EX extends { _tag: infer X } ? X : never,
+      R2,
+      E2,
+      B
+    >(
+      this: T.Effect<RX, EX, AX>,
+      tag: Tag,
+      f: (e: Extract<EX, { readonly _tag: Tag }>) => T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, E2 | Exclude<EX, { readonly _tag: Tag }>, AX | B>
+
+    /**
+     * @rewrite race_ from "@effect-ts/core/Effect"
+     */
+    race<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, EX | E2, AX | B>
+
+    /**
+     * @rewrite zip_ from "@effect-ts/core/Effect"
+     */
+    zip<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, EX | E2, Tuple<[AX, B]>>
+
+    /**
+     * @rewrite zipRight_ from "@effect-ts/core/Effect"
+     */
+    zipRight<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, EX | E2, B>
+
+    /**
+     * @rewrite zipLeft_ from "@effect-ts/core/Effect"
+     */
+    zipLeft<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, EX | E2, AX>
+
+    /**
+     * @rewrite zipPar_ from "@effect-ts/core/Effect"
+     */
+    zipPar<RX, EX, AX, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      f: T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<RX & R2, EX | E2, Tuple<[AX, B]>>
+
+    /**
+     * @rewrite runPromise from "@effect-ts/core/Effect"
+     */
+    runPromise<EX, AX>(this: T.Effect<T.DefaultEnv, EX, AX>): Promise<AX>
+
+    /**
+     * @rewrite runPromiseExit from "@effect-ts/core/Effect"
+     */
+    runPromiseExit<EX, AX>(this: T.Effect<T.DefaultEnv, EX, AX>): Promise<Exit<EX, AX>>
+
+    /**
+     * @rewrite runFiber from "@effect-ts/core/Effect"
+     */
+    runFiber<EX, AX>(this: T.Effect<T.DefaultEnv, EX, AX>): Fiber<EX, AX>
+
+    /**
+     * @rewrite absolve from "@effect-ts/core/Effect"
+     */
+    absolve<RX, EX, EE, AA>(
+      this: T.Effect<RX, EX, E.Either<EE, AA>>,
+      __trace?: string
+    ): T.Effect<RX, EX | EE, AA>
+
+    /**
+     * @rewrite bind_ from "@effect-ts/core/Effect"
+     */
+    bind<RX, EX, AX extends Record<string, unknown>, N extends string, R2, E2, B>(
+      this: T.Effect<RX, EX, AX>,
+      n: N & N extends keyof AX ? [`${N} already in use`] : N,
+      f: (a: AX) => T.Effect<R2, E2, B>,
+      __trace?: string
+    ): T.Effect<
+      RX & R2,
+      EX | E2,
+      Compute<
+        AX &
+          {
+            readonly [k in N]: B
+          },
+        "flat"
+      >
+    >
+
+    /**
+     * @rewrite let_ from "@effect-ts/core/Effect"
+     */
+    let<RX, EX, AX extends Record<string, unknown>, N extends string, B>(
+      this: T.Effect<RX, EX, AX>,
+      n: N & N extends keyof AX ? [`${N} already in use`] : N,
+      f: (a: AX) => B,
+      __trace?: string
+    ): T.Effect<
+      RX,
+      EX,
+      Compute<
+        AX &
+          {
+            readonly [k in N]: B
+          },
+        "flat"
+      >
+    >
+  }
+}
