@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.18](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.17...@effect-ts/fluent@0.0.18) (2021-06-27)
+
+
+### Features
+
+* **array:** begin array module ([d38ec05](https://github.com/Effect-TS/schema/commit/d38ec055ad6f69c40868a776f1f770e0569187e6))
+
+
+
+
+
 ## [0.0.17](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.16...@effect-ts/fluent@0.0.17) (2021-06-26)
 
 
