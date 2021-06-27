@@ -32,7 +32,8 @@
     "modules": [
       "array",
       "layer",
-      "has"
+      "has",
+      "either"
     ]
   }
 }

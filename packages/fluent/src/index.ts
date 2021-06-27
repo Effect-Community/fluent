@@ -8,7 +8,7 @@ import type { Exit } from "@effect-ts/core/Effect/Exit"
 import type { Fiber } from "@effect-ts/core/Effect/Fiber"
 import type { Layer } from "@effect-ts/core/Effect/Layer"
 import type * as M from "@effect-ts/core/Effect/Managed"
-import type { Either } from "@effect-ts/core/Either"
+import type * as E from "@effect-ts/core/Either"
 import type { Predicate, Refinement } from "@effect-ts/core/Function"
 import type { Has, Tag } from "@effect-ts/core/Has"
 import type * as O from "@effect-ts/core/Option"
@@ -121,7 +121,7 @@ export interface OptionOps<A> {
    */
   partition<AX, B, C>(
     this: O.Option<AX>,
-    f: (a: AX) => Either<B, C>
+    f: (a: AX) => E.Either<B, C>
   ): Separated<O.Option<B>, O.Option<C>>
 
   /**
@@ -144,7 +144,7 @@ export interface OptionOps<A> {
    * @rewrite separate from "@effect-ts/core/Option"
    */
   separate<AX, BX>(
-    this: O.Option<Either<AX, BX>>
+    this: O.Option<E.Either<AX, BX>>
   ): Separated<O.Option<AX>, O.Option<BX>>
 
   /**
@@ -173,9 +173,59 @@ export interface OptionOps<A> {
   zipRight<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<B>
 }
 
+export interface EitherOps<E, A> {
+  /**
+   * @rewriteGetter unsafeGetLeft from "@effect-ts/fluent/either"
+   */
+  readonly left: E | undefined
+
+  /**
+   * @rewriteGetter unsafeGetRight from "@effect-ts/fluent/either"
+   */
+  readonly right: A | undefined
+
+  /**
+   * @rewriteGetter getLeft from "@effect-ts/fluent/either"
+   */
+  readonly getLeft: O.Option<E>
+
+  /**
+   * @rewriteGetter getRight from "@effect-ts/fluent/either"
+   */
+  readonly getRight: O.Option<A>
+
+  /**
+   * @rewrite chain_ from "@effect-ts/core/Either"
+   */
+  chain<EX, AX, E2, B>(
+    this: E.Either<EX, AX>,
+    f: (a: AX) => E.Either<E2, B>
+  ): E.Either<EX | E2, B>
+
+  /**
+   * @rewrite map_ from "@effect-ts/core/Either"
+   */
+  map<EX, AX, B>(this: E.Either<EX, AX>, f: (a: AX) => B): E.Either<EX, B>
+
+  /**
+   * @rewrite isRight from "@effect-ts/core/Either"
+   */
+  isRight<EX, AX>(this: E.Either<EX, AX>): this is E.Right<AX>
+
+  /**
+   * @rewrite isLeft from "@effect-ts/core/Either"
+   */
+  isLeft<EX, AX>(this: E.Either<EX, AX>): this is E.Left<EX>
+}
+
 declare module "@effect-ts/system/Option/core" {
   export interface Some<A> extends OptionOps<A> {}
   export interface None extends OptionOps<never> {}
+}
+
+declare module "@effect-ts/system/Either/core" {
+  export interface Right<A> extends EitherOps<never, A> {}
+  export interface Left<E> extends EitherOps<E, never> {}
 }
 
 declare module "@effect-ts/system/Sync/core" {
@@ -346,7 +396,7 @@ declare module "@effect-ts/system/Effect/effect" {
     either<RX, EX, AX>(
       this: T.Effect<RX, EX, AX>,
       __trace?: string
-    ): T.Effect<RX, never, Either<EX, AX>>
+    ): T.Effect<RX, never, E.Either<EX, AX>>
 
     /**
      * @rewrite as_ from "@effect-ts/core/Effect"
@@ -503,7 +553,7 @@ declare module "@effect-ts/system/Effect/effect" {
      * @rewrite absolve from "@effect-ts/core/Effect"
      */
     absolve<RX, EX, EE, AA>(
-      this: T.Effect<RX, EX, Either<EE, AA>>,
+      this: T.Effect<RX, EX, E.Either<EE, AA>>,
       __trace?: string
     ): T.Effect<RX, EX | EE, AA>
 
