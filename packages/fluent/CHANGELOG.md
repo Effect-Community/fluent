@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.19...@effect-ts/fluent@0.0.20) (2021-06-27)
+
+
+### Features
+
+* **option:** finish module ([b6db356](https://github.com/Effect-TS/schema/commit/b6db35601b639459201b4452f968e753ef04bf0a))
+
+
+
+
+
 ## [0.0.19](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.18...@effect-ts/fluent@0.0.19) (2021-06-27)
 
 
