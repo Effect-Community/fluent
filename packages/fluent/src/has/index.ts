@@ -1,15 +1,17 @@
 import * as T from "@effect-ts/core/Effect"
 import type { Has, Tag } from "@effect-ts/core/Has"
-import type { Compute, UnionToIntersection } from "@effect-ts/core/Utils"
+import type { Compute, IsEqualTo, UnionToIntersection } from "@effect-ts/core/Utils"
 
 export type DerivedLifted<A> = UnionToIntersection<
   {
     [K in keyof A]: [A[K]] extends [
       (...args: infer ARGS) => T.Effect<infer RX, infer EX, infer AX>
     ]
-      ? {
-          [H in K]: (...args: ARGS) => T.Effect<RX & Has<A>, EX, AX>
-        }
+      ? IsEqualTo<(...args: ARGS) => T.Effect<RX, EX, AX>, A[K]> extends true
+        ? {
+            [H in K]: (...args: ARGS) => T.Effect<RX & Has<A>, EX, AX>
+          }
+        : never
       : never
   }[keyof A]
 >
