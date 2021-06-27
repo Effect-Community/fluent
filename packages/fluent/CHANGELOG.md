@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.21](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.20...@effect-ts/fluent@0.0.21) (2021-06-27)
+
+
+### Features
+
+* **either:** begin module ([accb141](https://github.com/Effect-TS/schema/commit/accb141502d0181597f5dd9e05bf93e8d875255f))
+
+
+
+
+
 ## [0.0.20](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.19...@effect-ts/fluent@0.0.20) (2021-06-27)
 
 
