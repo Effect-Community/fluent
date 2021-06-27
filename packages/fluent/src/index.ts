@@ -1,5 +1,6 @@
 // tracing: off
 
+import type * as A from "@effect-ts/core/Collections/Immutable/Array"
 import type { Tuple } from "@effect-ts/core/Collections/Immutable/Tuple"
 import type * as T from "@effect-ts/core/Effect"
 import type { Cause } from "@effect-ts/core/Effect/Cause"
@@ -12,6 +13,18 @@ import type { Has, Tag } from "@effect-ts/core/Has"
 import type * as O from "@effect-ts/core/Option"
 import type * as S from "@effect-ts/core/Sync"
 import type { _A, _E, _R, Compute, Erase } from "@effect-ts/core/Utils"
+
+declare global {
+  interface Array<T> {
+    /**
+     * @rewrite mapEffect_ from "@effect-ts/core/Collections/Immutable/Array"
+     */
+    mapM<AX, R, E, B>(
+      this: A.Array<AX>,
+      f: (a: AX) => T.Effect<R, E, B>
+    ): T.Effect<R, E, readonly B[]>
+  }
+}
 
 export interface OptionOps<A> {
   /**
