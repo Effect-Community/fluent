@@ -16,7 +16,7 @@ export interface Console extends _A<typeof makeConsole> {}
 export const Console = tag<Console>()
 export const LiveConsole = makeConsole.toLayer(Console)
 
-const { log } = T.deriveLifted(Console)(["log"], [], [])
+const { log } = Console.deriveLifted("log")
 
 describe("Array API", () => {
   it("fluent", async () => {

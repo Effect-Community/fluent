@@ -12,7 +12,9 @@ import type { Either } from "@effect-ts/core/Either"
 import type { Has, Tag } from "@effect-ts/core/Has"
 import type * as O from "@effect-ts/core/Option"
 import type * as S from "@effect-ts/core/Sync"
-import type { _A, _E, _R, Compute, Erase } from "@effect-ts/core/Utils"
+import type { Compute, Erase, UnionToIntersection } from "@effect-ts/core/Utils"
+
+import type { DerivedLifted } from "./has"
 
 declare global {
   interface Array<T> {
@@ -88,6 +90,27 @@ declare module "@effect-ts/system/Has" {
      * @rewrite succeed from "@effect-ts/core/Effect/Layer"
      */
     toLayer<AX>(this: Has<AX>): Layer<unknown, never, Has<AX>>
+  }
+}
+
+declare module "@effect-ts/system/Has" {
+  export interface Tag<T> {
+    /**
+     * @rewrite deriveLifted_ from "@effect-ts/fluent/has"
+     */
+    deriveLifted<TX, Ks extends readonly (keyof DerivedLifted<TX>)[]>(
+      this: Tag<TX>,
+      ...keys: Ks
+    ): Compute<
+      UnionToIntersection<
+        {
+          [k in keyof Ks]: Ks[k] extends keyof DerivedLifted<TX>
+            ? { [H in Ks[k]]: DerivedLifted<TX>[Ks[k]] }
+            : never
+        }[number]
+      >,
+      "flat"
+    >
   }
 }
 

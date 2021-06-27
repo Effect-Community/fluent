@@ -31,7 +31,8 @@
   "config": {
     "modules": [
       "array",
-      "layer"
+      "layer",
+      "has"
     ]
   }
 }
