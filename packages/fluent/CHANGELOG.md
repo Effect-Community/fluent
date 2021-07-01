@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.23...@effect-ts/fluent@0.0.24) (2021-07-01)
+
+
+### Features
+
+* **fluent:** finish effect api ([1ee8a8d](https://github.com/Effect-TS/schema/commit/1ee8a8d7a084c6fb59ab28ffb936b52342c5f767))
+
+
+
+
+
 ## [0.0.23](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.22...@effect-ts/fluent@0.0.23) (2021-06-27)
 
 **Note:** Version bump only for package @effect-ts/fluent
