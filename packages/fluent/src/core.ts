@@ -11,6 +11,16 @@ interface ArrayOps {
   pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
 
   /**
+   * @rewrite map_ from "@effect-ts/core/Collections/Immutable/Array"
+   */
+  map<AX, B>(this: A.Array<AX>, f: (a: AX) => B): A.Array<B>
+
+  /**
+   * @rewrite map_ from "@effect-ts/core/Collections/Immutable/Array"
+   */
+  map<AX, B>(this: AX[], f: (a: AX) => B): B[]
+
+  /**
    * @rewrite mapSync_ from "@effect-ts/core/Collections/Immutable/Array"
    */
   mapM<AX, R, E, B>(
@@ -40,17 +50,22 @@ interface ArrayOps {
   ): T.Effect<R, E, readonly B[]>
 
   /**
-   * @rewrite toMutable_ from "@effect-ts/core/Collections/Immutable/Array"
+   * @rewrite toMutable from "@effect-ts/core/Collections/Immutable/Array"
    */
   mutable<AX>(this: A.Array<AX>): AX[]
 
   /**
-   * @rewrite fromMutable_ from "@effect-ts/core/Collections/Immutable/Array"
+   * @rewrite fromMutable from "@effect-ts/core/Collections/Immutable/Array"
    */
   immutable<AX>(this: AX[]): A.Array<AX>
 }
 
 declare global {
   interface Array<T> extends ArrayOps {}
-  interface ReadonlyArray<T> extends ArrayOps {}
+  interface ReadonlyArray<T> extends ArrayOps {
+    /**
+     * @rewrite map_ from "@effect-ts/core/Collections/Immutable/Array"
+     */
+    map<AX, B>(this: A.Array<AX>, f: (a: AX) => B): A.Array<B>
+  }
 }

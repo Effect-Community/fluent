@@ -69,4 +69,8 @@ describe("Array API", () => {
     expect([0, 1, 2].mapM((x) => E.right(x + 1))).toEqual(E.right([1, 2, 3]))
     expect([0, 1, 2].mapM((x) => O.some(x + 1))).toEqual(O.some([1, 2, 3]))
   })
+
+  it("readonly", () => {
+    expect([0, 1, 2].immutable().map((a) => a + 1)).toEqual([1, 2, 3])
+  })
 })
