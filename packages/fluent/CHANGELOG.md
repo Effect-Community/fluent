@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.2](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.1.1...@effect-ts/fluent@0.1.2) (2021-07-02)
+
+
+### Features
+
+* **array:** patch readonly map ([ca51ea8](https://github.com/Effect-TS/schema/commit/ca51ea8ee4ad99b5f7bc4c8c2c5a2fc729513dde))
+
+
+
+
+
 ## [0.1.1](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.1.0...@effect-ts/fluent@0.1.1) (2021-07-02)
 
 **Note:** Version bump only for package @effect-ts/fluent
