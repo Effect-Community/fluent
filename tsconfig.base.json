@@ -32,8 +32,8 @@
     "target": "ES2018",
     "typeRoots": ["./node_modules/@types", "./typings"],
     "paths": {
-      "@effect-ts/fluent/*": ["packages/fluent/build/*"],
-      "@effect-ts/fluent": ["packages/fluent/build"]
+      "@effect-ts/fluent/*": ["packages/fluent/build/dts/*"],
+      "@effect-ts/fluent": ["packages/fluent/build/dts"]
     }
   },
   "exclude": ["node_modules", "build", "lib"]

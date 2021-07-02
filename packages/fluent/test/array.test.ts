@@ -1,5 +1,7 @@
 import * as T from "@effect-ts/core/Effect"
+import * as E from "@effect-ts/core/Either"
 import { tag } from "@effect-ts/core/Has"
+import * as O from "@effect-ts/core/Option"
 import * as S from "@effect-ts/core/Sync"
 import type { _A } from "@effect-ts/core/Utils"
 
@@ -61,5 +63,10 @@ describe("Array API", () => {
     expect(mockConsole).toHaveBeenNthCalledWith(1, "n: 1")
     expect(mockConsole).toHaveBeenNthCalledWith(2, "n: 2")
     expect(mockConsole).toHaveBeenNthCalledWith(3, "n: 3")
+  })
+
+  it("mapM", () => {
+    expect([0, 1, 2].mapM((x) => E.right(x + 1))).toEqual(E.right([1, 2, 3]))
+    expect([0, 1, 2].mapM((x) => O.some(x + 1))).toEqual(O.some([1, 2, 3]))
   })
 })
