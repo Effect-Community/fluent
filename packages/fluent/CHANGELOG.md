@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.24...@effect-ts/fluent@0.1.0) (2021-07-02)
+
+
+### Features
+
+* **array:** add mapM for Either and Option ([25826d2](https://github.com/Effect-TS/schema/commit/25826d22ec605855b0fbbbd751a9a2452843531b))
+* **array:** improve extension ([1725083](https://github.com/Effect-TS/schema/commit/1725083e46a4a20b8a3f25473a65d33deebfe330))
+
+
+
+
+
 ## [0.0.24](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.0.23...@effect-ts/fluent@0.0.24) (2021-07-01)
 
 
