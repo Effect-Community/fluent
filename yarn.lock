@@ -8339,7 +8339,12 @@ typescript-transform-paths@2.2.4:
   dependencies:
     minimatch "^3.0.4"
 
-typescript@4.4.0-dev.20210625, typescript@next:
+typescript@4.4.0-dev.20210726:
+  version "4.4.0-dev.20210726"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.0-dev.20210726.tgz#4c52cdb6a12bc0d411a22a8c609cf56435e7cb2b"
+  integrity sha512-7OOJOTf2TzRbghu251KOmRtByylrRxRmG71yvQ4G74g4RRUVyx0aSdODl9/BPNgyC1WqMob9++7xJM81noTahQ==
+
+typescript@next:
   version "4.4.0-dev.20210625"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.0-dev.20210625.tgz#0a22fef024138ff6f2d9c660006a5cb6984307dd"
   integrity sha512-ThG1wgNkWHH2vdXHOfT2docBIOFTEoRiLqyQIm+nfP9t9bS1Nd7Ze268vCXKhItdhIrUQ4scTRyw7xdiHEHo+A==
