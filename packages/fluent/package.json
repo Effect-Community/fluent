@@ -23,13 +23,15 @@
     "directory": "dist"
   },
   "peerDependencies": {
-    "@effect-ts/core": "^0.42.4"
+    "@effect-ts/core": "^0.43.0"
   },
   "config": {
     "side": [],
     "modules": [
       "Fx",
-      "Fx/Array"
+      "Fx/Array",
+      "Extensions",
+      "Prelude"
     ]
   }
 }

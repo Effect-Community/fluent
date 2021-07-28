@@ -1,6 +1,5 @@
 import { Tagged } from "@effect-ts/core/Case"
-import * as T from "@effect-ts/core/Effect"
-import * as L from "@effect-ts/core/Effect/Layer"
+import { Effect } from "@effect-ts/core/Effect"
 import { tag } from "@effect-ts/core/Has"
 import * as S from "@effect-ts/core/Sync"
 import type { _A } from "@effect-ts/core/Utils"
@@ -8,55 +7,53 @@ import type { _A } from "@effect-ts/core/Utils"
 class Err1 extends Tagged("Err1")<{}> {}
 class Err2 extends Tagged("Err2")<{}> {}
 
-const makeConsole = T.succeedWith(() => {
-  return {
-    log: (s: string) =>
-      T.succeedWith(() => {
-        console.log(s)
-      })
-  }
-})
+const makeConsole = Effect.succeed(() => ({
+  log: (s: string) =>
+    Effect.succeed(() => {
+      console.log(s)
+    })
+}))
 
 interface Console extends _A<typeof makeConsole> {}
 const Console = tag<Console>()
-const { log } = T.deriveLifted(Console)(["log"], [], [])
+const { log } = Effect.deriveLifted(Console)(["log"], [], [])
 
 describe("Effect API", () => {
   it("fluent", async () => {
     const messages: string[] = []
 
-    const TestConsole = L.pure(Console)({
+    const TestConsole = Console.of({
       log: (s) =>
-        T.succeedWith(() => {
+        Effect.succeed(() => {
           messages.push(s)
         })
-    })
+    }).toLayer()
 
     const fn = jest.fn()
 
-    const program = T.do
+    const program = Effect.do_
       .let("foo", () => 0)
-      .bind("bar", (_) => T.succeed(_.foo + 1))
+      .bind("bar", (_) => Effect.succeedNow(_.foo + 1))
       .map((_) => _.bar)
       .as(0)
-      .foldM(T.fail, T.succeed)
+      .foldM(Effect.failNow, Effect.succeedNow)
       .result()
-      .chain(T.done)
+      .chain(Effect.done)
       .chain(S.succeed)
-      .chain(() => T.fail(new Err1()))
-      .chain(() => T.fail(new Err2()))
-      .catchTag("Err1", (e) => T.succeed(e._tag.length))
+      .chain(() => Effect.failNow(new Err1()))
+      .chain(() => Effect.failNow(new Err2()))
+      .catchTag("Err1", (e) => Effect.succeedNow(e._tag.length))
       .tap((n) => log(`n: ${n}`))
       .either()
       .absolve()
-      .race(T.delay(10)(T.succeed(0)))
+      .race(Effect.succeedNow(0).delay(10))
       .ensuring(
-        T.succeedWith(() => {
+        Effect.succeed(() => {
           fn()
         })
       )
-      .bracket(T.succeed, () =>
-        T.succeedWith(() => {
+      .bracket(Effect.succeedNow, () =>
+        Effect.succeed(() => {
           fn()
         })
       )

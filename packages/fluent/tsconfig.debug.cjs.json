@@ -16,5 +16,5 @@
       }
     ]
   },
-  "include": ["test/array.test.ts"]
+  "include": ["test/effect.test.ts"]
 }

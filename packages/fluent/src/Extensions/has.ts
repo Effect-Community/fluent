@@ -1,3 +1,5 @@
+// ets_tracing: off
+
 import type { Layer } from "@effect-ts/core/Effect/Layer"
 import type { DerivedFunctions } from "@effect-ts/core/Has"
 import type { Compute, UnionToIntersection } from "@effect-ts/core/Utils"
@@ -5,24 +7,24 @@ import type { Compute, UnionToIntersection } from "@effect-ts/core/Utils"
 declare module "@effect-ts/system/Has" {
   export interface Has<T> {
     /**
-     * @rewrite pipe from "smart:pipe"
+     * @ets_rewrite_method pipe from "smart:pipe"
      */
     pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
 
     /**
-     * @rewrite succeed from "@effect-ts/core/Effect/Layer"
+     * @ets_rewrite_method succeed from "@effect-ts/core/Effect/Layer"
      */
     toLayer<AX>(this: Has<AX>): Layer<unknown, never, Has<AX>>
   }
 
   export interface Tag<T> {
     /**
-     * @rewrite pipe from "smart:pipe"
+     * @ets_rewrite_method pipe from "smart:pipe"
      */
     pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
 
     /**
-     * @rewrite deriveFunctions from "@effect-ts/core/Has"
+     * @ets_rewrite_method deriveFunctions from "@effect-ts/core/Has"
      */
     deriveLifted<TX, Ks extends readonly (keyof DerivedFunctions<TX>)[]>(
       this: Tag<TX>,

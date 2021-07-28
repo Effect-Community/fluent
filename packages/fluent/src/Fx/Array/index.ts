@@ -1,3 +1,5 @@
+// ets_tracing: off
+
 import * as A from "@effect-ts/core/Collections/Immutable/Array"
 import * as E from "@effect-ts/core/Either"
 import * as O from "@effect-ts/core/Option"
