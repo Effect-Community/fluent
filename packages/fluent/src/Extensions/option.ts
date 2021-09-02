@@ -69,7 +69,7 @@ export interface OptionOps<A> {
   /**
    * @ets_rewrite_method getOrElse_ from "@effect-ts/core/Option"
    */
-  getOrElse<AX, B>(this: O.Option<AX>, f: () => B): O.Option<AX | B>
+  getOrElse<AX, B>(this: O.Option<AX>, f: () => B): AX | B
 
   /**
    * @ets_rewrite_method isSome from "@effect-ts/core/Option"
