@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.2.0...@effect-ts/fluent@0.2.1) (2021-09-03)
+
+
+### Bug Fixes
+
+* **option:** getOrElse returns A | B, not wrapped in Option. ([13c3a2b](https://github.com/Effect-TS/schema/commit/13c3a2bbb96d3d28ac69e0c37eddc34b67fa7924))
+
+
+
+
+
 # [0.2.0](https://github.com/Effect-TS/schema/compare/@effect-ts/fluent@0.1.3...@effect-ts/fluent@0.2.0) (2021-07-28)
 
 **Note:** Version bump only for package @effect-ts/fluent
