@@ -4,6 +4,8 @@ import * as M from "@effect-ts/core/Effect/Managed"
 import { tag } from "@effect-ts/core/Has"
 import type { _A } from "@effect-ts/core/Utils"
 
+import {} from "../src/Extensions"
+
 const makeConsole = T.succeedWith(() => {
   return {
     log: (s: string) =>

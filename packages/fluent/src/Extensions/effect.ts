@@ -35,6 +35,16 @@ declare module "@effect-ts/system/Effect/effect" {
 
   export namespace Effect {
     /**
+     * @ets_rewrite_static effectAsync from "@effect-ts/core/Effect"
+     */
+    export const async: typeof T.effectAsync
+
+    /**
+     * @ets_rewrite_static effectAsyncInterrupt from "@effect-ts/core/Effect"
+     */
+    export const asyncInterrupt: typeof T.effectAsyncInterrupt
+
+    /**
      * @ets_rewrite_static chain from "@effect-ts/core/Effect"
      */
     export const chain: typeof T.chain
@@ -63,6 +73,26 @@ declare module "@effect-ts/system/Effect/effect" {
      * @ets_rewrite_static fail from "@effect-ts/core/Effect"
      */
     export const failNow: typeof T.fail
+
+    /**
+     * @ets_rewrite_static dieWith from "@effect-ts/core/Effect"
+     */
+    export const die: typeof T.dieWith
+
+    /**
+     * @ets_rewrite_static die from "@effect-ts/core/Effect"
+     */
+    export const dieNow: typeof T.die
+
+    /**
+     * @ets_rewrite_static haltWith from "@effect-ts/core/Effect"
+     */
+    export const halt: typeof T.haltWith
+
+    /**
+     * @ets_rewrite_static halt from "@effect-ts/core/Effect"
+     */
+    export const haltNow: typeof T.halt
 
     /**
      * @ets_rewrite_static succeedWith from "@effect-ts/core/Effect"
@@ -211,10 +241,9 @@ declare module "@effect-ts/system/Effect/effect" {
       RX & R2,
       EX | E2,
       Compute<
-        AX &
-          {
-            readonly [k in N]: B
-          },
+        AX & {
+          readonly [k in N]: B
+        },
         "flat"
       >
     >
@@ -224,10 +253,9 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     bindAll<
       K,
-      NER extends Record<string, Effect<any, any, any>> &
-        {
-          [k in keyof K & keyof NER]?: never
-        },
+      NER extends Record<string, Effect<any, any, any>> & {
+        [k in keyof K & keyof NER]?: never
+      },
       R,
       E
     >(
@@ -238,12 +266,11 @@ declare module "@effect-ts/system/Effect/effect" {
       R & _R<NER[keyof NER]>,
       E | _E<NER[keyof NER]>,
       Compute<
-        K &
-          {
-            readonly [K in keyof NER]: [NER[K]] extends [Effect<any, any, infer A>]
-              ? A
-              : never
-          },
+        K & {
+          readonly [K in keyof NER]: [NER[K]] extends [Effect<any, any, infer A>]
+            ? A
+            : never
+        },
         "flat"
       >
     >
@@ -253,10 +280,9 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     bindAllPar<
       K,
-      NER extends Record<string, Effect<any, any, any>> &
-        {
-          [k in keyof K & keyof NER]?: never
-        },
+      NER extends Record<string, Effect<any, any, any>> & {
+        [k in keyof K & keyof NER]?: never
+      },
       R,
       E
     >(
@@ -267,12 +293,11 @@ declare module "@effect-ts/system/Effect/effect" {
       R & _R<NER[keyof NER]>,
       E | _E<NER[keyof NER]>,
       Compute<
-        K &
-          {
-            readonly [K in keyof NER]: [NER[K]] extends [Effect<any, any, infer A>]
-              ? A
-              : never
-          },
+        K & {
+          readonly [K in keyof NER]: [NER[K]] extends [Effect<any, any, infer A>]
+            ? A
+            : never
+        },
         "flat"
       >
     >
@@ -282,10 +307,9 @@ declare module "@effect-ts/system/Effect/effect" {
      */
     bindAllParN<
       K,
-      NER extends Record<string, Effect<any, any, any>> &
-        {
-          [k in keyof K & keyof NER]?: never
-        },
+      NER extends Record<string, Effect<any, any, any>> & {
+        [k in keyof K & keyof NER]?: never
+      },
       R,
       E
     >(
@@ -297,12 +321,11 @@ declare module "@effect-ts/system/Effect/effect" {
       R & _R<NER[keyof NER]>,
       E | _E<NER[keyof NER]>,
       Compute<
-        K &
-          {
-            readonly [K in keyof NER]: [NER[K]] extends [Effect<any, any, infer A>]
-              ? A
-              : never
-          },
+        K & {
+          readonly [K in keyof NER]: [NER[K]] extends [Effect<any, any, infer A>]
+            ? A
+            : never
+        },
         "flat"
       >
     >
@@ -843,10 +866,9 @@ declare module "@effect-ts/system/Effect/effect" {
       RX,
       EX,
       Compute<
-        AX &
-          {
-            readonly [k in N]: B
-          },
+        AX & {
+          readonly [k in N]: B
+        },
         "flat"
       >
     >

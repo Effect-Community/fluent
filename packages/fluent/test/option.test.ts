@@ -1,6 +1,8 @@
 import * as E from "@effect-ts/core/Either"
 import * as O from "@effect-ts/core/Option"
 
+import {} from "../src/Extensions"
+
 describe("Option API", () => {
   it("option", () => {
     expect(O.some(1).value).toEqual(1)

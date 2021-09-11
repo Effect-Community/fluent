@@ -4,6 +4,8 @@ import { tag } from "@effect-ts/core/Has"
 import * as S from "@effect-ts/core/Sync"
 import type { _A } from "@effect-ts/core/Utils"
 
+import {} from "../src/Extensions"
+
 class Err1 extends Tagged("Err1")<{}> {}
 class Err2 extends Tagged("Err2")<{}> {}
 

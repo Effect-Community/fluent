@@ -9,7 +9,7 @@
     "experimentalDecorators": true,
     "preserveSymlinks": true,
     "moduleResolution": "node",
-    "noEmit": false,
+    "noEmit": true,
     "lib": ["es2020"],
     "sourceMap": true,
     "declarationMap": true,

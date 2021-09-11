@@ -1,6 +1,6 @@
 {
-  "name": "@effect-ts/fluent",
-  "version": "0.2.1",
+  "name": "@effect-ts/fluent-node",
+  "version": "0.0.0",
   "license": "MIT",
   "repository": "https://github.com/Effect-TS/fluent.git",
   "homepage": "https://www.matechs.com",
@@ -23,15 +23,11 @@
     "directory": "dist"
   },
   "peerDependencies": {
-    "@effect-ts/core": "^0.43.0"
+    "@effect-ts/core": "^0.43.9",
+    "@effect-ts/node": "^0.28.1"
   },
   "config": {
     "side": [],
-    "modules": [
-      "Fx",
-      "Fx/Array",
-      "Extensions",
-      "Prelude"
-    ]
+    "modules": []
   }
 }

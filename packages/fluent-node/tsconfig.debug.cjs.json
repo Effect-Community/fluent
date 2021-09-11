@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "build/debug",
+    "target": "ES2018",
+    "module": "CommonJS",
+    "declaration": false,
+    "declarationMap": false,
+    "removeComments": false,
+    "plugins": [
+      {
+        "transform": "@effect-ts/tracing-plugin",
+        "moduleMap": {
+          "^src/(.*)": "(@effect-ts/fluent-node): _src/$1"
+        }
+      }
+    ]
+  },
+  "include": ["test/effect.test.ts"]
+}

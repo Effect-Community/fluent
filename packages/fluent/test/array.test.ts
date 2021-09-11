@@ -5,6 +5,8 @@ import * as O from "@effect-ts/core/Option"
 import * as S from "@effect-ts/core/Sync"
 import type { _A } from "@effect-ts/core/Utils"
 
+import {} from "../src/Extensions"
+
 export const makeConsole = T.succeedWith(() => ({
   log: (s: string) =>
     T.succeedWith(() => {

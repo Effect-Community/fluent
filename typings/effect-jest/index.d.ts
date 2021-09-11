@@ -1,4 +1,4 @@
-import {} from "../../packages/fluent/src/Extensions"
+export {}
 
 declare global {
   namespace jest {
