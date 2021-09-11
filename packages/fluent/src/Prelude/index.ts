@@ -22,5 +22,6 @@ declare global {
   type _EOf<X> = _E<X>
   type _ROf<X> = _R<X>
 
+  type Data = typeof XData
   const Data: typeof XData
 }
