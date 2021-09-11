@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.4](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.3...@effect-ts/fluent@0.3.4) (2021-09-11)
+
+
+### Bug Fixes
+
+* add type ([7f5c3a1](https://github.com/Effect-TS/fluent/commit/7f5c3a157032f707dfabcde9f90155e3c50e4aac))
+
+
+
+
+
 ## [0.3.3](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.2...@effect-ts/fluent@0.3.3) (2021-09-11)
 
 
