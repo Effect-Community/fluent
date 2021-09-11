@@ -80,6 +80,11 @@ declare module "@effect-ts/system/Effect/effect" {
     export const die: typeof T.dieWith
 
     /**
+     * @ets_rewrite_static gen from "@effect-ts/core/Effect"
+     */
+    export const gen: typeof T.gen
+
+    /**
      * @ets_rewrite_static die from "@effect-ts/core/Effect"
      */
     export const dieNow: typeof T.die
