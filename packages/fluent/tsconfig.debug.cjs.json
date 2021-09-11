@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "noEmit": false,
     "outDir": "build/debug",
     "target": "ES2018",
     "module": "CommonJS",
