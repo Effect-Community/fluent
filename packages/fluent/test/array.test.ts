@@ -73,6 +73,6 @@ describe("Array API", () => {
   })
 
   it("readonly", () => {
-    expect([0, 1, 2].toChunk().map((a) => a + 1)).toEqual([1, 2, 3])
+    expect([0, 1, 2].map((a) => a + 1)).toEqual([1, 2, 3])
   })
 })
