@@ -5,8 +5,8 @@ import {} from "../src/Extensions"
 
 describe("Either API", () => {
   it("either", () => {
-    expect(O.some(1).value).toEqual(1)
-    expect(O.none.value).toEqual(void 0)
+    expect(O.some(1).toUndefined()).toEqual(1)
+    expect(O.none.toUndefined()).toEqual(void 0)
 
     const fn = (n: number) =>
       E.right(n).chain((k) => (k > 0 ? E.right(k) : E.left("error")))

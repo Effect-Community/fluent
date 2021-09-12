@@ -1,27 +1,37 @@
-import type * as _Case from "@effect-ts/core/Case"
-import type { Chunk as XChunk } from "@effect-ts/core/Collections/Immutable/Chunk"
-import type { Effect as XEffect } from "@effect-ts/core/Effect"
-import type { Managed as XManaged } from "@effect-ts/core/Effect/Managed"
-import type * as _Function from "@effect-ts/core/Function"
-import type * as _Has from "@effect-ts/core/Has"
-import type { _A, _E, _R } from "@effect-ts/core/Utils"
+/* eslint-disable @typescript-eslint/no-namespace */
+import { Array } from "@effect-ts/core/Collections/Immutable/Array"
+import { Chunk } from "@effect-ts/core/Collections/Immutable/Chunk"
+import { Effect } from "@effect-ts/core/Effect"
+import { Managed } from "@effect-ts/core/Effect/Managed"
+import { Promise } from "@effect-ts/core/Effect/Promise"
+import { Has, Tag } from "@effect-ts/core/Has"
+import { Option } from "@effect-ts/core/Option"
+import { _A, _E, _R } from "@effect-ts/core/Utils"
 
-import type { Data as XData } from "../Extensions/data"
+import {} from "../Extensions"
+import { Data } from "../Extensions/data"
 
 declare global {
-  type Effect<R, E, A> = XEffect<R, E, A>
-  const Effect: typeof XEffect
+  export namespace T {
+    export type EffectU<A> = Effect<unknown, never, A>
+    export type EffectE<E, A> = Effect<unknown, E, A>
+    export type EffectR<R, A> = Effect<R, never, A>
 
-  type Managed<R, E, A> = XManaged<R, E, A>
-  const Managed: typeof XManaged
-
-  type Chunk<A> = XChunk<A>
-  const Chunk: typeof XChunk
-
-  type _AOf<X> = _A<X>
-  type _EOf<X> = _E<X>
-  type _ROf<X> = _R<X>
-
-  type Data = typeof XData
-  const Data: typeof XData
+    export {
+      Array,
+      Effect,
+      Promise,
+      Managed,
+      Data,
+      Option,
+      Chunk,
+      Tag,
+      Has,
+      _A as _AOf,
+      _E as _EOf,
+      _R as _ROf
+    }
+  }
 }
+
+export {}

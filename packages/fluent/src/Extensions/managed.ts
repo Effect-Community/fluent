@@ -1,11 +1,30 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 // ets_tracing: off
 
 import type * as T from "@effect-ts/core/Effect"
 import type { Cause } from "@effect-ts/core/Effect/Cause"
+import type { Layer } from "@effect-ts/core/Effect/Layer"
 import type * as M from "@effect-ts/core/Effect/Managed"
+import type { Has, Tag } from "@effect-ts/system/Has"
 
 declare module "@effect-ts/system/Managed/managed" {
-  export interface Managed<R, E, A> {
+  export interface ManagedStaticOps {
+    /**
+     * @ets_rewrite_method pipe from "@effect-ts/core/Effect/Managed"
+     */
+    gen: typeof M.gen
+
+    /**
+     * @ets_rewrite_method makeExit_ from "@effect-ts/core/Effect/Managed"
+     */
+    makeExit: typeof M.makeExit_
+  }
+
+  export const Managed: ManagedStaticOps
+
+  export interface Managed<R, E, A> extends ManagedOps {}
+
+  export interface ManagedOps {
     /**
      * @ets_rewrite_method pipe from "smart:pipe"
      */
@@ -101,5 +120,18 @@ declare module "@effect-ts/system/Managed/managed" {
       f: (a: AX) => T.Effect<R2, E2, B>,
       __trace?: string
     ): T.Effect<RX & R2, EX | E2, B>
+
+    /**
+     * @ets_rewrite_method fromRawManaged from "@effect-ts/core/Effect/Layer"
+     */
+    toLayer<RX, EX, AX>(this: M.Managed<RX, EX, AX>): Layer<RX, EX, AX>
+
+    /**
+     * @ets_rewrite_method fromManaged_ from "@effect-ts/core/Effect/Layer"
+     */
+    toLayer<RX, EX, AX>(
+      this: M.Managed<RX, EX, AX>,
+      tag: Tag<AX>
+    ): Layer<RX, EX, Has<AX>>
   }
 }

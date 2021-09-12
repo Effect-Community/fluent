@@ -16,7 +16,7 @@ import type * as P from "@effect-ts/core/Effect/Promise"
 import type { Schedule } from "@effect-ts/core/Effect/Schedule"
 import type { Scope } from "@effect-ts/core/Effect/Scope"
 import type { Supervisor } from "@effect-ts/core/Effect/Supervisor"
-import * as E from "@effect-ts/core/Either"
+import type * as E from "@effect-ts/core/Either"
 import type { Has, Tag } from "@effect-ts/core/Has"
 import type * as O from "@effect-ts/core/Option"
 import type {
@@ -31,101 +31,110 @@ import type {
 import type { NoSuchElementException } from "@effect-ts/system/GlobalExceptions"
 
 declare module "@effect-ts/system/Effect/effect" {
-  export interface Base<R, E, A> extends Effect<R, E, A> {}
+  export const Effect: EffectStaticOps
 
-  export namespace Effect {
+  export interface EffectStaticOps {
+    /**
+     * @ets_rewrite_static Applicative from "@effect-ts/core/Effect"
+     */
+    Applicative: typeof T.Applicative
+
     /**
      * @ets_rewrite_static effectAsync from "@effect-ts/core/Effect"
      */
-    export const async: typeof T.effectAsync
+    async: typeof T.effectAsync
 
     /**
      * @ets_rewrite_static effectAsyncInterrupt from "@effect-ts/core/Effect"
      */
-    export const asyncInterrupt: typeof T.effectAsyncInterrupt
+    asyncInterrupt: typeof T.effectAsyncInterrupt
 
     /**
      * @ets_rewrite_static chain from "@effect-ts/core/Effect"
      */
-    export const chain: typeof T.chain
+    chain: typeof T.chain
 
     /**
      * @ets_rewrite_static do from "@effect-ts/core/Effect"
      */
-    export const do_: typeof T.do
+    do_: typeof T.do
 
     /**
      * @ets_rewrite_static deriveLifted from "@effect-ts/core/Effect"
      */
-    export const deriveLifted: typeof T.deriveLifted
+    deriveLifted: typeof T.deriveLifted
 
     /**
      * @ets_rewrite_static done from "@effect-ts/core/Effect"
      */
-    export const done: typeof T.done
+    done: typeof T.done
 
     /**
      * @ets_rewrite_static failWith from "@effect-ts/core/Effect"
      */
-    export const fail: typeof T.failWith
+    fail: typeof T.failWith
 
     /**
      * @ets_rewrite_static fail from "@effect-ts/core/Effect"
      */
-    export const failNow: typeof T.fail
+    failNow: typeof T.fail
 
     /**
      * @ets_rewrite_static dieWith from "@effect-ts/core/Effect"
      */
-    export const die: typeof T.dieWith
+    die: typeof T.dieWith
 
     /**
      * @ets_rewrite_static gen from "@effect-ts/core/Effect"
      */
-    export const gen: typeof T.gen
+    gen: typeof T.gen
 
     /**
      * @ets_rewrite_static die from "@effect-ts/core/Effect"
      */
-    export const dieNow: typeof T.die
+    dieNow: typeof T.die
 
     /**
      * @ets_rewrite_static haltWith from "@effect-ts/core/Effect"
      */
-    export const halt: typeof T.haltWith
+    halt: typeof T.haltWith
 
     /**
      * @ets_rewrite_static halt from "@effect-ts/core/Effect"
      */
-    export const haltNow: typeof T.halt
+    haltNow: typeof T.halt
 
     /**
      * @ets_rewrite_static succeedWith from "@effect-ts/core/Effect"
      */
-    export const succeed: typeof T.succeedWith
+    succeed: typeof T.succeedWith
 
     /**
      * @ets_rewrite_static succeed from "@effect-ts/core/Effect"
      */
-    export const succeedNow: typeof T.succeed
+    succeedNow: typeof T.succeed
 
     /**
      * @ets_rewrite_static provide from "@effect-ts/core/Effect"
      */
-    export const provide: typeof T.provide
+    provide: typeof T.provide
 
     /**
      * @ets_rewrite_static provideSomeLayer from "@effect-ts/core/Effect"
      */
-    export const provideSomeLayer: typeof T.provideSomeLayer
+    provideSomeLayer: typeof T.provideSomeLayer
 
     /**
      * @ets_rewrite_static defaultEnv from "@effect-ts/core/Effect"
      */
-    export const defaultEnv: typeof T.defaultEnv
+    defaultEnv: typeof T.defaultEnv
   }
 
-  export interface Effect<R, E, A> {
+  export interface Base<R, E, A> extends Effect<R, E, A> {}
+
+  export interface Effect<R, E, A> extends EffectOps {}
+
+  export interface EffectOps {
     /**
      * @ets_rewrite_method pipe from "smart:pipe"
      */
@@ -613,7 +622,7 @@ declare module "@effect-ts/system/Effect/effect" {
       g: (e: EX) => T.Effect<R3, E3, A3>,
       f: (a: AX) => T.Effect<R2, E2, A2>,
       __trace?: string
-    ): T.Effect<R & R2 & R3, E2 | E3, A2 | A3>
+    ): T.Effect<RX & R2 & R3, E2 | E3, A2 | A3>
 
     /**
      * @ets_rewrite_method forever from "@effect-ts/core/Effect"
@@ -1511,7 +1520,7 @@ declare module "@effect-ts/system/Effect/effect" {
       this: T.Effect<RX, EX, AX>,
       f: (a: AX) => T.Effect<R2, E2, B>,
       __trace?: string
-    ): T.Effect<RX & R2, EX | E2, A>
+    ): T.Effect<RX & R2, EX | E2, AX>
 
     /**
      * @ets_rewrite_method tapError_ from "@effect-ts/core/Effect"
@@ -1520,7 +1529,7 @@ declare module "@effect-ts/system/Effect/effect" {
       this: T.Effect<RX, EX, AX>,
       f: (e: EX) => T.Effect<R2, E2, B>,
       __trace?: string
-    ): T.Effect<RX & R2, EX | E2, A>
+    ): T.Effect<RX & R2, EX | E2, AX>
 
     /**
      * @ets_rewrite_method tapCause_ from "@effect-ts/core/Effect"

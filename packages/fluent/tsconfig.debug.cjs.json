@@ -17,5 +17,5 @@
       }
     ]
   },
-  "include": ["test/effect.test.ts"]
+  "include": ["test/prelude.test.ts"]
 }

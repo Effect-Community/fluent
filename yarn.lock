@@ -381,27 +381,27 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@effect-ts/build-utils@^0.23.10":
-  version "0.23.10"
-  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.23.10.tgz#8dde8078291d52880f1756c0990b3e1d099c02ad"
-  integrity sha512-Yfqf7GNtF9Pa6nbtEx4qSFR9uEqVbeRnFg9Lnys4vVKmr6p1GluFA9Kp/EAkKtVLRzBU679c46E5MseZ+fysQw==
+"@effect-ts/build-utils@^0.24.4":
+  version "0.24.4"
+  resolved "https://registry.yarnpkg.com/@effect-ts/build-utils/-/build-utils-0.24.4.tgz#d251d2a4d06f7873e660655338a77f4525f9f655"
+  integrity sha512-cRc6X5aT2YbVoBMKgKYHEt29ldK5GSnUlBIaGc5gq/+7nJ7fBaY8nRQM84nPzrqcdB1k6Axqu0JZemc3qxnqUA==
 
-"@effect-ts/core@^0.43.9":
-  version "0.43.9"
-  resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.43.9.tgz#39f1d5a37576e04957fe008d78a28eb70b682161"
-  integrity sha512-W5jgKbMNcruaam+mPqyYbSmKMW1ElyTU7u5uDlilPKVwh3jPGoWk7ZDWcQKdu0P6DbM1O8RZESjXPKftPCw/bA==
+"@effect-ts/core@^0.44.4":
+  version "0.44.4"
+  resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.44.4.tgz#bffac8f23fdb9cc0326c327fce8d97b474e8fe25"
+  integrity sha512-vBv+6YMp5VL6d5LtFK7GQa6atNZp91KSQwuS2V+VTfxaQX2lH9jxGvNZ3e0fx8TQ8HqgnQ5yt8HRR8Nn72rCTA==
   dependencies:
-    "@effect-ts/system" "^0.40.9"
+    "@effect-ts/system" "^0.41.2"
 
-"@effect-ts/node@^0.28.1":
-  version "0.28.1"
-  resolved "https://registry.yarnpkg.com/@effect-ts/node/-/node-0.28.1.tgz#cbc6e367fe07ff47cad9ba517d3551c5223d39b0"
-  integrity sha512-8O6qkuIKHwUGYP3ym0WFkUQ4GsMDvN2QsXyXY4jnBi7+LaN+KjIAoYohKumhXOrcdMFrKJcoZByxoN/bUZs/TQ==
+"@effect-ts/node@^0.29.0":
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/@effect-ts/node/-/node-0.29.0.tgz#75b560e501ccb4748acb8bbdfd5e475fbba129cf"
+  integrity sha512-7eKpQ7QUWnaCTfg3W6Gk/UWMHKYuULrATYM/EAYwdoMeO/IGFoessHEsJ4N8BBf/INtaTWZ57Hv1/kiOu8chog==
 
-"@effect-ts/system@^0.40.9":
-  version "0.40.9"
-  resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.40.9.tgz#190cf896d4f6c5128769552c5977091c7369dfc8"
-  integrity sha512-uNIj41VH+78NTY313lVja4VRgM5rcEcsIyQsRIh6td7mEIAbp/h5swXTU1AOk5yzH58SpCqI3b/EmCaQX0+d2w==
+"@effect-ts/system@^0.41.2":
+  version "0.41.2"
+  resolved "https://registry.yarnpkg.com/@effect-ts/system/-/system-0.41.2.tgz#1442204bcf82d41feeeb435b6613f38e2789f094"
+  integrity sha512-qCHnKpmJNogOdBZ0eU1bU3lWnSHs+nNlHpeW17EtK+fB6eYYOI+5FW+Onhb+EPx5IlUVc1LXs72ko237sFw6BA==
 
 "@effect-ts/tracing-plugin@^0.14.8":
   version "0.14.8"
@@ -3353,10 +3353,10 @@ eslint-module-utils@^2.6.2:
     debug "^3.2.7"
     pkg-dir "^2.0.0"
 
-eslint-plugin-codegen@^0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-codegen/-/eslint-plugin-codegen-0.16.0.tgz#9f8acce792c610eaac1aa7211b7134094a8a1cd0"
-  integrity sha512-HKwJ25zFKB/Qsy4VDL49sb8mmSU3mHJql31/lruWVdwgA50PoUmG5YpcYXMpxw/sS++S2UyMcbp64hjxiz6KLA==
+eslint-plugin-codegen@^0.16.1:
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-codegen/-/eslint-plugin-codegen-0.16.1.tgz#c82efbecdd8cdf561c09b777343388471a7b29af"
+  integrity sha512-+mKDJezeoziyQOuPicRj6im1GxzxDvv+EgAZAOTIxBwaWTadppgwZGFMeUrWucNM2duJXmvLDcbsmVT69ORgQA==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/generator" "~7.12.0"
@@ -3366,9 +3366,10 @@ eslint-plugin-codegen@^0.16.0:
     fp-ts "^2.1.0"
     glob "^7.1.4"
     io-ts "^2.2.4"
-    io-ts-extra "0.11.5"
+    io-ts-extra "0.11.6"
     js-yaml "^3.14.0"
     lodash "^4.17.15"
+    read-pkg-up "^7.0.1"
     string.prototype.matchall "^4.0.2"
 
 eslint-plugin-import@^2.24.2:
@@ -4529,10 +4530,10 @@ internal-slot@^1.0.3:
     has "^1.0.3"
     side-channel "^1.0.4"
 
-io-ts-extra@0.11.5:
-  version "0.11.5"
-  resolved "https://registry.yarnpkg.com/io-ts-extra/-/io-ts-extra-0.11.5.tgz#3ad8a23658ced9d67e408a4322368b07076edd8d"
-  integrity sha512-n9z5dTmqcUXb0Pk0zFK4/xq9CU6Rxxvyta9Sl3bhaZ58I6sm19EVlNV7jL3jGTbUYoRCKB7Lmw04d+YMlwfF/Q==
+io-ts-extra@0.11.6:
+  version "0.11.6"
+  resolved "https://registry.yarnpkg.com/io-ts-extra/-/io-ts-extra-0.11.6.tgz#ae18f8662cce59b421ed6f36a48b099e970ff0df"
+  integrity sha512-rTsvx3W5B2nx7p/eGf+OsEaBTmjSjLzxBDEiweCjwqIL9ZN6CZjG7hFK8zyGJyM0I2uCsRU4uYUhaTgg2SKHkQ==
   dependencies:
     fp-ts "^2.1.0"
     io-ts "^2.2.4"
@@ -8259,9 +8260,9 @@ typescript@4.4.3:
   integrity sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==
 
 typescript@next:
-  version "4.5.0-dev.20210911"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.0-dev.20210911.tgz#5e561e9c1a161839efe674cdb35d510783049f04"
-  integrity sha512-27mZRIuktujuZiFGCwy6pOhqEToeM6kwQlw5/oguO+p4PSHqzrLt9a/duhWD0RF2TYG1QoRUMSr9TcJLQd5xSg==
+  version "4.5.0-dev.20210912"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.0-dev.20210912.tgz#e8dfebbfded278f0e0cc9275c585c389af21310d"
+  integrity sha512-BLagCBI5IemzBAI9EUZE4OVYW2rhRYpOce23D7e+eNT3fR9Cg4snxY+brq1NBfgtC+c2A4BSI6XwZ80BNmDLPA==
 
 uglify-js@^3.1.4:
   version "3.14.1"
