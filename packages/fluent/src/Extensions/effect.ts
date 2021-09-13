@@ -35,6 +35,259 @@ declare module "@effect-ts/system/Effect/effect" {
 
   export interface EffectStaticOps {
     /**
+     * @ets_rewrite_static access from "@effect-ts/core/Effect"
+     */
+    access: typeof T.access
+
+    /**
+     * @ets_rewrite_static accessM from "@effect-ts/core/Effect"
+     */
+    accessM: typeof T.accessM
+
+    /**
+     * @ets_rewrite_static accessServiceM from "@effect-ts/core/Effect"
+     */
+    accessServiceM: typeof T.accessServiceM
+
+    /**
+     * @ets_rewrite_static accessService from "@effect-ts/core/Effect"
+     */
+    accessService: typeof T.accessService
+
+    /**
+     * @ets_rewrite_static accessServices from "@effect-ts/core/Effect"
+     */
+    accessServices: typeof T.accessServices
+
+    /**
+     * @ets_rewrite_static accessServices from "@effect-ts/core/Effect"
+     */
+    accessServicesM: typeof T.accessServicesM
+
+    /**
+     * @ets_rewrite_static accessServicesT from "@effect-ts/core/Effect"
+     */
+    accessServicesT: typeof T.accessServicesT
+
+    /**
+     * @ets_rewrite_static accessServicesTM from "@effect-ts/core/Effect"
+     */
+    accessServicesTM: typeof T.accessServicesTM
+
+    /**
+     * @ets_rewrite_static collect from "@effect-ts/core/Effect"
+     * @ets_data_first collect_
+     */
+    collect<A, R, E, B>(
+      f: (a: A) => T.Effect<R, O.Option<E>, B>,
+      __trace?: string | undefined
+    ): (self: Iterable<A>) => T.Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collect_ from "@effect-ts/core/Effect"
+     */
+    collect<A, R, E, B>(
+      self: Iterable<A>,
+      f: (a: A) => T.Effect<R, O.Option<E>, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collectAll from "@effect-ts/core/Effect"
+     */
+    collectAll: typeof T.collectAll
+
+    /**
+     * @ets_rewrite_static collectAllPar from "@effect-ts/core/Effect"
+     */
+    collectAllPar: typeof T.collectAllPar
+
+    /**
+     * @ets_rewrite_static collectAllPar from "@effect-ts/core/Effect"
+     * @ets_data_first collectAllParN_
+     */
+    collectAllParN(
+      n: number,
+      __trace?: string | undefined
+    ): <R, E, A>(as: Iterable<Effect<R, E, A>>) => Effect<R, E, Chunk<A>>
+
+    /**
+     * @ets_rewrite_static collectAllParN_ from "@effect-ts/core/Effect"
+     */
+    collectAllParN<R, E, A>(
+      as: Iterable<Effect<R, E, A>>,
+      n: number,
+      __trace?: string | undefined
+    ): Effect<R, E, Chunk<A>>
+
+    /**
+     * @ets_rewrite_static collectAllSuccesses from "@effect-ts/core/Effect"
+     */
+    collectAllSuccesses: typeof T.collectAllSuccesses
+
+    /**
+     * @ets_rewrite_static collectAllSuccessesPar from "@effect-ts/core/Effect"
+     */
+    collectAllSuccessesPar: typeof T.collectAllSuccessesPar
+
+    /**
+     * @ets_rewrite_static collectAllSuccessesPar from "@effect-ts/core/Effect"
+     */
+    collectAllSuccessesParN: typeof T.collectAllSuccessesParN
+
+    /**
+     * @ets_rewrite_static collectAllUnit from "@effect-ts/core/Effect"
+     */
+    collectAllUnit: typeof T.collectAllUnit
+
+    /**
+     * @ets_rewrite_static collectAllUnit from "@effect-ts/core/Effect"
+     */
+    collectAllUnitPar: typeof T.collectAllUnitPar
+
+    /**
+     * @ets_rewrite_static collectAllUnitParN from "@effect-ts/core/Effect"
+     * @ets_data_first collectAllUnitParN_
+     */
+    collectAllUnitParN(
+      n: number,
+      __trace?: string | undefined
+    ): <R, E, A>(as: Iterable<Effect<R, E, A>>) => Effect<R, E, void>
+
+    /**
+     * @ets_rewrite_static collectAllUnitParN_ from "@effect-ts/core/Effect"
+     */
+    collectAllUnitParN<R, E, A>(
+      as: Iterable<Effect<R, E, A>>,
+      n: number,
+      __trace?: string | undefined
+    ): Effect<R, E, void>
+
+    /**
+     * @ets_rewrite_static collectAllWith from "@effect-ts/core/Effect"
+     * @ets_data_first collectAllWith_
+     */
+    collectAllWith<A, B>(
+      pf: (a: A) => O.Option<B>,
+      __trace?: string | undefined
+    ): <R, E>(as: Iterable<Effect<R, E, A>>) => Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collectAllWith_ from "@effect-ts/core/Effect"
+     */
+    collectAllWith<R, E, A, B>(
+      as: Iterable<Effect<R, E, A>>,
+      pf: (a: A) => O.Option<B>,
+      __trace?: string | undefined
+    ): Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collectAllWithPar from "@effect-ts/core/Effect"
+     * @ets_data_first collectAllWithPar_
+     */
+    collectAllWithPar<A, B>(
+      pf: (a: A) => O.Option<B>,
+      __trace?: string | undefined
+    ): <R, E>(as: Iterable<Effect<R, E, A>>) => Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collectAllWithPar_ from "@effect-ts/core/Effect"
+     */
+    collectAllWithPar<R, E, A, B>(
+      as: Iterable<Effect<R, E, A>>,
+      pf: (a: A) => O.Option<B>,
+      __trace?: string | undefined
+    ): Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collectAllWithParN from "@effect-ts/core/Effect"
+     * @ets_data_first collectAllWithParN_
+     */
+    collectAllWithParN<A, B>(
+      n: number,
+      pf: (a: A) => O.Option<B>,
+      __trace?: string | undefined
+    ): <R, E>(as: Iterable<Effect<R, E, A>>) => Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collectAllWithParN_ from "@effect-ts/core/Effect"
+     */
+    collectAllWithParN<R, E, A, B>(
+      as: Iterable<Effect<R, E, A>>,
+      n: number,
+      pf: (a: A) => O.Option<B>,
+      __trace?: string | undefined
+    ): Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collectPar from "@effect-ts/core/Effect"
+     * @ets_data_first collectPar_
+     */
+    collectPar<A, R, E, B>(
+      f: (a: A) => T.Effect<R, O.Option<E>, B>,
+      __trace?: string | undefined
+    ): (self: Iterable<A>) => T.Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collectPar_ from "@effect-ts/core/Effect"
+     */
+    collectPar<A, R, E, B>(
+      self: Iterable<A>,
+      f: (a: A) => T.Effect<R, O.Option<E>, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collectParN from "@effect-ts/core/Effect"
+     * @ets_data_first collectParN_
+     */
+    collectParN<A, R, E, B>(
+      n: number,
+      f: (a: A) => T.Effect<R, O.Option<E>, B>,
+      __trace?: string | undefined
+    ): (self: Iterable<A>) => T.Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static collectParN_ from "@effect-ts/core/Effect"
+     */
+    collectParN<A, R, E, B>(
+      self: Iterable<A>,
+      n: number,
+      f: (a: A) => T.Effect<R, O.Option<E>, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static Applicative from "@effect-ts/core/Effect"
+     */
+    Applicative: typeof T.Applicative
+
+    /**
+     * @ets_rewrite_static effectAsync from "@effect-ts/core/Effect"
+     */
+    async: typeof T.effectAsync
+
+    /**
+     * @ets_rewrite_static effectAsyncInterrupt from "@effect-ts/core/Effect"
+     */
+    asyncInterrupt: typeof T.effectAsyncInterrupt
+
+    /**
+     * @ets_rewrite_static do from "@effect-ts/core/Effect"
+     */
+    do_: typeof T.do
+
+    /**
+     * @ets_rewrite_static deriveLifted from "@effect-ts/core/Effect"
+     */
+    deriveLifted: typeof T.deriveLifted
+
+    /**
+     * @ets_rewrite_static done from "@effect-ts/core/Effect"
+     */
+    done: typeof T.done
+
+    /**
      * @ets_rewrite_static forEach_ from "@effect-ts/core/Effect"
      */
     forEach<A, R, E, B>(
@@ -53,39 +306,42 @@ declare module "@effect-ts/system/Effect/effect" {
     ): (as: Iterable<A>) => Effect<R, E, Chunk<B>>
 
     /**
-     * @ets_rewrite_static Applicative from "@effect-ts/core/Effect"
+     * @ets_rewrite_static forEachPar_ from "@effect-ts/core/Effect"
      */
-    Applicative: typeof T.Applicative
+    forEachPar<A, R, E, B>(
+      as: Iterable<A>,
+      f: (a: A) => Effect<R, E, B>,
+      __trace?: string | undefined
+    ): Effect<R, E, Chunk<B>>
 
     /**
-     * @ets_rewrite_static effectAsync from "@effect-ts/core/Effect"
+     * @ets_rewrite_static forEachPar from "@effect-ts/core/Effect"
+     * @ets_data_first forEachPar_
      */
-    async: typeof T.effectAsync
+    forEachPar<A, R, E, B>(
+      f: (a: A) => Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => Effect<R, E, Chunk<B>>
 
     /**
-     * @ets_rewrite_static effectAsyncInterrupt from "@effect-ts/core/Effect"
+     * @ets_rewrite_static forEachParN_ from "@effect-ts/core/Effect"
      */
-    asyncInterrupt: typeof T.effectAsyncInterrupt
+    forEachParN<A, R, E, B>(
+      as: Iterable<A>,
+      n: number,
+      f: (a: A) => Effect<R, E, B>,
+      __trace?: string | undefined
+    ): Effect<R, E, Chunk<B>>
 
     /**
-     * @ets_rewrite_static chain from "@effect-ts/core/Effect"
+     * @ets_rewrite_static forEachParN from "@effect-ts/core/Effect"
+     * @ets_data_first forEachParN_
      */
-    chain: typeof T.chain
-
-    /**
-     * @ets_rewrite_static do from "@effect-ts/core/Effect"
-     */
-    do_: typeof T.do
-
-    /**
-     * @ets_rewrite_static deriveLifted from "@effect-ts/core/Effect"
-     */
-    deriveLifted: typeof T.deriveLifted
-
-    /**
-     * @ets_rewrite_static done from "@effect-ts/core/Effect"
-     */
-    done: typeof T.done
+    forEachParN<A, R, E, B>(
+      n: number,
+      f: (a: A) => Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => Effect<R, E, Chunk<B>>
 
     /**
      * @ets_rewrite_static failWith from "@effect-ts/core/Effect"
@@ -123,16 +379,6 @@ declare module "@effect-ts/system/Effect/effect" {
     haltNow: typeof T.halt
 
     /**
-     * @ets_rewrite_static succeedWith from "@effect-ts/core/Effect"
-     */
-    succeed: typeof T.succeedWith
-
-    /**
-     * @ets_rewrite_static succeed from "@effect-ts/core/Effect"
-     */
-    succeedNow: typeof T.succeed
-
-    /**
      * @ets_rewrite_static provide from "@effect-ts/core/Effect"
      */
     provide: typeof T.provide
@@ -141,6 +387,16 @@ declare module "@effect-ts/system/Effect/effect" {
      * @ets_rewrite_static provideSomeLayer from "@effect-ts/core/Effect"
      */
     provideSomeLayer: typeof T.provideSomeLayer
+
+    /**
+     * @ets_rewrite_static succeedWith from "@effect-ts/core/Effect"
+     */
+    succeed: typeof T.succeedWith
+
+    /**
+     * @ets_rewrite_static succeed from "@effect-ts/core/Effect"
+     */
+    succeedNow: typeof T.succeed
 
     /**
      * @ets_rewrite_static defaultEnv from "@effect-ts/core/Effect"
