@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.9](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.8...@effect-ts/fluent@0.3.9) (2021-09-13)
+
+**Note:** Version bump only for package @effect-ts/fluent
+
+
+
+
+
 ## [0.3.8](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.7...@effect-ts/fluent@0.3.8) (2021-09-13)
 
 
