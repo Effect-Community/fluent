@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.11](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.10...@effect-ts/fluent@0.3.11) (2021-09-13)
+
+
+### Features
+
+* **fluent:** Effect unify async ([6fc3ac4](https://github.com/Effect-TS/fluent/commit/6fc3ac4121d253a03d0272fe218609a6ef452ff9))
+
+
+
+
+
 ## [0.3.10](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.9...@effect-ts/fluent@0.3.10) (2021-09-13)
 
 
