@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.10](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.9...@effect-ts/fluent@0.3.10) (2021-09-13)
+
+
+### Features
+
+* **fluent:** Effect constructors up to collectParN ([da9c677](https://github.com/Effect-TS/fluent/commit/da9c6778f34eb190527201f74ec6d3c602a60563))
+
+
+
+
+
 ## [0.3.9](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.8...@effect-ts/fluent@0.3.9) (2021-09-13)
 
 **Note:** Version bump only for package @effect-ts/fluent
