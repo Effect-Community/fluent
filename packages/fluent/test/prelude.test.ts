@@ -75,4 +75,24 @@ describe("Prelude", () => {
     expect(res).toEqual([1, 2, 3])
     expect(res).toEqual(res2)
   })
+
+  it("works with optional chaining", () => {
+    interface Bla {
+      a?: {
+        b?: $T.Option<number>
+      }
+    }
+
+    const b: Bla = { a: { b: $T.Option.some(0) } }
+    const c: Bla = { a: {} }
+    const d: Bla = { a: { b: $T.Option.none } }
+
+    const x = b?.a?.b?.value
+    const y = c?.a?.b?.value
+    const z = d?.a?.b?.value
+
+    expect(x).toEqual(0)
+    expect(y).toEqual(undefined)
+    expect(z).toEqual(undefined)
+  })
 })
