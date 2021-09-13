@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.5](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.4...@effect-ts/fluent@0.3.5) (2021-09-13)
+
+
+### Features
+
+* **chunk:** mostly done with chunks ([606e211](https://github.com/Effect-TS/fluent/commit/606e211696be782851e5ea30e153c1e87dcf60fc))
+
+
+
+
+
 ## [0.3.4](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.3...@effect-ts/fluent@0.3.4) (2021-09-11)
 
 
