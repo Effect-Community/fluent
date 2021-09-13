@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.12](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.11...@effect-ts/fluent@0.3.12) (2021-09-13)
+
+
+### Features
+
+* **fluent:** effect constructors ([ea758e5](https://github.com/Effect-TS/fluent/commit/ea758e57fe5977626f481137fb5a542d6e68d94c))
+
+
+
+
+
 ## [0.3.11](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.10...@effect-ts/fluent@0.3.11) (2021-09-13)
 
 
