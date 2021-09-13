@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Array } from "@effect-ts/core/Collections/Immutable/Array"
 import { Chunk } from "@effect-ts/core/Collections/Immutable/Chunk"
+import { Tuple } from "@effect-ts/core/Collections/Immutable/Tuple"
 import type * as T from "@effect-ts/core/Effect"
 import { Effect } from "@effect-ts/core/Effect"
 import { Managed } from "@effect-ts/core/Effect/Managed"
@@ -29,6 +30,7 @@ declare global {
       Chunk,
       Tag,
       Has,
+      Tuple,
       _A,
       _E,
       _R

@@ -1,6 +1,7 @@
 // ets_tracing: off
 
 /* eslint-disable @typescript-eslint/no-namespace */
+import type { Async } from "@effect-ts/core/Async"
 import type { Chunk } from "@effect-ts/core/Collections/Immutable/Chunk"
 import type { NonEmptyArray } from "@effect-ts/core/Collections/Immutable/NonEmptyArray"
 import type { SortedSet } from "@effect-ts/core/Collections/Immutable/SortedSet"
@@ -17,7 +18,9 @@ import type { Schedule } from "@effect-ts/core/Effect/Schedule"
 import type { Scope } from "@effect-ts/core/Effect/Scope"
 import type { Supervisor } from "@effect-ts/core/Effect/Supervisor"
 import type * as E from "@effect-ts/core/Either"
+import type { Lazy, Predicate, Refinement } from "@effect-ts/core/Function"
 import type { Has, Tag } from "@effect-ts/core/Has"
+import type * as IO from "@effect-ts/core/IO"
 import type * as O from "@effect-ts/core/Option"
 import type {
   _A,
@@ -26,7 +29,8 @@ import type {
   Compute,
   EnforceNonEmptyRecord,
   Erase,
-  ForcedArray
+  ForcedArray,
+  Separated
 } from "@effect-ts/core/Utils"
 import type { NoSuchElementException } from "@effect-ts/system/GlobalExceptions"
 
@@ -333,7 +337,7 @@ declare module "@effect-ts/system/Effect/effect" {
     /**
      * @ets_rewrite_static effectAsyncInterrupt from "@effect-ts/core/Effect"
      */
-    async<R, E, A>(
+    asyncInterrupt<R, E, A>(
       register: (cb: T.Cb<Effect<R, E, A>>) => T.Canceler<R>,
       __trace?: string | undefined
     ): Effect<R, E, A>
@@ -341,7 +345,7 @@ declare module "@effect-ts/system/Effect/effect" {
     /**
      * @ets_rewrite_static effectAsyncInterruptBlockingOn from "@effect-ts/core/Effect"
      */
-    async<R, E, A>(
+    asyncInterrupt<R, E, A>(
       register: (cb: T.Cb<T.Effect<R, E, A>>) => T.Canceler<R>,
       blockingOn: readonly Fiber.FiberID[],
       __trace?: string | undefined
@@ -365,6 +369,50 @@ declare module "@effect-ts/system/Effect/effect" {
     ): T.Effect<R, E, A>
 
     /**
+     * @ets_rewrite_static effectAsyncM from "@effect-ts/core/Effect"
+     */
+    asyncEffect<R, E, R2, E2, A, X>(
+      register: (cb: (_: T.Effect<R2, E2, A>) => void) => T.Effect<R, E, X>,
+      __trace?: string | undefined
+    ): T.Effect<R & R2, E | E2, A>
+
+    /**
+     * @ets_rewrite_static effectAsyncOption from "@effect-ts/core/Effect"
+     */
+    asyncOption<R, E, A>(
+      register: (cb: (_: T.Effect<R, E, A>) => void) => O.Option<T.Effect<R, E, A>>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static effectAsyncOptionBlockingOn from "@effect-ts/core/Effect"
+     */
+    asyncOption<R, E, A>(
+      register: (cb: (_: Effect<R, E, A>) => void) => O.Option<Effect<R, E, A>>,
+      blockingOn: readonly Fiber.FiberID[],
+      __trace?: string
+    ): Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static effectMaybeAsyncInterrupt from "@effect-ts/core/Effect"
+     */
+    asyncOptionInterrupt<R, E, A>(
+      register: (
+        cb: T.Cb<T.Effect<R, E, A>>
+      ) => E.Either<T.Canceler<R>, T.Effect<R, E, A>>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static effectMaybeAsyncInterruptBlockingOn from "@effect-ts/core/Effect"
+     */
+    asyncOptionInterrupt<R, E, A>(
+      register: (cb: T.Cb<Effect<R, E, A>>) => E.Either<T.Canceler<R>, Effect<R, E, A>>,
+      blockingOn: readonly Fiber.FiberID[],
+      __trace?: string
+    ): Effect<R, E, A>
+
+    /**
      * @ets_rewrite_static do from "@effect-ts/core/Effect"
      */
     do_: typeof T.do
@@ -378,6 +426,31 @@ declare module "@effect-ts/system/Effect/effect" {
      * @ets_rewrite_static done from "@effect-ts/core/Effect"
      */
     done: typeof T.done
+
+    /**
+     * @ets_rewrite_static dieWith from "@effect-ts/core/Effect"
+     */
+    die: typeof T.dieWith
+
+    /**
+     * @ets_rewrite_static die from "@effect-ts/core/Effect"
+     */
+    dieNow: typeof T.die
+
+    /**
+     * @ets_rewrite_static defaultEnv from "@effect-ts/core/Effect"
+     */
+    defaultEnv: typeof T.defaultEnv
+
+    /**
+     * @ets_rewrite_static defaultPlatform from "@effect-ts/core/Effect"
+     */
+    defaultPlatform: typeof T.defaultPlatform
+
+    /**
+     * @ets_rewrite_static environment from "@effect-ts/core/Effect"
+     */
+    environment: typeof T.environment
 
     /**
      * @ets_rewrite_static forEach_ from "@effect-ts/core/Effect"
@@ -446,9 +519,329 @@ declare module "@effect-ts/system/Effect/effect" {
     failNow: typeof T.fail
 
     /**
-     * @ets_rewrite_static dieWith from "@effect-ts/core/Effect"
+     * @ets_rewrite_static filter from "@effect-ts/core/Effect"
+     * @ets_data_first filter_
      */
-    die: typeof T.dieWith
+    filter<A, R, E>(
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.Effect<R, E, readonly A[]>
+
+    /**
+     * @ets_rewrite_static filter_ from "@effect-ts/core/Effect"
+     */
+    filter<A, R, E>(
+      as: Iterable<A>,
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, readonly A[]>
+
+    /**
+     * @ets_rewrite_static filterNot from "@effect-ts/core/Effect"
+     * @ets_data_first filterNot_
+     */
+    filterNot<A, R, E>(
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.Effect<R, E, readonly A[]>
+
+    /**
+     * @ets_rewrite_static filterNot_ from "@effect-ts/core/Effect"
+     */
+    filterNot<A, R, E>(
+      as: Iterable<A>,
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, readonly A[]>
+
+    /**
+     * @ets_rewrite_static filterNotPar from "@effect-ts/core/Effect"
+     * @ets_data_first filterNotPar_
+     */
+    filterNotPar<A, R, E>(
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.Effect<R, E, readonly A[]>
+
+    /**
+     * @ets_rewrite_static filterNotPar_ from "@effect-ts/core/Effect"
+     */
+    filterNotPar<A, R, E>(
+      as: Iterable<A>,
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, readonly A[]>
+
+    /**
+     * @ets_rewrite_static filterNotParN from "@effect-ts/core/Effect"
+     * @ets_data_first filterNotParN_
+     */
+    filterNotParN<R, E, A>(
+      n: number,
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.Effect<R, E, Chunk<A>>
+
+    /**
+     * @ets_rewrite_static filterNotParN_ from "@effect-ts/core/Effect"
+     */
+    filterNotParN<A, R, E>(
+      as: Iterable<A>,
+      n: number,
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, Chunk<A>>
+
+    /**
+     * @ets_rewrite_static filterPar from "@effect-ts/core/Effect"
+     * @ets_data_first filterPar_
+     */
+    filterPar<A, R, E>(
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.Effect<R, E, readonly A[]>
+
+    /**
+     * @ets_rewrite_static filterPar_ from "@effect-ts/core/Effect"
+     */
+    filterPar<A, R, E>(
+      as: Iterable<A>,
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, readonly A[]>
+
+    /**
+     * @ets_rewrite_static filterParN from "@effect-ts/core/Effect"
+     * @ets_data_first filterParN_
+     */
+    filterParN<A, R, E>(
+      n: number,
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.Effect<R, E, Chunk<A>>
+
+    /**
+     * @ets_rewrite_static filterParN_ from "@effect-ts/core/Effect"
+     */
+    filterParN<A, R, E>(
+      as: Iterable<A>,
+      n: number,
+      f: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, Chunk<A>>
+
+    /**
+     * @ets_rewrite_static forEachExec from "@effect-ts/core/Effect"
+     * @ets_data_first forEachExec_
+     */
+    forEachExec<R, E, A, B>(
+      es: T.ExecutionStrategy,
+      f: (a: A) => Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static forEachExec_ from "@effect-ts/core/Effect"
+     */
+    forEachExec<R, E, A, B>(
+      as: Iterable<A>,
+      es: T.ExecutionStrategy,
+      f: (a: A) => Effect<R, E, B>,
+      __trace?: string | undefined
+    ): Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static first from "@effect-ts/core/Effect"
+     */
+    first: typeof T.first
+
+    /**
+     * @ets_rewrite_static forkAll from "@effect-ts/core/Effect"
+     */
+    forkAll: typeof T.forkAll
+
+    /**
+     * @ets_rewrite_static forkAllUnit from "@effect-ts/core/Effect"
+     */
+    forkAllUnit: typeof T.forkAllUnit
+
+    /**
+     * @ets_rewrite_static forkScope from "@effect-ts/core/Effect"
+     */
+    forkScope: typeof T.forkScope
+
+    /**
+     * @ets_rewrite_static forkScopeMask from "@effect-ts/core/Effect"
+     * @ets_data_first forkScopeMask_
+     */
+    forkScopeMask<R, E, A>(
+      f: (restore: T.ForkScopeRestore) => T.Effect<R, E, A>,
+      __trace?: string | undefined
+    ): (newScope: Scope<Exit<any, any>>) => T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static forkScopeMask_ from "@effect-ts/core/Effect"
+     */
+    forkScopeMask<R, E, A>(
+      newScope: Scope<Exit<any, any>>,
+      f: (restore: T.ForkScopeRestore) => T.Effect<R, E, A>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static forkScope from "@effect-ts/core/Effect"
+     */
+    forkScopeWith: typeof T.forkScopeWith
+
+    /**
+     * @ets_rewrite_static firstSuccessOf from "@effect-ts/core/Effect"
+     */
+    firstSuccessOf: typeof T.firstSuccessOf
+
+    /**
+     * @ets_rewrite_static fromAsync from "@effect-ts/core/Effect"
+     */
+    from<R, E, A>(
+      async: Async<R, E, A>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static fromEither from "@effect-ts/core/Effect"
+     */
+    from<E, A>(
+      f: () => E.Either<E, A>,
+      __trace?: string | undefined
+    ): T.Effect<unknown, E, A>
+
+    /**
+     * @ets_rewrite_static fromFiber from "@effect-ts/core/Effect"
+     */
+    from<E, A>(fiber: () => Fiber.Fiber<E, A>, __trace?: string | undefined): T.IO<E, A>
+
+    /**
+     * @ets_rewrite_static fromFiberM from "@effect-ts/core/Effect"
+     */
+    from<R, E, E2, A>(
+      fiber: T.Effect<R, E, Fiber.Fiber<E2, A>>,
+      __trace?: string | undefined
+    ): T.Effect<R, E | E2, A>
+
+    /**
+     * @ets_rewrite_static fromPredicate from "@effect-ts/core/Effect"
+     */
+    from<E, A, B extends A>(
+      refinement: Refinement<A, B>,
+      onFalse: (a: A) => E
+    ): (a: A) => IO<E, B>
+
+    /**
+     * @ets_rewrite_static fromPredicate from "@effect-ts/core/Effect"
+     */
+    from<E, A>(predicate: Predicate<A>, onFalse: (a: A) => E): (a: A) => IO<E, A>
+
+    /**
+     * @ets_rewrite_static fromIO from "@effect-ts/core/Effect"
+     */
+    from<A>(io: IO.IO<A>, __trace?: string | undefined): T.Effect<unknown, never, A>
+
+    /**
+     * @ets_rewrite_static fromNodeCb from "@effect-ts/core/Effect"
+     */
+    from<L, R>(
+      f: (this: unknown, cb: (e: L | null | undefined, r?: R) => void) => void,
+      __trace?: string
+    ): () => IO<L, R>
+
+    /**
+     * @ets_rewrite_static fromNodeCb from "@effect-ts/core/Effect"
+     */
+    from<A, L, R>(
+      f: (this: unknown, a: A, cb: (e: L | null | undefined, r?: R) => void) => void,
+      __trace?: string
+    ): (a: A) => IO<L, R>
+
+    /**
+     * @ets_rewrite_static fromNodeCb from "@effect-ts/core/Effect"
+     */
+    from<A, B, L, R>(
+      f: (
+        this: unknown,
+        a: A,
+        b: B,
+        cb: (e: L | null | undefined, r?: R) => void
+      ) => void,
+      __trace?: string
+    ): (a: A, b: B) => IO<L, R>
+
+    /**
+     * @ets_rewrite_static fromNodeCb from "@effect-ts/core/Effect"
+     */
+    from<A, B, C, L, R>(
+      f: (
+        this: unknown,
+        a: A,
+        b: B,
+        c: C,
+        cb: (e: L | null | undefined, r?: R) => void
+      ) => void,
+      __trace?: string
+    ): (a: A, b: B, c: C) => IO<L, R>
+
+    /**
+     * @ets_rewrite_static fromNodeCb from "@effect-ts/core/Effect"
+     */
+    from<A, B, C, D, L, R>(
+      f: (
+        this: unknown,
+        a: A,
+        b: B,
+        c: C,
+        d: D,
+        cb: (e: L | null | undefined, r?: R) => void
+      ) => void,
+      __trace?: string
+    ): (a: A, b: B, c: C, d: D) => IO<L, R>
+
+    /**
+     * @ets_rewrite_static fromNodeCb from "@effect-ts/core/Effect"
+     */
+    from<A, B, C, D, E, L, R>(
+      f: (
+        this: unknown,
+        a: A,
+        b: B,
+        c: C,
+        d: D,
+        e: E,
+        cb: (e: L | null | undefined, r?: R) => void
+      ) => void,
+      __trace?: string
+    ): (a: A, b: B, c: C, d: D, e: E) => IO<L, R>
+
+    /**
+     * @ets_rewrite_static fromNodeCb from "@effect-ts/core/Effect"
+     */
+    from<A extends any[], L, R>(
+      f: (
+        this: unknown,
+        ...args: [...A, (e: L | null | undefined, r?: R) => void]
+      ) => void,
+      __trace?: string
+    ): (...args: A) => IO<L, R>
+
+    /**
+     * @ets_rewrite_static fromOption from "@effect-ts/core/Effect"
+     */
+    from<A>(o: O.Option<A>, __trace?: string | undefined): T.IO<O.Option<never>, A>
+
+    /**
+     * @ets_rewrite_static fromNullable from "@effect-ts/core/Effect"
+     */
+    fromNullable<A>(
+      o: A,
+      __trace?: string | undefined
+    ): T.IO<O.Option<never>, NonNullable<A>>
 
     /**
      * @ets_rewrite_static gen from "@effect-ts/core/Effect"
@@ -456,9 +849,34 @@ declare module "@effect-ts/system/Effect/effect" {
     gen: typeof T.gen
 
     /**
-     * @ets_rewrite_static die from "@effect-ts/core/Effect"
+     * @ets_rewrite_static genM from "@effect-ts/core/Effect"
      */
-    dieNow: typeof T.die
+    genM: typeof T.genM
+
+    /**
+     * @ets_rewrite_static getIdentity from "@effect-ts/core/Effect"
+     */
+    getIdentity: typeof T.getIdentity
+
+    /**
+     * @ets_rewrite_static getIdentityPar from "@effect-ts/core/Effect"
+     */
+    getIdentityPar: typeof T.getIdentityPar
+
+    /**
+     * @ets_rewrite_static getOrFail from "@effect-ts/core/Effect"
+     */
+    getOrFail: typeof T.getOrFail
+
+    /**
+     * @ets_rewrite_static getOrFailUnit from "@effect-ts/core/Effect"
+     */
+    getOrFailUnit: typeof T.getOrFailUnit
+
+    /**
+     * @ets_rewrite_static getValidationApplicative from "@effect-ts/core/Effect"
+     */
+    getValidationApplicative: typeof T.getValidationApplicative
 
     /**
      * @ets_rewrite_static haltWith from "@effect-ts/core/Effect"
@@ -471,14 +889,598 @@ declare module "@effect-ts/system/Effect/effect" {
     haltNow: typeof T.halt
 
     /**
-     * @ets_rewrite_static provide from "@effect-ts/core/Effect"
+     * @ets_rewrite_static if from "@effect-ts/core/Effect"
+     * @ets_data_first if_
      */
-    provide: typeof T.provide
+    if<R1, E1, A1, R2, E2, A2>(
+      onTrue: () => Effect<R1, E1, A1>,
+      onFalse: () => Effect<R2, E2, A2>,
+      __trace?: string | undefined
+    ): (b: boolean) => Effect<R1 & R2, E1 | E2, A1 | A2>
+
+    /**
+     * @ets_rewrite_static if_ from "@effect-ts/core/Effect"
+     */
+    if<R1, E1, A1, R2, E2, A2>(
+      b: boolean,
+      onTrue: () => T.Effect<R1, E1, A1>,
+      onFalse: () => T.Effect<R2, E2, A2>,
+      __trace?: string | undefined
+    ): T.Effect<R1 & R2, E1 | E2, A1 | A2>
+
+    /**
+     * @ets_rewrite_static interrupt from "@effect-ts/core/Effect"
+     */
+    interrupt: typeof T.interrupt
+
+    /**
+     * @ets_rewrite_static interruptAs from "@effect-ts/core/Effect"
+     */
+    interruptAs: typeof T.interruptAs
+
+    /**
+     * @ets_rewrite_static interruptibleMask from "@effect-ts/core/Effect"
+     */
+    interruptibleMask: typeof T.interruptibleMask
+
+    /**
+     * @ets_rewrite_static iterate from "@effect-ts/core/Effect"
+     */
+    iterate: typeof T.iterate
+
+    /**
+     * @ets_rewrite_static loop from "@effect-ts/core/Effect"
+     */
+    loop: typeof T.loop
+
+    /**
+     * @ets_rewrite_static loopUnit from "@effect-ts/core/Effect"
+     */
+    loopUnit: typeof T.loopUnit
+
+    /**
+     * @ets_rewrite_static makeCustomRuntime from "@effect-ts/core/Effect"
+     */
+    makeCustomRuntime: typeof T.makeCustomRuntime
+
+    /**
+     * @ets_rewrite_static mapN from "@effect-ts/core/Effect"
+     * @ets_data_first mapN_
+     */
+    mapN<T extends NonEmptyArray<Effect<any, any, any>>, B>(
+      f: (
+        ..._: ForcedArray<{
+          [k in keyof T]: _A<T[k]>
+        }>
+      ) => B,
+      __trace?: string
+    ): (t: Tp.Tuple<T>) => Effect<_R<T[number]>, _E<T[number]>, B>
+
+    /**
+     * @ets_rewrite_static mapN_ from "@effect-ts/core/Effect"
+     */
+    mapN<T extends NonEmptyArray<Effect<any, any, any>>, B>(
+      t: Tp.Tuple<T>,
+      f: (
+        ..._: ForcedArray<{
+          [k in keyof T]: _A<T[k]>
+        }>
+      ) => B,
+      __trace?: string
+    ): Effect<_R<T[number]>, _E<T[number]>, B>
+
+    /**
+     * @ets_rewrite_static mapNPar from "@effect-ts/core/Effect"
+     * @ets_data_first mapNPar_
+     */
+    mapNPar<T extends NonEmptyArray<Effect<any, any, any>>, B>(
+      f: (
+        ..._: ForcedArray<{
+          [k in keyof T]: _A<T[k]>
+        }>
+      ) => B,
+      __trace?: string
+    ): (t: Tp.Tuple<T>) => Effect<_R<T[number]>, _E<T[number]>, B>
+
+    /**
+     * @ets_rewrite_static mapNPar_ from "@effect-ts/core/Effect"
+     */
+    mapNPar<T extends NonEmptyArray<Effect<any, any, any>>, B>(
+      t: Tp.Tuple<T>,
+      f: (
+        ..._: ForcedArray<{
+          [k in keyof T]: _A<T[k]>
+        }>
+      ) => B,
+      __trace?: string
+    ): Effect<_R<T[number]>, _E<T[number]>, B>
+
+    /**
+     * @ets_rewrite_static mapNParN from "@effect-ts/core/Effect"
+     * @ets_data_first mapNParN_
+     */
+    mapNParN<T extends NonEmptyArray<Effect<any, any, any>>, B>(
+      n: number,
+      f: (
+        ..._: ForcedArray<{
+          [k in keyof T]: _A<T[k]>
+        }>
+      ) => B,
+      __trace?: string
+    ): (t: Tp.Tuple<T>) => Effect<_R<T[number]>, _E<T[number]>, B>
+
+    /**
+     * @ets_rewrite_static mapNParN_ from "@effect-ts/core/Effect"
+     */
+    mapNParN<T extends NonEmptyArray<Effect<any, any, any>>, B>(
+      t: Tp.Tuple<T>,
+      n: number,
+      f: (
+        ..._: ForcedArray<{
+          [k in keyof T]: _A<T[k]>
+        }>
+      ) => B,
+      __trace?: string
+    ): Effect<_R<T[number]>, _E<T[number]>, B>
+
+    /**
+     * @ets_rewrite_static match from "@effect-ts/core/Effect"
+     */
+    match: typeof T.match
+
+    /**
+     * @ets_rewrite_static matchIn from "@effect-ts/core/Effect"
+     */
+    matchIn: typeof T.matchIn
+
+    /**
+     * @ets_rewrite_static matchMorph from "@effect-ts/core/Effect"
+     */
+    matchMorph: typeof T.matchMorph
+
+    /**
+     * @ets_rewrite_static matchTag from "@effect-ts/core/Effect"
+     */
+    matchTag: typeof T.matchTag
+
+    /**
+     * @ets_rewrite_static matchTagIn from "@effect-ts/core/Effect"
+     */
+    matchTagIn: typeof T.matchTagIn
+
+    /**
+     * @ets_rewrite_static memoize from "@effect-ts/core/Effect"
+     */
+    memoize: typeof T.memoize
+
+    /**
+     * @ets_rewrite_static memoizeEq from "@effect-ts/core/Effect"
+     */
+    memoizeEq: typeof T.memoizeEq
+
+    /**
+     * @ets_rewrite_static mergeAll from "@effect-ts/core/Effect"
+     * @ets_data_first mergeAll_
+     */
+    mergeAll<A, B>(
+      zero: B,
+      f: (b: B, a: A) => B,
+      __trace?: string | undefined
+    ): <R, E>(as: Iterable<T.Effect<R, E, A>>) => T.Effect<R, E, B>
+
+    /**
+     * @ets_rewrite_static mergeAll_ from "@effect-ts/core/Effect"
+     */
+    mergeAll<R, E, A, B>(
+      as: Iterable<T.Effect<R, E, A>>,
+      zero: B,
+      f: (b: B, a: A) => B,
+      __trace?: string | undefined
+    ): T.Effect<R, E, B>
+
+    /**
+     * @ets_rewrite_static mergeAllPar from "@effect-ts/core/Effect"
+     * @ets_data_first mergeAllPar_
+     */
+    mergeAllPar<A, B>(
+      zero: B,
+      f: (b: B, a: A) => B,
+      __trace?: string | undefined
+    ): <R, E>(as: Iterable<T.Effect<R, E, A>>) => T.Effect<R, E, B>
+
+    /**
+     * @ets_rewrite_static mergeAllPar_ from "@effect-ts/core/Effect"
+     */
+    mergeAllPar<R, E, A, B>(
+      as: Iterable<T.Effect<R, E, A>>,
+      zero: B,
+      f: (b: B, a: A) => B,
+      __trace?: string | undefined
+    ): T.Effect<R, E, B>
+
+    /**
+     * @ets_rewrite_static mergeAllParN from "@effect-ts/core/Effect"
+     * @ets_data_first mergeAllParN_
+     */
+    mergeAllParN<A, B>(
+      n: number,
+      zero: B,
+      f: (b: B, a: A) => B,
+      __trace?: string | undefined
+    ): <R, E>(as: Iterable<T.Effect<R, E, A>>) => T.Effect<R, E, B>
+
+    /**
+     * @ets_rewrite_static mergeAllParN_ from "@effect-ts/core/Effect"
+     */
+    mergeAllParN<R, E, A, B>(
+      as: Iterable<T.Effect<R, E, A>>,
+      n: number,
+      zero: B,
+      f: (b: B, a: A) => B,
+      __trace?: string | undefined
+    ): T.Effect<R, E, B>
+
+    /**
+     * @ets_rewrite_static never from "@effect-ts/core/Effect"
+     */
+    never: typeof T.never
+
+    /**
+     * @ets_rewrite_static none from "@effect-ts/core/Effect"
+     */
+    none: typeof T.none
+
+    /**
+     * @ets_rewrite_static parallel from "@effect-ts/core/Effect"
+     */
+    parallel: typeof T.parallel
+
+    /**
+     * @ets_rewrite_static parallelN from "@effect-ts/core/Effect"
+     */
+    parallelN: typeof T.parallelN
+
+    /**
+     * @ets_rewrite_static partition from "@effect-ts/core/Effect"
+     * @ets_data_first partition_
+     */
+    partition<A, R, E, B>(
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.RIO<R, Separated<Iterable<E>, Iterable<B>>>
+
+    /**
+     * @ets_rewrite_static partition_ from "@effect-ts/core/Effect"
+     */
+    partition<A, R, E, B>(
+      as: Iterable<A>,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): T.RIO<R, Separated<Iterable<E>, Iterable<B>>>
+
+    /**
+     * @ets_rewrite_static partitionPar from "@effect-ts/core/Effect"
+     * @ets_data_first partitionPar_
+     */
+    partitionPar<A, R, E, B>(
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.RIO<R, Separated<Iterable<E>, Iterable<B>>>
+
+    /**
+     * @ets_rewrite_static partitionPar_ from "@effect-ts/core/Effect"
+     */
+    partitionPar<A, R, E, B>(
+      as: Iterable<A>,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): T.RIO<R, Separated<Iterable<E>, Iterable<B>>>
+
+    /**
+     * @ets_rewrite_static partitionParN from "@effect-ts/core/Effect"
+     * @ets_data_first partitionParN_
+     */
+    partitionParN<A, R, E, B>(
+      n: number,
+      f: (a: A) => Effect<R, E, B>,
+      __trace?: string
+    ): (as: Iterable<A>) => Effect<R, never, Separated<Iterable<E>, Iterable<B>>>
+
+    /**
+     * @ets_rewrite_static partitionParN_ from "@effect-ts/core/Effect"
+     */
+    partitionParN<A, R, E, B>(
+      as: Iterable<A>,
+      n: number,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, never, Separated<Iterable<E>, Iterable<B>>>
+
+    /**
+     * @ets_rewrite_static prettyReporter from "@effect-ts/core/Effect"
+     */
+    prettyReporter: typeof T.prettyReporter
+
+    /**
+     * @ets_rewrite_static promise from "@effect-ts/core/Effect"
+     */
+    promise<A>(effect: Lazy<Promise<A>>, __trace?: string | undefined): UIO<A>
+
+    /**
+     * @ets_rewrite_static tryCatchPromise from "@effect-ts/core/Effect"
+     */
+    promise<E, A>(
+      promise: Lazy<Promise<A>>,
+      onReject: (reason: unknown) => E,
+      __trace?: string | undefined
+    ): T.IO<E, A>
+
+    /**
+     * @ets_rewrite_static provide from "@effect-ts/core/Effect"
+     * @ets_data_first provide_
+     */
+    provide<R>(
+      r: R,
+      __trace?: string | undefined
+    ): <E, A, R0>(next: T.Effect<R & R0, E, A>) => T.Effect<R0, E, A>
+
+    /**
+     * @ets_rewrite_static provide_ from "@effect-ts/core/Effect"
+     */
+    provide_<E, A, R0, R>(
+      next: T.Effect<R & R0, E, A>,
+      r: R,
+      __trace?: string | undefined
+    ): T.Effect<R0, E, A>
+
+    /**
+     * @ets_rewrite_static provideAll from "@effect-ts/core/Effect"
+     * @ets_data_first provideAll_
+     */
+    provideAll<R>(
+      r: R,
+      __trace?: string | undefined
+    ): <E, A>(next: T.Effect<R, E, A>) => T.Effect<unknown, E, A>
+
+    /**
+     * @ets_rewrite_static provideAll_ from "@effect-ts/core/Effect"
+     */
+    provideAll<R, E, A>(
+      next: T.Effect<R, E, A>,
+      r: R,
+      __trace?: string | undefined
+    ): T.Effect<unknown, E, A>
+
+    /**
+     * @ets_rewrite_static provideLayer from "@effect-ts/core/Effect"
+     * @ets_data_first provideLayer_
+     */
+    provideLayer<R, E, A>(
+      layer: Layer<R, E, A>
+    ): <E1, A1>(self: T.Effect<A, E1, A1>) => T.Effect<R, E | E1, A1>
+
+    /**
+     * @ets_rewrite_static provideLayer_ from "@effect-ts/core/Effect"
+     */
+    provideLayer<R, E, A, E1, A1>(
+      self: T.Effect<A, E1, A1>,
+      layer: Layer<R, E, A>
+    ): T.Effect<R, E | E1, A1>
 
     /**
      * @ets_rewrite_static provideSomeLayer from "@effect-ts/core/Effect"
+     * @ets_data_first provideSomeLayer_
      */
-    provideSomeLayer: typeof T.provideSomeLayer
+    provideSomeLayer<R, E, A>(
+      layer: Layer<R, E, A>
+    ): <R1, E1, A1>(self: T.Effect<R1 & A, E1, A1>) => T.Effect<R & R1, E | E1, A1>
+
+    /**
+     * @ets_rewrite_static provideSomeLayer_ from "@effect-ts/core/Effect"
+     */
+    provideSomeLayer<R1, E1, A1, R, E, A>(
+      self: T.Effect<R1 & A, E1, A1>,
+      layer: Layer<R, E, A>
+    ): T.Effect<R & R1, E | E1, A1>
+
+    /**
+     * @ets_rewrite_static provideSome from "@effect-ts/core/Effect"
+     * @ets_data_first provideSome_
+     */
+    provideSome<R0, R>(
+      f: (r0: R0) => R,
+      __trace?: string | undefined
+    ): <E, A>(effect: T.Effect<R, E, A>) => T.Effect<R0, E, A>
+
+    /**
+     * @ets_rewrite_static provideSome_ from "@effect-ts/core/Effect"
+     */
+    provideSome<R0, R, E, A>(
+      effect: T.Effect<R, E, A>,
+      f: (r0: R0) => R,
+      __trace?: string | undefined
+    ): T.Effect<R0, E, A>
+
+    /**
+     * @ets_rewrite_static raceAll from "@effect-ts/core/Effect"
+     */
+    raceAll: typeof T.raceAll
+
+    /**
+     * @ets_rewrite_static raceAllWait from "@effect-ts/core/Effect"
+     */
+    raceAllWait: typeof T.raceAllWait
+
+    /**
+     * @ets_rewrite_static raceAllWithStrategy from "@effect-ts/core/Effect"
+     */
+    raceAllWithStrategy: typeof T.raceAllWithStrategy
+
+    /**
+     * @ets_rewrite_static reduce from "@effect-ts/core/Effect"
+     * @ets_data_first reduce_
+     */
+    reduce<Z, R, E, A>(
+      zero: Z,
+      f: (z: Z, a: A) => Effect<R, E, Z>,
+      __trace?: string
+    ): (i: Iterable<A>) => Effect<R, E, Z>
+
+    /**
+     * @ets_rewrite_static reduce_ from "@effect-ts/core/Effect"
+     */
+    reduce<A, Z, R, E>(
+      i: Iterable<A>,
+      zero: Z,
+      f: (z: Z, a: A) => T.Effect<R, E, Z>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, Z>
+
+    /**
+     * @ets_rewrite_static reduceAll from "@effect-ts/core/Effect"
+     * @ets_data_first reduceAll_
+     */
+    reduceAll<A>(
+      f: (acc: A, a: A) => A,
+      __trace?: string | undefined
+    ): <R, E>(as: NonEmptyArray<T.Effect<R, E, A>>) => T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static reduceAll_ from "@effect-ts/core/Effect"
+     */
+    reduceAll<R, E, A>(
+      as: NonEmptyArray<T.Effect<R, E, A>>,
+      f: (acc: A, a: A) => A,
+      __trace?: string | undefined
+    ): T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static reduceAllPar from "@effect-ts/core/Effect"
+     * @ets_data_first reduceAllPar_
+     */
+    reduceAllPar<A>(
+      f: (acc: A, a: A) => A,
+      __trace?: string | undefined
+    ): <R, E>(as: NonEmptyArray<T.Effect<R, E, A>>) => T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static reduceAllPar_ from "@effect-ts/core/Effect"
+     */
+    reduceAllPar<R, E, A>(
+      as: NonEmptyArray<T.Effect<R, E, A>>,
+      f: (acc: A, a: A) => A,
+      __trace?: string | undefined
+    ): T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static reduceAllParN from "@effect-ts/core/Effect"
+     * @ets_data_first reduceAllParN_
+     */
+    reduceAllParN<A>(
+      n: number,
+      f: (acc: A, a: A) => A,
+      __trace?: string
+    ): <R, E>(as: NonEmptyArray<Effect<R, E, A>>) => Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static reduceAllParN_ from "@effect-ts/core/Effect"
+     */
+    reduceAllParN<R, E, A>(
+      as: NonEmptyArray<T.Effect<R, E, A>>,
+      n: number,
+      f: (acc: A, a: A) => A,
+      __trace?: string | undefined
+    ): T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static reduceRight from "@effect-ts/core/Effect"
+     * @ets_data_first reduceRight_
+     */
+    reduceRight<R, E, A, Z>(
+      zero: Z,
+      f: (a: A, z: Z) => T.Effect<R, E, Z>,
+      __trace?: string | undefined
+    ): (i: Iterable<A>) => T.Effect<R, E, Z>
+
+    /**
+     * @ets_rewrite_static reduceRight_ from "@effect-ts/core/Effect"
+     */
+    reduceRight<A, Z, R, E>(
+      i: Iterable<A>,
+      zero: Z,
+      f: (a: A, z: Z) => T.Effect<R, E, Z>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, Z>
+
+    /**
+     * @ets_rewrite_static runtime from "@effect-ts/core/Effect"
+     */
+    runtime: typeof T.runtime
+
+    /**
+     * @ets_rewrite_static second from "@effect-ts/core/Effect"
+     */
+    second: typeof T.second
+
+    /**
+     * @ets_rewrite_static sequential from "@effect-ts/core/Effect"
+     */
+    sequential: typeof T.sequential
+
+    /**
+     * @ets_rewrite_static service from "@effect-ts/core/Effect"
+     */
+    service: typeof T.service
+
+    /**
+     * @ets_rewrite_static services from "@effect-ts/core/Effect"
+     */
+    services: typeof T.services
+
+    /**
+     * @ets_rewrite_static sleep from "@effect-ts/core/Effect"
+     */
+    sleep: typeof T.sleep
+
+    /**
+     * @ets_rewrite_static struct from "@effect-ts/core/Effect"
+     */
+    struct: typeof T.struct
+
+    /**
+     * @ets_rewrite_static structPar from "@effect-ts/core/Effect"
+     */
+    structPar: typeof T.structPar
+
+    /**
+     * @ets_rewrite_static structParN from "@effect-ts/core/Effect"
+     * @ets_data_first structParN_
+     */
+    structParN(
+      n: number,
+      __trace?: string
+    ): <NER extends Record<string, Effect<any, any, any>>>(
+      r: EnforceNonEmptyRecord<NER> & Record<string, Effect<any, any, any>>
+    ) => Effect<
+      _R<NER[keyof NER]>,
+      _E<NER[keyof NER]>,
+      { [K in keyof NER]: [NER[K]] extends [Effect<any, any, infer A>] ? A : never }
+    >
+
+    /**
+     * @ets_rewrite_static structParN_ from "@effect-ts/core/Effect"
+     */
+    structParN<NER extends Record<string, Effect<any, any, any>>>(
+      r: EnforceNonEmptyRecord<NER> & Record<string, Effect<any, any, any>>,
+      n: number,
+      __trace?: string
+    ): Effect<
+      _R<NER[keyof NER]>,
+      _E<NER[keyof NER]>,
+      {
+        [K in keyof NER]: [NER[K]] extends [Effect<any, any, infer A>] ? A : never
+      }
+    >
 
     /**
      * @ets_rewrite_static succeedWith from "@effect-ts/core/Effect"
@@ -486,14 +1488,274 @@ declare module "@effect-ts/system/Effect/effect" {
     succeed: typeof T.succeedWith
 
     /**
+     * @ets_rewrite_static suspend from "@effect-ts/core/Effect"
+     */
+    suspend: typeof T.suspend
+
+    /**
      * @ets_rewrite_static succeed from "@effect-ts/core/Effect"
      */
     succeedNow: typeof T.succeed
 
     /**
-     * @ets_rewrite_static defaultEnv from "@effect-ts/core/Effect"
+     * @ets_rewrite_static trace from "@effect-ts/core/Effect"
      */
-    defaultEnv: typeof T.defaultEnv
+    trace: typeof T.trace
+
+    /**
+     * @ets_rewrite_static tracedMask from "@effect-ts/core/Effect"
+     */
+    tracedMask: typeof T.tracedMask
+
+    /**
+     * @ets_rewrite_static transplant from "@effect-ts/core/Effect"
+     */
+    transplant: typeof T.transplant
+
+    /**
+     * @ets_rewrite_static try from "@effect-ts/core/Effect"
+     */
+    try: typeof T.try
+
+    /**
+     * @ets_rewrite_static tryCatch from "@effect-ts/core/Effect"
+     */
+    tryCatch: typeof T.tryCatchOption
+
+    /**
+     * @ets_rewrite_static tryCatch from "@effect-ts/core/Effect"
+     */
+    tryCatchOption: typeof T.tryCatchOption
+
+    /**
+     * @ets_rewrite_static tryCatchSuspend from "@effect-ts/core/Effect"
+     */
+    tryCatchSuspend: typeof T.tryCatchSuspend
+
+    /**
+     * @ets_rewrite_static tryCatchPromise from "@effect-ts/core/Effect"
+     */
+    tryCatchPromise: typeof T.tryCatchPromise
+
+    /**
+     * @ets_rewrite_static tryPromise from "@effect-ts/core/Effect"
+     */
+    tryPromise: typeof T.tryPromise
+
+    /**
+     * @ets_rewrite_static tuple from "@effect-ts/core/Effect"
+     */
+    tuple: typeof T.tuple
+
+    /**
+     * @ets_rewrite_static tuplePar from "@effect-ts/core/Effect"
+     */
+    tuplePar: typeof T.tuplePar
+
+    /**
+     * @ets_rewrite_static tupleParN from "@effect-ts/core/Effect"
+     */
+    tupleParN: typeof T.tupleParN
+
+    /**
+     * @ets_rewrite_static uninterruptibleMask from "@effect-ts/core/Effect"
+     */
+    uninterruptibleMask: typeof T.uninterruptibleMask
+
+    /**
+     * @ets_rewrite_static union from "@effect-ts/core/Effect"
+     */
+    union: typeof T.union
+
+    /**
+     * @ets_rewrite_static unionFn from "@effect-ts/core/Effect"
+     */
+    unionFn: typeof T.unionFn
+
+    /**
+     * @ets_rewrite_static unit from "@effect-ts/core/Effect"
+     */
+    unit: typeof T.unit
+
+    /**
+     * @ets_rewrite_static unitTraced from "@effect-ts/core/Effect"
+     */
+    unitTraced: typeof T.unitTraced
+
+    /**
+     * @ets_rewrite_static untracedMask from "@effect-ts/core/Effect"
+     */
+    untracedMask: typeof T.untracedMask
+
+    /**
+     * @ets_rewrite_static validate from "@effect-ts/core/Effect"
+     * @ets_data_first validate_
+     */
+    validate<A, R, E, B>(
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.Effect<R, Chunk<E>, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static validate_ from "@effect-ts/core/Effect"
+     */
+    validate<A, R, E, B>(
+      as: Iterable<A>,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, Chunk<E>, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static validatePar from "@effect-ts/core/Effect"
+     * @ets_data_first validatePar_
+     */
+    validatePar<A, R, E, B>(
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.Effect<R, Chunk<E>, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static validatePar_ from "@effect-ts/core/Effect"
+     */
+    validatePar<A, R, E, B>(
+      as: Iterable<A>,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, Chunk<E>, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static validateParN from "@effect-ts/core/Effect"
+     * @ets_data_first validateParN_
+     */
+    validateParN<A, R, E, B>(
+      n: number,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.Effect<R, Chunk<E>, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static validateParN_ from "@effect-ts/core/Effect"
+     */
+    validateParN<A, R, E, B>(
+      as: Iterable<A>,
+      n: number,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, Chunk<E>, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static validateExec from "@effect-ts/core/Effect"
+     * @ets_data_first validateExec_
+     */
+    validateExec<R, E, A, B>(
+      es: T.ExecutionStrategy,
+      f: (a: A) => Effect<R, E, B>,
+      __trace?: string
+    ): (as: Iterable<A>) => Effect<R, Chunk<E>, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static validateExec_ from "@effect-ts/core/Effect"
+     */
+    validateExec<A, R, E, B>(
+      as: Iterable<A>,
+      es: T.ExecutionStrategy,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, Chunk<E>, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static validateFirst from "@effect-ts/core/Effect"
+     * @ets_data_first validateFirst_
+     */
+    validateFirst<A, R, E, B>(
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (i: Iterable<A>) => T.Effect<R, Chunk<E>, B>
+
+    /**
+     * @ets_rewrite_static validateFirst_ from "@effect-ts/core/Effect"
+     */
+    validateFirst<A, R, E, B>(
+      i: Iterable<A>,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, Chunk<E>, B>
+
+    /**
+     * @ets_rewrite_static validateFirstPar from "@effect-ts/core/Effect"
+     * @ets_data_first validateFirstPar_
+     */
+    validateFirstPar<A, R, E, B>(
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (i: Iterable<A>) => T.Effect<R, Chunk<E>, B>
+
+    /**
+     * @ets_rewrite_static validateFirstPar_ from "@effect-ts/core/Effect"
+     */
+    validateFirstPar<A, R, E, B>(
+      i: Iterable<A>,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, Chunk<E>, B>
+
+    /**
+     * @ets_rewrite_static validateFirstParN from "@effect-ts/core/Effect"
+     * @ets_data_first validateFirstParN_
+     */
+    validateFirstParN<A, R, E, B>(
+      n: number,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (i: Iterable<A>) => T.Effect<R, Chunk<E>, B>
+
+    /**
+     * @ets_rewrite_static validateFirstParN_ from "@effect-ts/core/Effect"
+     */
+    validateFirstParN<A, R, E, B>(
+      i: Iterable<A>,
+      n: number,
+      f: (a: A) => T.Effect<R, E, B>,
+      __trace?: string | undefined
+    ): T.Effect<R, Chunk<E>, B>
+
+    /**
+     * @ets_rewrite_static whenCase from "@effect-ts/core/Effect"
+     * @ets_data_first whenCase_
+     */
+    whenCase<R, E, A, X>(
+      pf: (a: A) => O.Option<T.Effect<R, E, X>>,
+      __trace?: string | undefined
+    ): (a: A) => T.Effect<R, E, void>
+
+    /**
+     * @ets_rewrite_static whenCase_ from "@effect-ts/core/Effect"
+     */
+    whenCase<R, E, A, X>(
+      a: A,
+      pf: (a: A) => O.Option<T.Effect<R, E, X>>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, void>
+
+    /**
+     * @ets_rewrite_static withChildren from "@effect-ts/core/Effect"
+     */
+    withChildren: typeof T.withChildren
+
+    /**
+     * @ets_rewrite_static withRuntime from "@effect-ts/core/Effect"
+     */
+    withRuntime: typeof T.withRuntime
+
+    /**
+     * @ets_rewrite_static withRuntime from "@effect-ts/core/Effect"
+     */
+    withRuntimeM: typeof T.withRuntimeM
+
+    /**
+     * @ets_rewrite_static yieldNow from "@effect-ts/core/Effect"
+     */
+    yieldNow: typeof T.yieldNow
   }
 
   export interface Base<R, E, A> extends Effect<R, E, A> {}

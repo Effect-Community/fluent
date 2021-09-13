@@ -95,4 +95,16 @@ describe("Prelude", () => {
     expect(y).toEqual(undefined)
     expect(z).toEqual(undefined)
   })
+
+  it("mapN", async () => {
+    const res = await $T.Tuple.tuple(
+      $T.Effect.succeedNow(0),
+      $T.Effect.succeedNow(1),
+      $T.Effect.succeedNow(2)
+    )
+      .mapEffectN((a, b, c) => a + b + c)
+      .runPromise()
+
+    expect(res).toEqual(3)
+  })
 })
