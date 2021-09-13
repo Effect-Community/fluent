@@ -12,7 +12,7 @@ import {} from "../Extensions"
 import { Data } from "../Extensions/data"
 
 declare global {
-  export namespace T {
+  export namespace $T {
     export type EffectU<A> = Effect<unknown, never, A>
     export type EffectE<E, A> = Effect<unknown, E, A>
     export type EffectR<R, A> = Effect<R, never, A>
@@ -27,9 +27,9 @@ declare global {
       Chunk,
       Tag,
       Has,
-      _A as _AOf,
-      _E as _EOf,
-      _R as _ROf
+      _A,
+      _E,
+      _R
     }
   }
 }

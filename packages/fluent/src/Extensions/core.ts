@@ -19,7 +19,7 @@ declare global {
 
   interface Array<T> extends ArrayOps {}
 
-  interface ArrayOps {
+  interface ArrayOps extends ReadonlyArrayOps {
     /**
      * @ets_rewrite_method fromMutable from "@effect-ts/core/Collections/Immutable/Array"
      */

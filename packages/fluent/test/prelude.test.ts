@@ -3,23 +3,23 @@ import type {} from "../src/Prelude"
 describe("Prelude", () => {
   it("works", async () => {
     const logCache: string[] = []
-    const log = (s: string) => T.Effect.succeed(() => logCache.push(s))
+    const log = (s: string) => $T.Effect.succeed(() => logCache.push(s))
 
     const ServiceId = "@demo/Service"
     type ServiceId = typeof ServiceId
 
     interface Service {
       readonly serviceId: ServiceId
-      readonly print: (s: string) => T.EffectU<void>
+      readonly print: (s: string) => $T.EffectU<void>
     }
 
-    const Service = T.Data.tag<Service>()
+    const Service = $T.Data.tag<Service>()
 
-    const LiveService = T.Effect.succeed(() =>
+    const LiveService = $T.Effect.succeed(() =>
       Service.of({
         serviceId: ServiceId,
         print: (s) =>
-          T.Effect.succeed(() => {
+          $T.Effect.succeed(() => {
             logCache.push(s)
           })
       })
@@ -31,9 +31,9 @@ describe("Prelude", () => {
     const { print } = Service.deriveLifted("print")
 
     expect(
-      await T.Chunk.from([0, 1, 2])
+      await $T.Chunk.from([0, 1, 2])
         .map((n) => n + 1)
-        .mapM((x) => T.Effect.succeed(() => x + 1).tap((x) => print(`got: ${x}`)))
+        .mapM((x) => $T.Effect.succeed(() => x + 1).tap((x) => print(`got: ${x}`)))
         .map((_) => _.toArray())
         .inject(LiveService)
         .runPromise()
@@ -49,13 +49,13 @@ describe("Prelude", () => {
   })
 
   it("forEachF", async () => {
-    const res = await T.Chunk.many(0, 1, 2)
-      .forEachF(T.Effect.Applicative)((n) => T.Effect.succeedNow(n + 1))
+    const res = await $T.Chunk.many(0, 1, 2)
+      .forEachF($T.Effect.Applicative)((n) => $T.Effect.succeedNow(n + 1))
       .map((_) => _.toArray())
       .runPromise()
 
-    const res2 = T.Chunk.many(0, 1, 2)
-      .forEachF(T.Option.Applicative)((n) => T.Option.some(n + 1))
+    const res2 = $T.Chunk.many(0, 1, 2)
+      .forEachF($T.Option.Applicative)((n) => $T.Option.some(n + 1))
       .map((_) => _.toArray())
       .toUndefined()!
 
@@ -63,12 +63,12 @@ describe("Prelude", () => {
   })
 
   it("forEach", async () => {
-    const res = await T.Effect.forEach([0, 1, 2], (n) => T.Effect.succeedNow(n + 1))
+    const res = await $T.Effect.forEach([0, 1, 2], (n) => $T.Effect.succeedNow(n + 1))
       .map((_) => _.toArray())
       .runPromise()
 
     const res2 = await [0, 1, 2]
-      .pipe(T.Effect.forEach((n) => T.Effect.succeedNow(n + 1)))
+      .pipe($T.Effect.forEach((n) => $T.Effect.succeedNow(n + 1)))
       .map((_) => _.toArray())
       .runPromise()
 
