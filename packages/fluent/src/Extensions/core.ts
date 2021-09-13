@@ -8,7 +8,9 @@ import type * as O from "@effect-ts/core/Option"
 import type * as S from "@effect-ts/core/Sync"
 
 declare global {
-  interface Array<T> {
+  interface Array<T> extends ArrayOps {}
+
+  interface ArrayOps {
     /**
      * @ets_rewrite_method fromMutable from "@effect-ts/core/Collections/Immutable/Array"
      */
@@ -44,7 +46,10 @@ declare global {
      */
     toChunk<AX>(this: AX[]): C.Chunk<AX>
   }
-  interface ReadonlyArray<T> {
+
+  interface ReadonlyArray<T> extends ReadonlyArrayOps {}
+
+  interface ReadonlyArrayOps {
     /**
      * @ets_rewrite_method toMutable from "@effect-ts/core/Collections/Immutable/Array"
      */
