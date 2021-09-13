@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Array } from "@effect-ts/core/Collections/Immutable/Array"
 import { Chunk } from "@effect-ts/core/Collections/Immutable/Chunk"
+import type * as T from "@effect-ts/core/Effect"
 import { Effect } from "@effect-ts/core/Effect"
 import { Managed } from "@effect-ts/core/Effect/Managed"
 import { Promise } from "@effect-ts/core/Effect/Promise"
@@ -16,6 +17,7 @@ declare global {
     export type EffectU<A> = Effect<unknown, never, A>
     export type EffectE<E, A> = Effect<unknown, E, A>
     export type EffectR<R, A> = Effect<R, never, A>
+    export type Cb<A> = T.Cb<A>
 
     export {
       Array,

@@ -258,19 +258,111 @@ declare module "@effect-ts/system/Effect/effect" {
     ): T.Effect<R, E, Chunk<B>>
 
     /**
+     * @ets_rewrite_static cond from "@effect-ts/core/Effect"
+     * @ets_data_first cond_
+     */
+    cond<E, A>(
+      onTrue: () => A,
+      onFalse: () => E,
+      __trace?: string | undefined
+    ): (b: boolean) => T.Effect<unknown, E, A>
+
+    /**
+     * @ets_rewrite_static cond_ from "@effect-ts/core/Effect"
+     */
+    cond<E, A>(
+      b: boolean,
+      onTrue: () => A,
+      onFalse: () => E,
+      __trace?: string | undefined
+    ): T.Effect<unknown, E, A>
+
+    /**
+     * @ets_rewrite_static condM from "@effect-ts/core/Effect"
+     * @ets_data_first condM_
+     */
+    condM<R, R2, E, A>(
+      onTrue: T.RIO<R, A>,
+      onFalse: T.RIO<R2, E>,
+      __trace?: string | undefined
+    ): (b: boolean) => T.Effect<R & R2, E, A>
+
+    /**
+     * @ets_rewrite_static condM_ from "@effect-ts/core/Effect"
+     */
+    condM<R, R2, E, A>(
+      b: boolean,
+      onTrue: T.RIO<R, A>,
+      onFalse: T.RIO<R2, E>,
+      __trace?: string | undefined
+    ): T.Effect<R & R2, E, A>
+
+    /**
+     * @ets_rewrite_static Applicative from "@effect-ts/core/Effect"
+     */
+    descriptor: typeof T.descriptor
+
+    /**
+     * @ets_rewrite_static descriptorWith from "@effect-ts/core/Effect"
+     */
+    descriptorWith: typeof T.descriptorWith
+
+    /**
+     * @ets_rewrite_static dropWhile from "@effect-ts/core/Effect"
+     * @ets_data_first dropWhile_
+     */
+    dropWhile<A, R, E>(
+      p: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => T.Effect<R, E, Array<A>>
+
+    /**
+     * @ets_rewrite_static dropWhile_ from "@effect-ts/core/Effect"
+     */
+    dropWhile<A, R, E>(
+      as: Iterable<A>,
+      p: (a: A) => T.Effect<R, E, boolean>,
+      __trace?: string | undefined
+    ): T.Effect<R, E, Array<A>>
+
+    /**
      * @ets_rewrite_static Applicative from "@effect-ts/core/Effect"
      */
     Applicative: typeof T.Applicative
 
     /**
-     * @ets_rewrite_static effectAsync from "@effect-ts/core/Effect"
-     */
-    async: typeof T.effectAsync
-
-    /**
      * @ets_rewrite_static effectAsyncInterrupt from "@effect-ts/core/Effect"
      */
-    asyncInterrupt: typeof T.effectAsyncInterrupt
+    async<R, E, A>(
+      register: (cb: T.Cb<Effect<R, E, A>>) => T.Canceler<R>,
+      __trace?: string | undefined
+    ): Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static effectAsyncInterruptBlockingOn from "@effect-ts/core/Effect"
+     */
+    async<R, E, A>(
+      register: (cb: T.Cb<T.Effect<R, E, A>>) => T.Canceler<R>,
+      blockingOn: readonly Fiber.FiberID[],
+      __trace?: string | undefined
+    ): T.Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static effectAsync from "@effect-ts/core/Effect"
+     */
+    async<R, E, A>(
+      register: (cb: T.Cb<Effect<R, E, A>>) => void,
+      __trace?: string | undefined
+    ): Effect<R, E, A>
+
+    /**
+     * @ets_rewrite_static effectAsyncBlockingOn from "@effect-ts/core/Effect"
+     */
+    async<R, E, A>(
+      register: (cb: T.Cb<T.Effect<R, E, A>>) => void,
+      blockingOn: readonly Fiber.FiberID[],
+      __trace?: string | undefined
+    ): T.Effect<R, E, A>
 
     /**
      * @ets_rewrite_static do from "@effect-ts/core/Effect"

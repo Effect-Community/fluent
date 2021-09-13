@@ -23,5 +23,10 @@
     "prefix": "!",
     "body": ["yield* _()"],
     "description": "Yield generator calling _()"
+  },
+  "Data First": {
+    "prefix": "df",
+    "body": ["@ets_data_first $0"],
+    "description": "data first annotation"
   }
 }
