@@ -2,8 +2,13 @@
 import { Array } from "@effect-ts/core/Collections/Immutable/Array"
 import { Chunk } from "@effect-ts/core/Collections/Immutable/Chunk"
 import { Tuple } from "@effect-ts/core/Collections/Immutable/Tuple"
-import type * as T from "@effect-ts/core/Effect"
-import { Effect } from "@effect-ts/core/Effect"
+import {
+  Cb,
+  Effect,
+  IO as EffectE,
+  RIO as EffectR,
+  UIO as EffectU
+} from "@effect-ts/core/Effect"
 import { Managed } from "@effect-ts/core/Effect/Managed"
 import { Promise } from "@effect-ts/core/Effect/Promise"
 import { Has, Tag } from "@effect-ts/core/Has"
@@ -15,11 +20,6 @@ import { Data } from "../Extensions/data"
 
 declare global {
   export namespace $T {
-    export type EffectU<A> = Effect<unknown, never, A>
-    export type EffectE<E, A> = Effect<unknown, E, A>
-    export type EffectR<R, A> = Effect<R, never, A>
-    export type Cb<A> = T.Cb<A>
-
     export {
       Array,
       Effect,
@@ -28,6 +28,10 @@ declare global {
       Data,
       Option,
       Chunk,
+      Cb,
+      EffectU,
+      EffectR,
+      EffectE,
       Tag,
       Has,
       Tuple,
