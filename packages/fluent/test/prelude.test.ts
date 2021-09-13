@@ -61,4 +61,18 @@ describe("Prelude", () => {
 
     expect(res).toEqual(res2)
   })
+
+  it("forEach", async () => {
+    const res = await T.Effect.forEach([0, 1, 2], (n) => T.Effect.succeedNow(n + 1))
+      .map((_) => _.toArray())
+      .runPromise()
+
+    const res2 = await [0, 1, 2]
+      .pipe(T.Effect.forEach((n) => T.Effect.succeedNow(n + 1)))
+      .map((_) => _.toArray())
+      .runPromise()
+
+    expect(res).toEqual([1, 2, 3])
+    expect(res).toEqual(res2)
+  })
 })

@@ -317,6 +317,11 @@ declare module "@effect-ts/system/Collections/Immutable/Chunk" {
 
   interface ChunkOps {
     /**
+     * @ets_rewrite_method pipe from "smart:pipe"
+     */
+    pipe<Self, Ret>(this: Self, f: (self: Self) => Ret): Ret
+
+    /**
      * @ets_rewrite_method append_ from "@effect-ts/core/Collections/Immutable/Chunk"
      */
     append<A, A1>(this: Chunk<A>, a: A1): Chunk<A | A1>

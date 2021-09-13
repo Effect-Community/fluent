@@ -35,6 +35,24 @@ declare module "@effect-ts/system/Effect/effect" {
 
   export interface EffectStaticOps {
     /**
+     * @ets_rewrite_static forEach_ from "@effect-ts/core/Effect"
+     */
+    forEach<A, R, E, B>(
+      as: Iterable<A>,
+      f: (a: A) => Effect<R, E, B>,
+      __trace?: string | undefined
+    ): Effect<R, E, Chunk<B>>
+
+    /**
+     * @ets_rewrite_static forEach from "@effect-ts/core/Effect"
+     * @ets_data_first forEach_
+     */
+    forEach<A, R, E, B>(
+      f: (a: A) => Effect<R, E, B>,
+      __trace?: string | undefined
+    ): (as: Iterable<A>) => Effect<R, E, Chunk<B>>
+
+    /**
      * @ets_rewrite_static Applicative from "@effect-ts/core/Effect"
      */
     Applicative: typeof T.Applicative

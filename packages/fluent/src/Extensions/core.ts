@@ -8,6 +8,15 @@ import type * as O from "@effect-ts/core/Option"
 import type * as S from "@effect-ts/core/Sync"
 
 declare global {
+  interface ArrayConstructor extends ArrayStaticOps {}
+
+  interface ArrayStaticOps {
+    /**
+     * @ets_rewrite_static getEqual from "@effect-ts/core/Collections/Immutable/Array"
+     */
+    getEqual: typeof A.getEqual
+  }
+
   interface Array<T> extends ArrayOps {}
 
   interface ArrayOps {

@@ -8,7 +8,7 @@ import type * as O from "@effect-ts/core/Option"
 import type { Separated } from "@effect-ts/core/Utils"
 
 declare module "@effect-ts/system/Option/core" {
-  export interface OptionOps {
+  export interface OptionOps<A> {
     /**
      * @ets_rewrite_method pipe from "smart:pipe"
      */
@@ -145,10 +145,15 @@ declare module "@effect-ts/system/Option/core" {
      * @ets_rewrite_method zipSecond_ from "@effect-ts/core/Option"
      */
     zipRight<AX, B>(this: O.Option<AX>, fa: O.Option<B>): O.Option<B>
+
+    /**
+     * @ets_rewrite_getter toUndefined from "@effect-ts/core/Option"
+     */
+    get value(): A | undefined
   }
 
-  export interface Some<A> extends OptionOps {}
-  export interface None extends OptionOps {}
+  export interface Some<A> extends OptionOps<A> {}
+  export interface None extends OptionOps<never> {}
 
   export interface OptionStaticOps {
     /**
