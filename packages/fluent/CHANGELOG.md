@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.8](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.7...@effect-ts/fluent@0.3.8) (2021-09-13)
+
+
+### Features
+
+* **fluent:** avoid T clash with $T, fix array ([db89ef0](https://github.com/Effect-TS/fluent/commit/db89ef068e98f8cd20092403ece327978e619fc5))
+
+
+
+
+
 ## [0.3.7](https://github.com/Effect-TS/fluent/compare/@effect-ts/fluent@0.3.6...@effect-ts/fluent@0.3.7) (2021-09-13)
 
 
