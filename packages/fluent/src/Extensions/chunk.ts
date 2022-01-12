@@ -360,7 +360,7 @@ declare module "@effect-ts/system/Collections/Immutable/Chunk" {
     /**
      * @ets_rewrite_method concat_ from "@effect-ts/core/Collections/Immutable/Chunk"
      */
-    concat<A, A1>(self: Chunk<A>, that: Chunk<A1>): Chunk<A | A1>
+    concat<A, A1>(this: Chunk<A>, that: Chunk<A1>): Chunk<A | A1>
 
     /**
      * @ets_rewrite_method corresponds_ from "@effect-ts/core/Collections/Immutable/Chunk"
@@ -412,7 +412,7 @@ declare module "@effect-ts/system/Collections/Immutable/Chunk" {
     /**
      * @ets_rewrite_method exists_ from "@effect-ts/core/Collections/Immutable/Chunk"
      */
-    exists<A>(self: Chunk<A>, f: (a: A) => boolean): boolean
+    exists<A>(this: Chunk<A>, f: (a: A) => boolean): boolean
 
     /**
      * @ets_rewrite_method filter_ from "@effect-ts/core/Collections/Immutable/Chunk"
@@ -435,17 +435,17 @@ declare module "@effect-ts/system/Collections/Immutable/Chunk" {
     /**
      * @ets_rewrite_method filterMap_ from "@effect-ts/core/Collections/Immutable/Chunk"
      */
-    filterMap<A, B>(self: Chunk<A>, f: (a: A) => Option<B>): Chunk<B>
+    filterMap<A, B>(this: Chunk<A>, f: (a: A) => Option<B>): Chunk<B>
 
     /**
      * @ets_rewrite_method find_ from "@effect-ts/core/Collections/Immutable/Chunk"
      */
-    find<A, B extends A>(self: Chunk<A>, f: F.Refinement<A, B>): Option<B>
+    find<A, B extends A>(this: Chunk<A>, f: F.Refinement<A, B>): Option<B>
 
     /**
      * @ets_rewrite_method find_ from "@effect-ts/core/Collections/Immutable/Chunk"
      */
-    find<A>(self: Chunk<A>, f: F.Predicate<A>): Option<A>
+    find<A>(this: Chunk<A>, f: F.Predicate<A>): Option<A>
 
     /**
      * @ets_rewrite_method findM_ from "@effect-ts/core/Collections/Immutable/Chunk"
